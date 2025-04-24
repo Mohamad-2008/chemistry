@@ -115,7 +115,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
     // شروع انیمیشن جابجایی
     moveController.forward().then((_) {
       moveController.dispose();
-      
+
       // تأخیر 400 میلی‌ثانیه‌ای قبل از شروع انیمیشن بزرگ و کوچک شدن
       Future.delayed(const Duration(seconds: 5), () {
         if (_isMounted) {
