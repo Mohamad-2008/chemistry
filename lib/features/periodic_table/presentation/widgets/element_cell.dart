@@ -17,6 +17,7 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
   bool _isMounted = false;
+  bool _isSearching = false;
 
   @override
   void initState() {
@@ -24,38 +25,33 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
     _isMounted = true;
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 900), // کل انیمیشن 0.9 ثانیه
+      duration: const Duration(milliseconds: 900),
     );
 
-    // تعریف انیمیشن با TweenSequence برای مراحل مختلف
     _scaleAnimation = TweenSequence<double>([
-      // مرحله 1: بزرگ شدن نرم (0 تا 0.3 ثانیه)
       TweenSequenceItem(
         tween: Tween<double>(begin: 1.0, end: 1.4).chain(CurveTween(curve: Curves.easeOutSine)),
-        weight: 33.33, // 300 میلی‌ثانیه
+        weight: 33.33,
       ),
-      // مرحله 2: لرزش ظریف (0.3 تا 0.5 ثانیه)
       TweenSequenceItem(
         tween: TweenSequence<double>([
           TweenSequenceItem(
             tween: Tween<double>(begin: 1.4, end: 1.35).chain(CurveTween(curve: Curves.easeInOutSine)),
-            weight: 50, // 100 میلی‌ثانیه
+            weight: 50,
           ),
           TweenSequenceItem(
             tween: Tween<double>(begin: 1.35, end: 1.4).chain(CurveTween(curve: Curves.easeInOutSine)),
-            weight: 50, // 100 میلی‌ثانیه
+            weight: 50,
           ),
         ]),
-        weight: 22.22, // 200 میلی‌ثانیه
+        weight: 22.22,
       ),
-      // مرحله 3: بازگشت به حالت اولیه (0.5 تا 0.9 ثانیه)
       TweenSequenceItem(
         tween: Tween<double>(begin: 1.4, end: 1.0).chain(CurveTween(curve: Curves.easeInSine)),
-        weight: 44.45, // 400 میلی‌ثانیه
+        weight: 44.45,
       ),
     ]).animate(_animationController);
 
-    // ریست انیمیشن بعد از اتمام
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed && _isMounted) {
         _animationController.reset();
@@ -76,10 +72,9 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
     final provider = Provider.of<PeriodicTableProvider>(context);
     final isSelected = widget.element != null && widget.element == provider.selectedElement;
 
-    // اجرای انیمیشن برای عنصر انتخاب‌شده
-    if (isSelected && !_animationController.isAnimating && !_animationController.isCompleted && _isMounted) {
+    if (isSelected && !_animationController.isAnimating && !_animationController.isCompleted && _isMounted && _isSearching) {
       _animationController.forward();
-    } else if (!isSelected && _animationController.isAnimating && _isMounted) {
+    } else if ((!isSelected || !_isSearching) && _animationController.isAnimating && _isMounted) {
       _animationController.stop();
       _animationController.reset();
     }
@@ -87,105 +82,89 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
     return GestureDetector(
       onTap: widget.element != null
           ? () {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (_isMounted) {
-            provider.selectElement(widget.element);
-            _showElementDetails(context, widget.element!);
-          }
-        });
-      }
+              setState(() {
+                _isSearching = false;
+              });
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (_isMounted) {
+                  provider.selectElement(widget.element);
+                  Navigator.pushNamed(
+                    context,
+                    '/element_details',
+                    arguments: widget.element,
+                  );
+                }
+              });
+            }
           : null,
-      child: ScaleTransition(
-        scale: _scaleAnimation,
-        child: Container(
-          width: 64,
-          height: 64,
-          margin: const EdgeInsets.all(2),
-          decoration: BoxDecoration(
-            color: widget.element != null ? _getCategoryColor(widget.element!.category) : Colors.transparent,
-            border: Border.all(
-              color: isSelected ? Colors.yellow : AppColors.borderColor,
-              width: isSelected ? 2 : 1,
-            ),
-            borderRadius: BorderRadius.circular(4),
-            boxShadow: isSelected
-                ? [
-              BoxShadow(
-                color: Colors.yellow.withOpacity(0.5),
-                blurRadius: 8,
-                spreadRadius: 2,
-              ),
-            ]
-                : [],
-          ),
-          child: widget.element != null
-              ? Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                widget.element!.symbol,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: widget.element!.symbol == 'لانتانیدها' || widget.element!.symbol == 'آکتینیدها' ? 13 : 18,
-                  color: Colors.white,
-                  overflow: TextOverflow.visible,
-                ),
-                softWrap: true,
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                _getNumberText(widget.element!),
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.white70,
-                ),
-              ),
-            ],
-          )
-              : null,
-        ),
-      ),
+      child: _isSearching && isSelected
+          ? ScaleTransition(
+              scale: _scaleAnimation,
+              child: _buildElementContainer(isSelected),
+            )
+          : _buildElementContainer(isSelected),
     );
   }
 
-  String _getNumberText(ElementModel element) {
-    if (element.symbol == 'لانتانیدها') {
-      return '57-71';
-    } else if (element.symbol == 'آکتینیدها') {
-      return '89-103';
-    } else if (element.number == 0) {
-      return '';
-    }
-    return element.number.toString();
-  }
-
-  void _showElementDetails(BuildContext context, ElementModel element) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.scaffoldBackground,
-        title: Text(
-          element.name,
-          style: const TextStyle(color: Colors.white),
+  Widget _buildElementContainer(bool isSelected) {
+    return Container(
+      width: 64,
+      height: 64,
+      margin: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        color: widget.element != null ? _getCategoryColor(widget.element!.category) : Colors.transparent,
+        border: Border.all(
+          color: isSelected ? Colors.yellow : AppColors.borderColor,
+          width: isSelected ? 2 : 1,
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('نماد: ${element.symbol}', style: const TextStyle(color: Colors.white)),
-            Text('عدد اتمی: ${_getNumberText(element)}', style: const TextStyle(color: Colors.white)),
-            Text('جرم اتمی: ${element.atomicMass}', style: const TextStyle(color: Colors.white)),
-            Text('فاز: ${element.phase}', style: const TextStyle(color: Colors.white)),
-            Text('دسته‌بندی: ${element.category}', style: const TextStyle(color: Colors.white)),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('بستن', style: TextStyle(color: Colors.blue)),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(4),
+        boxShadow: isSelected
+            ? [
+                BoxShadow(
+                  color: Colors.yellow.withOpacity(0.5),
+                  blurRadius: 8,
+                  spreadRadius: 2,
+                ),
+              ]
+            : [],
       ),
+      child: widget.element != null
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (widget.element!.number == 0)
+                  Text(
+                    widget.element!.symbol,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                  )
+                else
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.element!.symbol,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        widget.element!.number.toString(),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.white70,
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            )
+          : null,
     );
   }
 
