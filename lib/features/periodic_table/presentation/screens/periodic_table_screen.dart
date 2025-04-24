@@ -28,7 +28,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
     _isMounted = true;
     _arrowController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 300),
       upperBound: 0.5,
     );
     if (_isAppBarVisible) {
@@ -115,7 +115,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
     // شروع انیمیشن جابجایی
     moveController.forward().then((_) {
       moveController.dispose();
-
+      
       // تأخیر 400 میلی‌ثانیه‌ای قبل از شروع انیمیشن بزرگ و کوچک شدن
       Future.delayed(const Duration(seconds: 5), () {
         if (_isMounted) {

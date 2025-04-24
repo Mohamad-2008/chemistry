@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:periodic_table_app/core/models/element_details_model.dart';
 import 'package:periodic_table_app/core/utils/color_utils.dart';
 import 'package:periodic_table_app/core/utils/translation_utils.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:periodic_table_app/features/chat_bot/data/services/chat_bot_service.dart';
+import 'package:periodic_table_app/features/chat_bot/presentation/screens/chat_bot_screen.dart';
 
 class ElementDetailsScreen extends StatefulWidget {
   final ElementDetailsModel element;
@@ -16,6 +19,25 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
+  final TextEditingController _questionController = TextEditingController();
+  final List<String> _answers = [];
+  int _currentAnswerIndex = 0;
+  String _displayedAnswer = '';
+  bool _isLoading = false;
+  final List<String> _hintTexts = [];
+  int _currentHintIndex = 0;
+  bool _showChatInput = false;
+  bool _isFirstAnswer = true;
+  bool _isExpanded = false;
+  final GlobalKey _answerBoxKey = GlobalKey(); // کلید برای باکس جواب
+  final GlobalKey _chatInputKey = GlobalKey(); // کلید برای تکست‌فیلد
+  double _answerBoxHeight = 0.0; // متغیر برای ذخیره ارتفاع باکس جواب
+  double _chatInputHeight = 0.0; // متغیر برای ذخیره ارتفاع تکست‌فیلد
+
+  double _getHeight(GlobalKey key) {
+    final RenderBox? renderBox = key.currentContext?.findRenderObject() as RenderBox?;
+    return renderBox?.size.height ?? 0.0;
+  }
 
   @override
   void initState() {
@@ -28,174 +50,507 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
     _animationController.forward();
+    _initializeHintTexts();
+  }
+
+  void _updateHeights() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() {
+          final RenderBox? answerBox = _answerBoxKey.currentContext?.findRenderObject() as RenderBox?;
+          final RenderBox? chatInputBox = _chatInputKey.currentContext?.findRenderObject() as RenderBox?;
+          _answerBoxHeight = answerBox?.size.height ?? 0.0;
+          _chatInputHeight = chatInputBox?.size.height ?? 0.0;
+        });
+      }
+    });
+  }
+
+  void _initializeHintTexts() {
+    _hintTexts.addAll([
+      'سوال خود را در مورد ${widget.element.name} بپرسید...',
+      'می‌خواهید در مورد ${widget.element.name} چه بدانید؟',
+      'درباره ${widget.element.name} سوال دارید؟',
+      '${widget.element.name} را بهتر بشناسید...',
+    ]);
+    _startHintRotation();
+  }
+
+  void _startHintRotation() {
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        setState(() {
+          _currentHintIndex = (_currentHintIndex + 1) % _hintTexts.length;
+        });
+        _startHintRotation();
+      }
+    });
+  }
+
+  void _toggleChatInput() {
+    setState(() {
+      _showChatInput = !_showChatInput;
+      if (!_showChatInput) {
+        _answers.clear();
+      }
+    });
   }
 
   @override
   void dispose() {
     _animationController.dispose();
+    _questionController.dispose();
     super.dispose();
+  }
+
+  void _animateAnswer(String answer) {
+    _displayedAnswer = '';
+    if (_isFirstAnswer) {
+      for (var i = 0; i <= answer.length; i++) {
+        Future.delayed(Duration(milliseconds: i * 20), () {
+          if (mounted) {
+            setState(() {
+              _displayedAnswer = answer.substring(0, i);
+            });
+          }
+        });
+      }
+      _isFirstAnswer = false;
+    } else {
+      setState(() {
+        _displayedAnswer = answer;
+      });
+    }
+  }
+
+  Future<void> _sendQuestion() async {
+    if (_questionController.text.trim().isEmpty) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    // بستن کیبورد
+    FocusScope.of(context).unfocus();
+
+    final chatBotService = ChatBotService(element: widget.element);
+    final response = await chatBotService.sendMessage(_questionController.text);
+
+    setState(() {
+      _answers.add(response.text);
+      _currentAnswerIndex = _answers.length - 1;
+      _isLoading = false;
+      _questionController.clear();
+      _isFirstAnswer = true;
+    });
+
+    _animateAnswer(_answers[_currentAnswerIndex]);
+    _updateHeights();
+  }
+
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('نمی‌توان لینک را باز کرد: $url')),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    _updateHeights();
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        body: CustomScrollView(
-          slivers: [
-            _buildSliverAppBar(context),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: FadeTransition(
-                  opacity: _fadeAnimation,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+        floatingActionButton: Container(
+          width: 60,
+          height: 60,
+          margin: EdgeInsets.only(
+            bottom: !_showChatInput
+                ? 10
+                : _showChatInput && _answers.isEmpty
+                ? _getHeight(_chatInputKey)  // فقط تکست‌فیلد بازه
+                : _getHeight(_chatInputKey) + _getHeight(_answerBoxKey) + 20, // تکست‌فیلد و باکس جواب بازن
+          ),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.blueGrey[900],
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: IconButton(
+            icon: Icon(
+              _showChatInput ? Icons.close : Icons.chat_outlined,
+              color: Colors.white,
+              size: 30,
+            ),
+            onPressed: () {
+              setState(() {
+                _showChatInput = !_showChatInput;
+                if (!_showChatInput) {
+                  _answers.clear();
+                  _currentAnswerIndex = 0;
+                  _displayedAnswer = '';
+                }
+              });
+            },
+          ),
+        ),        body: Stack(
+          children: [
+            CustomScrollView(
+              slivers: [
+                _buildSliverAppBar(context),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: FadeTransition(
+                      opacity: _fadeAnimation,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildInfoCard(
+                            context,
+                            'اطلاعات کلی',
+                            Icons.info_outline,
+                            [
+                              _buildInfoRow('عدد اتمی', widget.element.number.toString(), Icons.numbers),
+                              _buildInfoRow('نماد', widget.element.symbol, Icons.science),
+                              _buildInfoRow('دسته‌بندی', _formatCategory(widget.element.category), Icons.category),
+                              _buildInfoRow('گروه', widget.element.xpos.toString(), Icons.grid_view),
+                              _buildInfoRow('دوره', widget.element.ypos.toString(), Icons.timeline),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          _buildInfoCard(
+                            context,
+                            'خواص فیزیکی',
+                            Icons.thermostat,
+                            [
+                              _buildInfoRow('جرم اتمی', widget.element.atomicMass, Icons.scale),
+                              _buildInfoRow('فاز', widget.element.phase, Icons.water_drop),
+                              _buildInfoRow(
+                                'ظاهر',
+                                widget.element.appearance.isNotEmpty ? widget.element.appearance : 'نامشخص',
+                                Icons.visibility,
+                              ),
+                              if (widget.element.physicalProperties['density'] != null)
+                                _buildInfoRow(
+                                  'چگالی',
+                                  '${widget.element.physicalProperties['density']} g/L',
+                                  Icons.density_medium,
+                                ),
+                              if (widget.element.physicalProperties['melt'] != null)
+                                _buildInfoRow(
+                                  'نقطه ذوب',
+                                  '${widget.element.physicalProperties['melt']} K',
+                                  Icons.whatshot,
+                                ),
+                              if (widget.element.physicalProperties['boil'] != null)
+                                _buildInfoRow(
+                                  'نقطه جوش',
+                                  '${widget.element.physicalProperties['boil']} K',
+                                  Icons.local_fire_department,
+                                ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          _buildInfoCard(
+                            context,
+                            'خواص شیمیایی',
+                            Icons.biotech,
+                            [
+                              if (widget.element.electronegativity != null)
+                                _buildInfoRow(
+                                  'الکترونگاتیوی',
+                                  widget.element.electronegativity.toString(),
+                                  Icons.electric_bolt,
+                                ),
+                              if (widget.element.ionizationEnergy != null)
+                                _buildInfoRow(
+                                  'انرژی یونش',
+                                  '${widget.element.ionizationEnergy} kJ/mol',
+                                  Icons.energy_savings_leaf,
+                                ),
+                              if (widget.element.oxidationStates != null)
+                                _buildInfoRow(
+                                  'حالت اکسایش',
+                                  widget.element.oxidationStates!.join(', '),
+                                  Icons.swap_horiz,
+                                ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          _buildInfoCard(
+                            context,
+                            'خواص اتمی',
+                            Icons.scatter_plot,
+                            [
+                              if (widget.element.electronConfiguration != null)
+                                _buildInfoRow(
+                                  'پیکربندی الکترونی',
+                                  widget.element.electronConfiguration!,
+                                  Icons.electrical_services,
+                                ),
+                              if (widget.element.atomicRadius != null)
+                                _buildInfoRow(
+                                  'شعاع اتمی',
+                                  '${widget.element.atomicRadius} pm',
+                                  Icons.circle,
+                                ),
+                              if (widget.element.covalentRadius != null)
+                                _buildInfoRow(
+                                  'شعاع کووالانسی',
+                                  '${widget.element.covalentRadius} pm',
+                                  Icons.link,
+                                ),
+                              if (widget.element.halfLife != null)
+                                _buildInfoRow(
+                                  'نیمه‌عمر',
+                                  widget.element.halfLife!,
+                                  Icons.hourglass_bottom,
+                                ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          _buildInfoCard(
+                            context,
+                            'اطلاعات تاریخی',
+                            Icons.history,
+                            [
+                              _buildInfoRow(
+                                'کاشف',
+                                widget.element.discoveredBy.isNotEmpty ? widget.element.discoveredBy : 'نامشخص',
+                                Icons.person_search,
+                              ),
+                              _buildInfoRow(
+                                'نام‌گذاری شده توسط',
+                                widget.element.namedBy.isNotEmpty ? widget.element.namedBy : 'نامشخص',
+                                Icons.edit,
+                              ),
+                              _buildInfoRow('منبع', widget.element.source, Icons.source),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          _buildInfoCard(
+                            context,
+                            'خلاصه',
+                            Icons.description,
+                            [
+                              Directionality(
+                                textDirection: TextDirection.ltr,
+                                child: _buildInfoRow(
+                                  'توضیحات',
+                                  widget.element.summary.isNotEmpty ? widget.element.summary : 'خلاصه‌ای موجود نیست.',
+                                  Icons.text_fields,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            if (_answers.isNotEmpty)
+              Positioned(
+                key: _answerBoxKey, // اضافه کردن کلید به باکس جواب
+                bottom: 80,
+                left: 8,
+                right: 8,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    FadeTransition(
+                      opacity: _fadeAnimation,
+                      child: Container(
+                        constraints: BoxConstraints(
+                          maxHeight: _isExpanded
+                              ? MediaQuery.of(context).size.height * 0.6
+                              : MediaQuery.of(context).size.height * 0.5,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey[900],
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              blurRadius: 10,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+                                  onPressed: _currentAnswerIndex > 0
+                                      ? () {
+                                    setState(() {
+                                      _currentAnswerIndex--;
+                                      _displayedAnswer = _answers[_currentAnswerIndex];
+                                    });
+                                  }
+                                      : null,
+                                ),
+                                Text(
+                                  '${_currentAnswerIndex + 1}/${_answers.length}',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Vazir',
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 20),
+                                      onPressed: _currentAnswerIndex < _answers.length - 1
+                                          ? () {
+                                        setState(() {
+                                          _currentAnswerIndex++;
+                                          _displayedAnswer = _answers[_currentAnswerIndex];
+                                        });
+                                      }
+                                          : null,
+                                    ),
+                                    IconButton(
+                                      icon: Icon(
+                                        _isExpanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
+                                        color: Colors.white,
+                                        size: 20,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _isExpanded = !_isExpanded;
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            if (_isExpanded)
+                              Expanded(
+                                child: SingleChildScrollView(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                    child: Text(
+                                      _displayedAnswer,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontFamily: 'Vazir',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            if (!_isExpanded)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                                child: Text(
+                                  _displayedAnswer,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontFamily: 'Vazir',
+                                  ),
+                                  maxLines: 6,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+            if (_showChatInput)
+              Positioned(
+                key: _chatInputKey, // اضافه کردن کلید به تکست‌فیلد
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.blueGrey[900],
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 10,
+                        offset: const Offset(0, -5),
+                      ),
+                    ],
+                  ),
+                  child: Row(
                     children: [
-                      _buildInfoCard(
-                        context,
-                        'اطلاعات کلی',
-                        Icons.info_outline,
-                        [
-                          _buildInfoRow('عدد اتمی', widget.element.number.toString(), Icons.numbers),
-                          _buildInfoRow('نماد', widget.element.symbol, Icons.science),
-                          _buildInfoRow('دسته‌بندی', _formatCategory(widget.element.category), Icons.category),
-                          _buildInfoRow('گروه', widget.element.xpos.toString(), Icons.grid_view),
-                          _buildInfoRow('دوره', widget.element.ypos.toString(), Icons.timeline),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      _buildInfoCard(
-                        context,
-                        'خواص فیزیکی',
-                        Icons.thermostat,
-                        [
-                          _buildInfoRow('جرم اتمی', widget.element.atomicMass, Icons.scale),
-                          _buildInfoRow('فاز', widget.element.phase, Icons.water_drop),
-                          _buildInfoRow(
-                            'ظاهر',
-                            widget.element.appearance.isNotEmpty ? widget.element.appearance : 'نامشخص',
-                            Icons.visibility,
+                      Expanded(
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.blueGrey[800],
+                            borderRadius: BorderRadius.circular(25),
                           ),
-                          if (widget.element.physicalProperties['density'] != null)
-                            _buildInfoRow(
-                              'چگالی',
-                              '${widget.element.physicalProperties['density']} g/L',
-                              Icons.density_medium,
+                          child: TextField(
+                            controller: _questionController,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Vazir',
                             ),
-                          if (widget.element.physicalProperties['melt'] != null)
-                            _buildInfoRow(
-                              'نقطه ذوب',
-                              '${widget.element.physicalProperties['melt']} K',
-                              Icons.whatshot,
+                            decoration: InputDecoration(
+                              hintText: _hintTexts[_currentHintIndex],
+                              hintStyle: TextStyle(
+                                color: Colors.white.withOpacity(0.5),
+                                fontFamily: 'Vazir',
+                              ),
+                              border: InputBorder.none,
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                             ),
-                          if (widget.element.physicalProperties['boil'] != null)
-                            _buildInfoRow(
-                              'نقطه جوش',
-                              '${widget.element.physicalProperties['boil']} K',
-                              Icons.local_fire_department,
-                            ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      _buildInfoCard(
-                        context,
-                        'خواص شیمیایی',
-                        Icons.biotech,
-                        [
-                          if (widget.element.electronegativity != null)
-                            _buildInfoRow(
-                              'الکترونگاتیوی',
-                              widget.element.electronegativity.toString(),
-                              Icons.electric_bolt,
-                            ),
-                          if (widget.element.ionizationEnergy != null)
-                            _buildInfoRow(
-                              'انرژی یونش',
-                              '${widget.element.ionizationEnergy} kJ/mol',
-                              Icons.energy_savings_leaf,
-                            ),
-                          if (widget.element.oxidationStates != null)
-                            _buildInfoRow(
-                              'حالت اکسایش',
-                              widget.element.oxidationStates!.join(', '),
-                              Icons.swap_horiz,
-                            ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      _buildInfoCard(
-                        context,
-                        'خواص اتمی',
-                        Icons.scatter_plot,
-                        [
-                          if (widget.element.electronConfiguration != null)
-                            _buildInfoRow(
-                              'پیکربندی الکترونی',
-                              widget.element.electronConfiguration!,
-                              Icons.electrical_services,
-                            ),
-                          if (widget.element.atomicRadius != null)
-                            _buildInfoRow(
-                              'شعاع اتمی',
-                              '${widget.element.atomicRadius} pm',
-                              Icons.circle,
-                            ),
-                          if (widget.element.covalentRadius != null)
-                            _buildInfoRow(
-                              'شعاع کووالانسی',
-                              '${widget.element.covalentRadius} pm',
-                              Icons.link,
-                            ),
-                          if (widget.element.halfLife != null)
-                            _buildInfoRow(
-                              'نیمه‌عمر',
-                              widget.element.halfLife!,
-                              Icons.hourglass_bottom,
-                            ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      _buildInfoCard(
-                        context,
-                        'اطلاعات تاریخی',
-                        Icons.history,
-                        [
-                          _buildInfoRow(
-                            'کاشف',
-                            widget.element.discoveredBy.isNotEmpty ? widget.element.discoveredBy : 'نامشخص',
-                            Icons.person_search,
+                            onSubmitted: (_) => _sendQuestion(),
                           ),
-                          _buildInfoRow(
-                            'نام‌گذاری شده توسط',
-                            widget.element.namedBy.isNotEmpty ? widget.element.namedBy : 'نامشخص',
-                            Icons.edit,
-                          ),
-                          _buildInfoRow('منبع', widget.element.source, Icons.source),
-                        ],
+                        ),
                       ),
-                      const SizedBox(height: 16),
-                      _buildInfoCard(
-                        context,
-                        'خلاصه',
-                        Icons.description,
-                        [
-                          Directionality(
-                            textDirection: TextDirection.ltr,
-                            child: _buildInfoRow(
-                              'توضیحات',
-                              widget.element.summary.isNotEmpty ? widget.element.summary : 'خلاصه‌ای موجود نیست.',
-                              Icons.text_fields,
+                      const SizedBox(width: 8),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey[800],
+                          shape: BoxShape.circle,
+                        ),
+                        child: IconButton(
+                          icon: _isLoading
+                              ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
-                          ),
-                        ],
+                          )
+                              : const Icon(Icons.send, color: Colors.white),
+                          onPressed: _isLoading ? null : _sendQuestion,
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
           ],
         ),
       ),
@@ -208,7 +563,6 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
     return Directionality(
       textDirection: TextDirection.ltr,
       child: SliverAppBar(
-        // collapsedHeight: 60,
         expandedHeight: 300.0,
         floating: false,
         pinned: true,
@@ -220,232 +574,292 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: IconButton(
-              icon: const Icon(Icons.info_outline, color: Colors.white),
-              onPressed: () {
-                // لینک به ویکی‌پدیا
-                // می‌توانید اینجا کد مربوط به باز کردن لینک ویکی‌پدیا را اضافه کنید
-              },
-            ),
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: IconButton(
+                icon: const Icon(Icons.info_outline, color: Colors.white),
+                onPressed: () {
+                  _launchURL(widget.element.source);
+                },
+              )
           ),
         ],
         flexibleSpace: LayoutBuilder(
           builder: (context, constraints) {
-            final isExpanded = constraints.maxHeight > 180;
+            final isExpanded = constraints.maxHeight > 150;
 
             return Stack(
               children: [
                 FlexibleSpaceBar(
                   titlePadding: EdgeInsets.only(
-                    bottom: isExpanded ? 18.0 : 8,
-                    left: isExpanded ? 18 : 52,
+                    bottom: isExpanded ? 0.0 : 0,
+                    left: isExpanded ? 0 : 0,
                     right: 12,
                   ),
                   title: FadeTransition(
                     opacity: _fadeAnimation,
-                    child: isExpanded
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    TranslationUtils.translate(widget.element.name),
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                      fontFamily: 'Vazir',
-                                      shadows: [
-                                        Shadow(
-                                          blurRadius: 6,
-                                          color: Colors.black54,
-                                          offset: Offset(-1, 2),
+                    child: TweenAnimationBuilder<EdgeInsets>(
+                      tween: EdgeInsetsTween(
+                        begin: isExpanded
+                            ? const EdgeInsets.only(bottom: 8, left: 52, right: 4)
+                            : const EdgeInsets.only(bottom: 18, left: 18, right: 4),
+                        end: isExpanded
+                            ? const EdgeInsets.only(bottom: 18, left: 18, right: 4)
+                            : const EdgeInsets.only(bottom: 8, left: 52, right: 4),
+                      ),
+                      duration: const Duration(milliseconds: 400),
+                      curve: Curves.easeInOut,
+                      builder: (context, padding, child) {
+                        return Padding(
+                          padding: padding,
+                          child: child,
+                        );
+                      },
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: TweenAnimationBuilder<double>(
+                                tween: Tween<double>(begin: isExpanded ? 1 : 0, end: isExpanded ? 1 : 0),
+                                duration: const Duration(milliseconds: 400),
+                                curve: Curves.easeInOut,
+                                builder: (context, value, child) {
+                                  return Opacity(
+                                    opacity: value,
+                                    child: Transform.translate(
+                                      offset: Offset(0, 20 * (1 - value)),
+                                      child: Transform.scale(
+                                        scale: 0.9 + (0.1 * value),
+                                        child: child,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          TranslationUtils.translate(widget.element.name),
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
+                                            color: Colors.white,
+                                            fontFamily: 'Vazir',
+                                            shadows: [
+                                              Shadow(
+                                                blurRadius: 6,
+                                                color: Colors.black54,
+                                                offset: Offset(-1, 2),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              widget.element.symbol,
+                                              style: const TextStyle(
+                                                fontSize: 36,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                                fontFamily: 'Vazir',
+                                                shadows: [
+                                                  Shadow(
+                                                    blurRadius: 6,
+                                                    color: Colors.black54,
+                                                    offset: Offset(-1, 2),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Text(
+                                              widget.element.number.toString(),
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                                fontFamily: 'Vazir',
+                                                shadows: [
+                                                  Shadow(
+                                                    blurRadius: 6,
+                                                    color: Colors.black54,
+                                                    offset: Offset(-1, 2),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 2),
+                                        Text(
+                                          '${widget.element.atomicMass} (g/mol)',
+                                          style: const TextStyle(
+                                            fontSize: 10,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500,
+                                            fontFamily: 'Vazir',
+                                            shadows: [
+                                              Shadow(
+                                                blurRadius: 6,
+                                                color: Colors.black54,
+                                                offset: Offset(-2, 2),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        widget.element.symbol,
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: categoryColor.withOpacity(0.8),
+                                        borderRadius: BorderRadius.circular(5),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.4),
+                                            blurRadius: 2,
+                                            offset: const Offset(2, 2),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Text(
+                                        TranslationUtils.translate(widget.element.category.toUpperCase()),
                                         style: const TextStyle(
-                                          fontSize: 36,
+                                          fontSize: 8,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                           fontFamily: 'Vazir',
-                                          shadows: [
-                                            Shadow(
-                                              blurRadius: 6,
-                                              color: Colors.black54,
-                                              offset: Offset(-1, 2),
-                                            ),
-                                          ],
                                         ),
                                       ),
-                                      Text(
-                                        widget.element.number.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                          fontFamily: 'Vazir',
-                                          shadows: [
-                                            Shadow(
-                                              blurRadius: 6,
-                                              color: Colors.black54,
-                                              offset: Offset(-1, 2),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: TweenAnimationBuilder<double>(
+                                tween: Tween<double>(begin: isExpanded ? 0 : 1, end: isExpanded ? 0 : 1),
+                                duration: const Duration(milliseconds: 400),
+                                curve: Curves.easeInOut,
+                                builder: (context, value, child) {
+                                  return Opacity(
+                                    opacity: value,
+                                    child: Transform.translate(
+                                      offset: Offset(0, 20 * (1 - value)),
+                                      child: Transform.scale(
+                                        scale: 0.9 + (0.1 * value),
+                                        child: child,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    AnimatedContainer(
+                                      duration: const Duration(milliseconds: 300),
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: categoryColor.withOpacity(0.8),
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.2),
+                                            blurRadius: 4,
+                                            offset: const Offset(0, 2),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          widget.element.symbol,
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            fontFamily: 'Vazir',
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              TranslationUtils.translate(widget.element.name),
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                                fontFamily: 'Vazir',
+                                                shadows: [
+                                                  Shadow(
+                                                    blurRadius: 4.0,
+                                                    color: Colors.black54,
+                                                    offset: Offset(0, 2),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(width: 4),
+                                            Text(
+                                              TranslationUtils.translate('${widget.element.number}'),
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                                fontFamily: 'Vazir',
+                                                shadows: [
+                                                  Shadow(
+                                                    blurRadius: 4.0,
+                                                    color: Colors.black54,
+                                                    offset: Offset(0, 2),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ],
                                         ),
-                                      ),                                      
-                                    ],
-                                  ),
-                                  SizedBox(height: 2),
-                                  Text(
-                                    '${widget.element.atomicMass} (g/mol)',
-                                    style: const TextStyle(
-                                      fontSize: 10,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                      fontFamily: 'Vazir',
-                                      shadows: [
-                                        Shadow(
-                                          blurRadius: 6,
-                                          color: Colors.black54,
-                                          offset: Offset(-2, 2),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          '${widget.element.atomicMass} (g/mol)',
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.white70,
+                                            fontFamily: 'Vazir',
+                                            shadows: [
+                                              Shadow(
+                                                blurRadius: 4.0,
+                                                color: Colors.black54,
+                                                offset: Offset(0, 2),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: categoryColor.withOpacity(0.8),
-                                  borderRadius: BorderRadius.circular(5),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.4),
-                                      blurRadius: 2,
-                                      offset: const Offset(2, 2),
                                     ),
                                   ],
                                 ),
-                                child: Text(
-                                  TranslationUtils.translate(widget.element.category.toUpperCase()),
-                                  style: const TextStyle(
-                                    fontSize: 8,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontFamily: 'Vazir',
-                                  ),
-                                ),
                               ),
-                            ],
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              AnimatedContainer(
-                                duration: const Duration(milliseconds: 300),
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: categoryColor.withOpacity(0.8),
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.2),
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    widget.element.symbol,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      fontFamily: 'Vazir',
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 12,),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                              
-                                    children: [
-                                      Text(
-                                    TranslationUtils.translate(widget.element.name),
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      fontFamily: 'Vazir',
-                                      shadows: [
-                                        Shadow(
-                                          blurRadius: 4.0,
-                                          color: Colors.black54,
-                                          offset: Offset(0, 2),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(width: 4,),
-                                  Text(
-                                    TranslationUtils.translate('${widget.element.number}'),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      fontFamily: 'Vazir',
-                                      shadows: [
-                                        Shadow(
-                                          blurRadius: 4.0,
-                                          color: Colors.black54,
-                                          offset: Offset(0, 2),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                    ],
-                                  ),
-                                  
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    '${widget.element.atomicMass} (g/mol)',
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.white70,
-                                      fontFamily: 'Vazir',
-                                      shadows: [
-                                        Shadow(
-                                          blurRadius: 4.0,
-                                          color: Colors.black54,
-                                          offset: Offset(0, 2),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                            ),
                           ),
+                        ],
+                      ),
+                    ),
                   ),
                   background: Stack(
                     fit: StackFit.expand,
@@ -454,10 +868,10 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                         tag: 'element_${widget.element.number}',
                         child: widget.element.imageUrl.isNotEmpty
                             ? Image.network(
-                                widget.element.imageUrl,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) => _buildFallbackImage(context),
-                              )
+                          widget.element.imageUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => _buildFallbackImage(context),
+                        )
                             : _buildFallbackImage(context),
                       ),
                       Container(
@@ -561,11 +975,11 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                 Text(
                   TranslationUtils.translate(title),
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontFamily: 'Vazir',
-                      ),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontFamily: 'Vazir',
+                  ),
                 ),
               ],
             ),

@@ -63,6 +63,9 @@ class PeriodicTableBottomNav extends StatelessWidget {
                   _buildNavItem(icon: Icons.bar_chart, isActive: false, onTap: () {
                     CustomSnackBar.show(context, 'جدول‌ها و نمودارها به زودی اضافه می‌شود!');
                   }),
+                  _buildNavItem(icon: Icons.chat_bubble_outline, isActive: false, onTap: () {
+                    Navigator.pushNamed(context, '/chat_bot');
+                  }),
                   _buildNavItem(icon: Icons.home, isActive: false, onTap: () {
                     CustomSnackBar.show(context, 'منوی اصلی به زودی اضافه می‌شود!');
                   }),

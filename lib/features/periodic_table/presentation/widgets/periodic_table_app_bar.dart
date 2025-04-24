@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:periodic_table_app/core/constants/app_colors.dart';
-import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
-import 'package:provider/provider.dart';
-import 'custom_snack_bar.dart';
+import 'package:periodic_table_app/features/periodic_table/presentation/widgets/custom_snack_bar.dart';
 
 class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isVisible;
@@ -15,21 +12,6 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
     required this.orientation,
     required this.onSearchPressed,
   });
-
-  // لیست دسته‌بندی‌ها به‌صورت دستی تعریف شده
-  static const List<String> _categories = [
-    'diatomic_nonmetal',
-    'noble_gas',
-    'alkali_metal',
-    'alkaline_earth_metal',
-    'metalloid',
-    'polyatomic_nonmetal',
-    'post-transition_metal',
-    'transition_metal',
-    'lanthanide',
-    'actinide',
-    'unknown',
-  ];
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
@@ -75,45 +57,14 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
                 CustomSnackBar.show(context, 'بازگشت به زودی اضافه می‌شود!');
               },
             ),
-            title: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  'جدول تناوبی',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Vazir',
-                  ),
-                ),
-                const SizedBox(width: 8),
-                PopupMenuButton<ThirdField>(
-                  icon: const Icon(Icons.add_circle_outline, color: Colors.white),
-                  tooltip: 'انتخاب فیلد سوم',
-                  onSelected: (ThirdField field) {
-                    context.read<PeriodicTableProvider>().setThirdField(field);
-                  },
-                  itemBuilder: (BuildContext context) => <PopupMenuEntry<ThirdField>>[
-                    const PopupMenuItem<ThirdField>(
-                      value: ThirdField.atomicMass,
-                      child: Text('جرم اتمی'),
-                    ),
-                    const PopupMenuItem<ThirdField>(
-                      value: ThirdField.name,
-                      child: Text('نام کامل'),
-                    ),
-                    const PopupMenuItem<ThirdField>(
-                      value: ThirdField.phase,
-                      child: Text('فاز'),
-                    ),
-                    const PopupMenuItem<ThirdField>(
-                      value: ThirdField.electronegativity,
-                      child: Text('الکترونگاتیوی'),
-                    ),
-                  ],
-                ),
-              ],
+            title: const Text(
+              'جدول تناوبی',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Vazir',
+              ),
             ),
             centerTitle: true,
             actions: [
@@ -121,22 +72,11 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
                 icon: const Icon(Icons.search, color: Colors.white),
                 onPressed: onSearchPressed,
               ),
-              PopupMenuButton<String>(
-                icon: const Icon(Icons.sort, color: Colors.white),
-                tooltip: 'سورت بر اساس دسته‌بندی',
-                onSelected: (String? category) {
-                  context.read<PeriodicTableProvider>().setCategory(category);
+              IconButton(
+                icon: const Icon(Icons.menu, color: Colors.white),
+                onPressed: () {
+                  CustomSnackBar.show(context, 'منو به زودی اضافه می‌شود!');
                 },
-                itemBuilder: (BuildContext context) => [
-                  const PopupMenuItem<String>(
-                    value: null,
-                    child: Text('همه دسته‌ها'),
-                  ),
-                  ..._categories.map((category) => PopupMenuItem<String>(
-                    value: category,
-                    child: Text(category.replaceAll('_', ' ').toUpperCase()),
-                  )),
-                ],
               ),
             ],
           ),
