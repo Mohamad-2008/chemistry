@@ -15,7 +15,7 @@ class ElementCell extends StatefulWidget {
 
 class _ElementCellState extends State<ElementCell> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-  late Animation<double> _scaleAnimation;
+  late Animation<double> _glowAnimation;
   bool _isMounted = false;
   bool _isSearching = false;
 
@@ -25,36 +25,22 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
     _isMounted = true;
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 900),
+      duration: const Duration(milliseconds: 1000),
     );
 
-    _scaleAnimation = TweenSequence<double>([
-      TweenSequenceItem(
-        tween: Tween<double>(begin: 1.0, end: 1.4).chain(CurveTween(curve: Curves.easeOutSine)),
-        weight: 33.33,
-      ),
-      TweenSequenceItem(
-        tween: TweenSequence<double>([
-          TweenSequenceItem(
-            tween: Tween<double>(begin: 1.4, end: 1.35).chain(CurveTween(curve: Curves.easeInOutSine)),
-            weight: 50,
-          ),
-          TweenSequenceItem(
-            tween: Tween<double>(begin: 1.35, end: 1.4).chain(CurveTween(curve: Curves.easeInOutSine)),
-            weight: 50,
-          ),
-        ]),
-        weight: 22.22,
-      ),
-      TweenSequenceItem(
-        tween: Tween<double>(begin: 1.4, end: 1.0).chain(CurveTween(curve: Curves.easeInSine)),
-        weight: 44.45,
-      ),
-    ]).animate(_animationController);
+    _glowAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
 
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed && _isMounted) {
-        _animationController.reset();
+        _animationController.reverse();
+      } else if (status == AnimationStatus.dismissed && _isMounted) {
+        _animationController.forward();
       }
     });
   }
@@ -72,11 +58,16 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
     final provider = Provider.of<PeriodicTableProvider>(context);
     final isSelected = widget.element != null && widget.element == provider.selectedElement;
 
-    if (isSelected && !_animationController.isAnimating && !_animationController.isCompleted && _isMounted && _isSearching) {
+    if (isSelected && !_animationController.isAnimating && _isMounted && _isSearching) {
       _animationController.forward();
     } else if ((!isSelected || !_isSearching) && _animationController.isAnimating && _isMounted) {
       _animationController.stop();
       _animationController.reset();
+    }
+
+    // برای لانتانیدها و آکتینیدها هیچ عملی انجام نده
+    if (widget.element != null && widget.element!.number == 0) {
+      return _buildCellContent();
     }
 
     return GestureDetector(
@@ -98,73 +89,145 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
             }
           : null,
       child: _isSearching && isSelected
-          ? ScaleTransition(
-              scale: _scaleAnimation,
-              child: _buildElementContainer(isSelected),
+          ? AnimatedBuilder(
+              animation: _animationController,
+              builder: (context, child) {
+                return Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.yellow.withOpacity(0.5 * _glowAnimation.value),
+                        blurRadius: 15 * _glowAnimation.value,
+                        spreadRadius: 5 * _glowAnimation.value,
+                      ),
+                    ],
+                  ),
+                  child: _buildCellContent(),
+                );
+              },
             )
-          : _buildElementContainer(isSelected),
+          : _buildCellContent(),
     );
   }
 
-  Widget _buildElementContainer(bool isSelected) {
+  Widget _buildCellContent() {
+    if (widget.element == null) {
+      return Container(
+        width: 64,
+        height: 64,
+        margin: const EdgeInsets.all(2),
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(4),
+        ),
+      );
+    }
+
+    // برای لانتانیدها و آکتینیدها
+    if (widget.element!.number == 0) {
+      return Container(
+        width: 64,
+        height: 64,
+        margin: const EdgeInsets.all(2),
+        decoration: BoxDecoration(
+          color: Colors.blueGrey[900]!.withOpacity(0.9),
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(
+            color: Colors.white.withOpacity(0.2),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.5),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Center(
+          child: Text(
+            widget.element!.symbol,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Vazir',
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+
+    final provider = Provider.of<PeriodicTableProvider>(context);
+    final thirdItemValue = provider.getThirdItemValue(widget.element!);
+    final isSelected = widget.element == provider.selectedElement;
+
     return Container(
       width: 64,
       height: 64,
       margin: const EdgeInsets.all(2),
       decoration: BoxDecoration(
-        color: widget.element != null ? _getCategoryColor(widget.element!.category) : Colors.transparent,
-        border: Border.all(
-          color: isSelected ? Colors.yellow : AppColors.borderColor,
-          width: isSelected ? 2 : 1,
-        ),
+        color: _getCategoryColor(widget.element!.category),
         borderRadius: BorderRadius.circular(4),
-        boxShadow: isSelected
-            ? [
-                BoxShadow(
-                  color: Colors.yellow.withOpacity(0.5),
-                  blurRadius: 8,
-                  spreadRadius: 2,
-                ),
-              ]
-            : [],
+        border: Border.all(
+          color: Colors.white.withOpacity(0.2),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.5),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
-      child: widget.element != null
-          ? Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (widget.element!.number == 0)
-                  Text(
-                    widget.element!.symbol,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                      color: Colors.white,
-                    ),
-                  )
-                else
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        widget.element!.symbol,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        widget.element!.number.toString(),
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.white70,
-                        ),
-                      ),
-                    ],
-                  ),
-              ],
-            )
-          : null,
+      child: Stack(
+        children: [
+          Positioned(
+            top: 4,
+            right: 4,
+            child: Text(
+              widget.element!.number.toString(),
+              style: const TextStyle(
+                color: Colors.white70,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Vazir',
+              ),
+            ),
+          ),
+          Center(
+            child: Text(
+              widget.element!.symbol,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Vazir',
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 4,
+            left: 0,
+            right: 0,
+            child: Text(
+              thirdItemValue,
+              style: const TextStyle(
+                color: Colors.white70,
+                fontSize: 10,
+                fontFamily: 'Vazir',
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

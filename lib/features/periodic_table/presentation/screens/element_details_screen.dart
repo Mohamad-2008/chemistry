@@ -34,6 +34,10 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
   double _answerBoxHeight = 0.0; // متغیر برای ذخیره ارتفاع باکس جواب
   double _chatInputHeight = 0.0; // متغیر برای ذخیره ارتفاع تکست‌فیلد
 
+  // اضافه کردن انیمیشن‌های جدید
+  late Animation<double> _boxScaleAnimation;
+  late Animation<double> _buttonScaleAnimation;
+
   double _getHeight(GlobalKey key) {
     final RenderBox? renderBox = key.currentContext?.findRenderObject() as RenderBox?;
     return renderBox?.size.height ?? 0.0;
@@ -49,7 +53,20 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
-    _animationController.forward();
+    
+    _boxScaleAnimation = Tween<double>(begin: 0.95, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+    
+    _buttonScaleAnimation = Tween<double>(begin: 0.9, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+    
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _animationController.forward();
+      }
+    });
     _initializeHintTexts();
   }
 
@@ -98,6 +115,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
 
   @override
   void dispose() {
+    _animationController.stop();
     _animationController.dispose();
     _questionController.dispose();
     super.dispose();
@@ -159,6 +177,22 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
     }
   }
 
+  bool _shouldShowExpandButton(String text) {
+    final textPainter = TextPainter(
+      text: TextSpan(
+        text: text,
+        style: const TextStyle(
+          fontSize: 14,
+          fontFamily: 'Vazir',
+        ),
+      ),
+      maxLines: 6,
+      textDirection: TextDirection.rtl,
+    );
+    textPainter.layout(maxWidth: MediaQuery.of(context).size.width - 32);
+    return textPainter.didExceedMaxLines;
+  }
+
   @override
   Widget build(BuildContext context) {
     _updateHeights();
@@ -166,43 +200,46 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        floatingActionButton: Container(
-          width: 60,
-          height: 60,
-          margin: EdgeInsets.only(
-            bottom: !_showChatInput
-                ? 10
-                : _showChatInput && _answers.isEmpty
-                ? _getHeight(_chatInputKey)  // فقط تکست‌فیلد بازه
-                : _getHeight(_chatInputKey) + _getHeight(_answerBoxKey) + 20, // تکست‌فیلد و باکس جواب بازن
-          ),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.blueGrey[900],
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.3),
-                blurRadius: 10,
-                offset: const Offset(0, 5),
-              ),
-            ],
-          ),
-          child: IconButton(
-            icon: Icon(
-              _showChatInput ? Icons.close : Icons.chat_outlined,
-              color: Colors.white,
-              size: 30,
+        floatingActionButton: ScaleTransition(
+          scale: _buttonScaleAnimation,
+          child: Container(
+            width: 60,
+            height: 60,
+            margin: EdgeInsets.only(
+              bottom: !_showChatInput
+                  ? 10
+                  : _showChatInput && _answers.isEmpty
+                  ? _getHeight(_chatInputKey)
+                  : _getHeight(_chatInputKey) + _getHeight(_answerBoxKey) + 20,
             ),
-            onPressed: () {
-              setState(() {
-                _showChatInput = !_showChatInput;
-                if (!_showChatInput) {
-                  _answers.clear();
-                  _currentAnswerIndex = 0;
-                  _displayedAnswer = '';
-                }
-              });
-            },
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.blueGrey[900],
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: IconButton(
+              icon: Icon(
+                _showChatInput ? Icons.close : Icons.chat_bubble_outline,
+                color: Colors.white,
+                size: 30,
+              ),
+              onPressed: () {
+                setState(() {
+                  _showChatInput = !_showChatInput;
+                  if (!_showChatInput) {
+                    _answers.clear();
+                    _currentAnswerIndex = 0;
+                    _displayedAnswer = '';
+                  }
+                });
+              },
+            ),
           ),
         ),        body: Stack(
           children: [
@@ -364,138 +401,232 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
             ),
             if (_answers.isNotEmpty)
               Positioned(
-                key: _answerBoxKey, // اضافه کردن کلید به باکس جواب
+                key: _answerBoxKey,
                 bottom: 80,
                 left: 8,
                 right: 8,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    FadeTransition(
-                      opacity: _fadeAnimation,
-                      child: Container(
-                        constraints: BoxConstraints(
-                          maxHeight: _isExpanded
-                              ? MediaQuery.of(context).size.height * 0.6
-                              : MediaQuery.of(context).size.height * 0.5,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.blueGrey[900],
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
-                              blurRadius: 10,
-                              spreadRadius: 2,
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
-                                  onPressed: _currentAnswerIndex > 0
-                                      ? () {
-                                    setState(() {
-                                      _currentAnswerIndex--;
-                                      _displayedAnswer = _answers[_currentAnswerIndex];
-                                    });
-                                  }
-                                      : null,
-                                ),
-                                Text(
-                                  '${_currentAnswerIndex + 1}/${_answers.length}',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Vazir',
+                child: ScaleTransition(
+                  scale: _boxScaleAnimation,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      FadeTransition(
+                        opacity: _fadeAnimation,
+                        child: Container(
+                          constraints: BoxConstraints(
+                            maxHeight: _isExpanded
+                                ? MediaQuery.of(context).size.height * 0.6
+                                : MediaQuery.of(context).size.height * 0.5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.blueGrey[900],
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.blueGrey[800]!.withOpacity(0.5),
+                                blurRadius: 15,
+                                spreadRadius: 2,
+                                offset: const Offset(0, 4),
+                              ),
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                blurRadius: 10,
+                                spreadRadius: 1,
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: Colors.blueGrey[800],
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(16),
+                                    topRight: Radius.circular(16),
                                   ),
                                 ),
-                                Row(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     IconButton(
-                                      icon: const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 20),
-                                      onPressed: _currentAnswerIndex < _answers.length - 1
+                                      icon: Icon(
+                                        Icons.arrow_back_ios,
+                                        color: _currentAnswerIndex > 0 ? Colors.white : Colors.white30,
+                                        size: 20,
+                                      ),
+                                      onPressed: _currentAnswerIndex > 0
                                           ? () {
+                                        setState(() {
+                                          _currentAnswerIndex--;
+                                          _displayedAnswer = _answers[_currentAnswerIndex];
+                                        });
+                                      }
+                                          : null,
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: Colors.blueGrey[700],
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Text(
+                                        '${_currentAnswerIndex + 1}/${_answers.length}',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Vazir',
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: _currentAnswerIndex < _answers.length - 1 ? Colors.white : Colors.white30,
+                                            size: 20,
+                                          ),
+                                          onPressed: _currentAnswerIndex < _answers.length - 1
+                                              ? () {
                                         setState(() {
                                           _currentAnswerIndex++;
                                           _displayedAnswer = _answers[_currentAnswerIndex];
                                         });
                                       }
                                           : null,
-                                    ),
-                                    IconButton(
-                                      icon: Icon(
-                                        _isExpanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
-                                        color: Colors.white,
-                                        size: 20,
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          _isExpanded = !_isExpanded;
-                                        });
-                                      },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(
+                                            _isExpanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
+                                            color: Colors.white,
+                                            size: 24,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              _isExpanded = !_isExpanded;
+                                            });
+                                          },
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
-                            if (_isExpanded)
-                              Expanded(
-                                child: SingleChildScrollView(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                    child: Text(
-                                      _displayedAnswer,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontFamily: 'Vazir',
+                              ),
+                              if (_isExpanded)
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                      child: Text(
+                                        _displayedAnswer,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontFamily: 'Vazir',
+                                          height: 1.5,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            if (!_isExpanded)
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                                child: Text(
-                                  _displayedAnswer,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontFamily: 'Vazir',
+                              if (!_isExpanded)
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Colors.blueGrey[900]!,
+                                        Colors.blueGrey[900]!.withOpacity(0.8),
+                                      ],
+                                    ),
                                   ),
-                                  maxLines: 6,
-                                  overflow: TextOverflow.ellipsis,
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        _displayedAnswer,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontFamily: 'Vazir',
+                                          height: 1.4,
+                                        ),
+                                        maxLines: 6,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      if (_shouldShowExpandButton(_displayedAnswer))
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 8),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                _isExpanded = true;
+                                              });
+                                            },
+                                            style: TextButton.styleFrom(
+                                              backgroundColor: Colors.blueGrey[700],
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(20),
+                                              ),
+                                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                            ),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Icon(
+                                                  Icons.keyboard_arrow_up,
+                                                  color: Colors.white.withOpacity(0.9),
+                                                  size: 20,
+                                                ),
+                                                const SizedBox(width: 4),
+                                                Text(
+                                                  'مشاهده کامل پاسخ',
+                                                  style: TextStyle(
+                                                    color: Colors.white.withOpacity(0.9),
+                                                    fontSize: 12,
+                                                    fontFamily: 'Vazir',
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
 
             if (_showChatInput)
               Positioned(
-                key: _chatInputKey, // اضافه کردن کلید به تکست‌فیلد
+                key: _chatInputKey,
                 bottom: 0,
                 left: 0,
                 right: 0,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   decoration: BoxDecoration(
                     color: Colors.blueGrey[900],
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
+                        color: Colors.blueGrey[800]!.withOpacity(0.5),
+                        blurRadius: 15,
+                        spreadRadius: 2,
+                        offset: const Offset(0, -4),
+                      ),
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
                         blurRadius: 10,
-                        offset: const Offset(0, -5),
+                        spreadRadius: 1,
                       ),
                     ],
                   ),
@@ -505,20 +636,36 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                         child: Container(
                           height: 50,
                           decoration: BoxDecoration(
-                            color: Colors.blueGrey[800],
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Colors.blueGrey[800]!,
+                                Colors.blueGrey[700]!,
+                              ],
+                            ),
                             borderRadius: BorderRadius.circular(25),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
                           ),
                           child: TextField(
                             controller: _questionController,
                             style: const TextStyle(
                               color: Colors.white,
                               fontFamily: 'Vazir',
+                              fontSize: 14,
                             ),
                             decoration: InputDecoration(
                               hintText: _hintTexts[_currentHintIndex],
                               hintStyle: TextStyle(
                                 color: Colors.white.withOpacity(0.5),
                                 fontFamily: 'Vazir',
+                                fontSize: 14,
                               ),
                               border: InputBorder.none,
                               contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -527,25 +674,44 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.blueGrey[800],
-                          shape: BoxShape.circle,
-                        ),
-                        child: IconButton(
-                          icon: _isLoading
-                              ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      const SizedBox(width: 12),
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Colors.blueGrey[800]!,
+                                  Colors.blueGrey[700]!,
+                                ],
+                              ),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
                             ),
-                          )
-                              : const Icon(Icons.send, color: Colors.white),
-                          onPressed: _isLoading ? null : _sendQuestion,
-                        ),
+                            child: IconButton(
+                              icon: const Icon(Icons.send, color: Colors.white),
+                              onPressed: _isLoading ? null : _sendQuestion,
+                            ),
+                          ),
+                          if (_isLoading)
+                            SizedBox(
+                              width: 40,
+                              height: 40,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white.withOpacity(0.7)),
+                              ),
+                            ),
+                        ],
                       ),
                     ],
                   ),
@@ -585,7 +751,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
         ],
         flexibleSpace: LayoutBuilder(
           builder: (context, constraints) {
-            final isExpanded = constraints.maxHeight > 150;
+            final isExpanded = constraints.maxHeight > 190;
 
             return Stack(
               children: [

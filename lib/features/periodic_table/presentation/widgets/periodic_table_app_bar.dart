@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/widgets/custom_snack_bar.dart';
+import 'package:periodic_table_app/features/periodic_table/presentation/widgets/settings_menu.dart';
+import 'package:provider/provider.dart';
+import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
 
 class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isVisible;
@@ -15,6 +18,35 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
+
+  void _showSettingsMenu(BuildContext context) {
+    final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+    final RenderBox button = context.findRenderObject() as RenderBox;
+    final RenderBox overlay = Navigator.of(context).overlay!.context.findRenderObject() as RenderBox;
+    final RelativeRect position = RelativeRect.fromRect(
+      Rect.fromPoints(
+        button.localToGlobal(Offset.zero, ancestor: overlay),
+        button.localToGlobal(button.size.bottomRight(Offset.zero), ancestor: overlay),
+      ),
+      Offset.zero & overlay.size,
+    );
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.transparent,
+        contentPadding: EdgeInsets.zero,
+        content: SettingsMenu(initialType: provider.thirdItemType),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+    ).then((value) {
+      if (value != null) {
+        provider.setThirdItemType(value as ThirdItemType);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,14 +101,12 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
             centerTitle: true,
             actions: [
               IconButton(
-                icon: const Icon(Icons.search, color: Colors.white),
-                onPressed: onSearchPressed,
+                icon: const Icon(Icons.settings, color: Colors.white),
+                onPressed: () => _showSettingsMenu(context),
               ),
               IconButton(
-                icon: const Icon(Icons.menu, color: Colors.white),
-                onPressed: () {
-                  CustomSnackBar.show(context, 'منو به زودی اضافه می‌شود!');
-                },
+                icon: const Icon(Icons.search, color: Colors.white),
+                onPressed: onSearchPressed,
               ),
             ],
           ),

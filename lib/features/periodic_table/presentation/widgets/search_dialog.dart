@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:periodic_table_app/core/models/element_model.dart';
 import 'package:provider/provider.dart';
 import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
+import 'package:periodic_table_app/features/periodic_table/presentation/widgets/search_type.dart';
 
 void showSearchDialog(BuildContext context, {required Function(ElementModel) onElementSelected}) {
   final TextEditingController controller = TextEditingController();
+  SearchType selectedSearchType = SearchType.name;
 
   showDialog(
     context: context,
@@ -20,25 +22,78 @@ void showSearchDialog(BuildContext context, {required Function(ElementModel) onE
               height: MediaQuery.of(context).size.height * 0.5,
               child: Column(
                 children: [
-                  TextField(
-                    controller: controller,
-                    decoration: InputDecoration(
-                      hintText: 'نام یا نماد عنصر را وارد کنید',
-                      hintStyle: const TextStyle(color: Colors.white70),
-                      filled: true,
-                      fillColor: Colors.blueGrey[800],
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: controller,
+                          decoration: InputDecoration(
+                            hintText: '${selectedSearchType.title} را وارد کنید',
+                            hintStyle: const TextStyle(color: Colors.white70),
+                            filled: true,
+                            fillColor: Colors.blueGrey[800],
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide.none,
+                            ),
+                            prefixIcon: const Icon(Icons.search, color: Colors.white),
+                          ),
+                          style: const TextStyle(color: Colors.white),
+                          textDirection: TextDirection.rtl,
+                          onChanged: (value) {
+                            Provider.of<PeriodicTableProvider>(context, listen: false).searchElements(value);
+                            setState(() {}); // به‌روزرسانی لیست نتایج
+                          },
+                        ),
                       ),
-                      prefixIcon: const Icon(Icons.search, color: Colors.white),
-                    ),
-                    style: const TextStyle(color: Colors.white),
-                    textDirection: TextDirection.rtl,
-                    onChanged: (value) {
-                      Provider.of<PeriodicTableProvider>(context, listen: false).searchElements(value);
-                      setState(() {}); // به‌روزرسانی لیست نتایج
-                    },
+                      const SizedBox(width: 8),
+                      PopupMenuButton<SearchType>(
+                        icon: const Icon(Icons.filter_list, color: Colors.white),
+                        color: Colors.blueGrey[900],
+                        onSelected: (SearchType type) {
+                          setState(() {
+                            selectedSearchType = type;
+                            controller.clear();
+                            Provider.of<PeriodicTableProvider>(context, listen: false).setSearchType(type);
+                            Provider.of<PeriodicTableProvider>(context, listen: false).searchElements('');
+                          });
+                        },
+                        itemBuilder: (BuildContext context) => <PopupMenuEntry<SearchType>>[
+                          const PopupMenuItem<SearchType>(
+                            value: SearchType.name,
+                            child: Text('نام', style: TextStyle(color: Colors.white)),
+                          ),
+                          const PopupMenuItem<SearchType>(
+                            value: SearchType.symbol,
+                            child: Text('نماد', style: TextStyle(color: Colors.white)),
+                          ),
+                          const PopupMenuItem<SearchType>(
+                            value: SearchType.atomicNumber,
+                            child: Text('عدد اتمی', style: TextStyle(color: Colors.white)),
+                          ),
+                          const PopupMenuItem<SearchType>(
+                            value: SearchType.atomicMass,
+                            child: Text('جرم اتمی', style: TextStyle(color: Colors.white)),
+                          ),
+                          const PopupMenuItem<SearchType>(
+                            value: SearchType.category,
+                            child: Text('دسته', style: TextStyle(color: Colors.white)),
+                          ),
+                          const PopupMenuItem<SearchType>(
+                            value: SearchType.phase,
+                            child: Text('فاز', style: TextStyle(color: Colors.white)),
+                          ),
+                          const PopupMenuItem<SearchType>(
+                            value: SearchType.meltingPoint,
+                            child: Text('نقطه ذوب', style: TextStyle(color: Colors.white)),
+                          ),
+                          const PopupMenuItem<SearchType>(
+                            value: SearchType.boilingPoint,
+                            child: Text('نقطه جوش', style: TextStyle(color: Colors.white)),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 16),
                   Expanded(
@@ -50,7 +105,7 @@ void showSearchDialog(BuildContext context, {required Function(ElementModel) onE
                             final element = provider.filteredElements[index];
                             return ListTile(
                               title: Text(
-                                element.name,
+                                '${element.name} (${element.symbol})',
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontFamily: 'Vazir',
@@ -58,13 +113,19 @@ void showSearchDialog(BuildContext context, {required Function(ElementModel) onE
                                 textDirection: TextDirection.rtl,
                               ),
                               subtitle: Text(
-                                element.symbol,
+                                'عدد اتمی: ${element.number} | جرم اتمی: ${element.atomicMass}',
                                 style: const TextStyle(color: Colors.white70),
                               ),
                               onTap: () {
-                                Navigator.pop(context);
-                                onElementSelected(element);
-                                controller.dispose();
+                                final selectedElement = element;
+                                FocusScope.of(context).unfocus();
+                                Future.delayed(const Duration(milliseconds: 100), () {
+                                  if (Navigator.canPop(context)) {
+                                    Navigator.pop(context);
+                                    controller.dispose();
+                                    onElementSelected(selectedElement);
+                                  }
+                                });
                               },
                             );
                           },
@@ -82,6 +143,7 @@ void showSearchDialog(BuildContext context, {required Function(ElementModel) onE
             onPressed: () {
               Navigator.pop(context);
               controller.dispose();
+              Provider.of<PeriodicTableProvider>(context, listen: false).clearSearch();
             },
             child: const Text(
               'بستن',

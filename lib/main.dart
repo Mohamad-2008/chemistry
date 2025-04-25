@@ -7,6 +7,7 @@ import 'package:periodic_table_app/core/models/element_details_model.dart';
 import 'package:periodic_table_app/features/periodic_table/data/periodic_table_repository.dart';
 import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
 import 'package:periodic_table_app/features/chat_bot/presentation/screens/chat_bot_screen.dart';
+import 'package:periodic_table_app/features/splash_screen/presentation/screens/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
+        home: const SplashScreen(),
         initialRoute: '/',
         onGenerateRoute: (settings) {
           if (settings.name == '/') {

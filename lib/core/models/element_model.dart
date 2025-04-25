@@ -7,6 +7,8 @@ class ElementModel {
   final String category;
   final double atomicMass;
   final String phase;
+  final double? meltingPoint;
+  final double? boilingPoint;
 
   ElementModel({
     required this.name,
@@ -17,6 +19,8 @@ class ElementModel {
     required this.category,
     required this.atomicMass,
     required this.phase,
+    this.meltingPoint,
+    this.boilingPoint,
   });
 
   factory ElementModel.fromJson(Map<String, dynamic> json) {
@@ -29,6 +33,8 @@ class ElementModel {
       category: json['category'] ?? 'unknown',
       atomicMass: (json['atomic_mass'] as num?)?.toDouble() ?? 0.0,
       phase: json['phase'] ?? 'Unknown',
+      meltingPoint: (json['melt'] as num?)?.toDouble(),
+      boilingPoint: (json['boil'] as num?)?.toDouble(),
     );
   }
 }

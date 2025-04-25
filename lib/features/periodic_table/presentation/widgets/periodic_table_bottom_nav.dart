@@ -54,9 +54,7 @@ class PeriodicTableBottomNav extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   _buildNavItem(icon: Icons.grid_on, isActive: true, onTap: () {}),
-                  _buildNavItem(icon: Icons.search, isActive: false, onTap: () {
-                    CustomSnackBar.show(context, 'جستجو به زودی اضافه می‌شود!');
-                  }),
+
                   _buildNavItem(icon: Icons.format_list_bulleted, isActive: false, onTap: () {
                     CustomSnackBar.show(context, 'لیست اتم‌ها به زودی اضافه می‌شود!');
                   }),
