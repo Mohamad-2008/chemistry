@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:particles_flutter/particles_flutter.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/screens/periodic_table_screen.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/screens/element_details_screen.dart';
+import 'package:periodic_table_app/features/periodic_table/presentation/screens/element_search_screen.dart';
+import 'package:periodic_table_app/features/periodic_table/presentation/screens/element_comparison_screen.dart';
 import 'package:periodic_table_app/core/models/element_model.dart';
 import 'package:periodic_table_app/core/models/element_details_model.dart';
 import 'package:periodic_table_app/features/periodic_table/data/periodic_table_repository.dart';
 import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
 import 'package:periodic_table_app/features/chat_bot/presentation/screens/chat_bot_screen.dart';
 import 'package:periodic_table_app/features/splash_screen/presentation/screens/splash_screen.dart';
+import 'package:periodic_table_app/utils/particle_painter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -117,6 +119,21 @@ class MyApp extends StatelessWidget {
               ),
             );
           }
+          if (settings.name == '/element_search') {
+            final firstElement = settings.arguments as ElementDetailsModel;
+            return MaterialPageRoute(
+              builder: (_) => ElementSearchScreen(firstElement: firstElement),
+            );
+          }
+          if (settings.name == '/element_comparison') {
+            final args = settings.arguments as Map<String, ElementDetailsModel>;
+            return MaterialPageRoute(
+              builder: (_) => ElementComparisonScreen(
+                element1: args['element1']!,
+                element2: args['element2']!,
+              ),
+            );
+          }
           if (settings.name == '/chat_bot') {
             return MaterialPageRoute(builder: (_) => const ChatBotScreen());
           }
@@ -125,31 +142,35 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           if (child == null) return const SizedBox.shrink();
 
-          double screenHeight = MediaQuery.of(context).size.height;
-          double screenWidth = MediaQuery.of(context).size.width;
-
           return Stack(
             children: [
-              // لایه 1: پس زمینه ذرات (ساده شده و با IgnorePointer)
+              // لایه 1: پس زمینه ذرات
               IgnorePointer(
-                ignoring: true, // از دریافت رویدادهای لمسی جلوگیری می کند
-                child: CircularParticle(
-                  key: UniqueKey(),
-                  awayRadius: 80,
-                  numberOfParticles: 50, // کاهش تعداد برای تست
-                  speedOfParticles: 1,
-                  height: screenHeight,
-                  width: screenWidth,
-                  onTapAnimation: false, // غیرفعال کردن انیمیشن لمس
-                  particleColor: Colors.white, 
-                  awayAnimationDuration: const Duration(milliseconds: 600),
-                  maxParticleSize: 3, // کمی کوچکتر
-                  isRandomColor: false,
-                  awayAnimationCurve: Curves.easeInOutBack,
-                  enableHover: false,
-                  hoverColor: Colors.white,
-                  hoverRadius: 90,
-                  connectDots: false, // غیرفعال کردن اتصال نقاط
+                ignoring: true,
+                child: Stack(
+                  children: [
+                    // ذرات آبی
+                    ParticleAnimation(
+                      numberOfParticles: 20,
+                      particleColor: Colors.blue,
+                      maxParticleSize: 2,
+                      speed: 1,
+                    ),
+                    // ذرات بنفش
+                    ParticleAnimation(
+                      numberOfParticles: 15,
+                      particleColor: Colors.purple,
+                      maxParticleSize: 3,
+                      speed: 1.2,
+                    ),
+                    // ذرات زرد
+                    ParticleAnimation(
+                      numberOfParticles: 25,
+                      particleColor: Colors.yellow,
+                      maxParticleSize: 1.5,
+                      speed: 0.8,
+                    ),
+                  ],
                 ),
               ),
               // لایه 2: محتوای صفحه با پس زمینه شفاف
@@ -157,7 +178,7 @@ class MyApp extends StatelessWidget {
                 data: Theme.of(context).copyWith(
                   scaffoldBackgroundColor: Colors.transparent,
                 ),
-                child: child, 
+                child: child,
               ),
             ],
           );

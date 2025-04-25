@@ -37,16 +37,6 @@ class _SplashScreenState extends State<SplashScreen> {
               width: 200,
               height: 200,
             ),
-            const SizedBox(height: 20),
-            const Text(
-              'شیمی با هیزنبرگ',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Lalezar',
-              ),
-            ),
           ],
         ),
       ),

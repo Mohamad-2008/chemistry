@@ -17,8 +17,7 @@ dependencies:
   uuid: ^4.2.2
   http: ^1.1.0
   shared_preferences: ^2.2.2
-  particles_flutter: ^0.1.4
-  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -28,9 +27,10 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/
+    - assets/data/
     - assets/data/periodic_table.json
     - assets/images/app_icon.png
+    - assets/images/atom.png
   fonts:
     - family: Vazir
       fonts:

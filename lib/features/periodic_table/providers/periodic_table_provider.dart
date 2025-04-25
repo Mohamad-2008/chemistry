@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:periodic_table_app/core/models/element_model.dart';
-import 'package:periodic_table_app/features/periodic_table/data/periodic_table_repository.dart';
+import 'package:periodic_table_app/features/periodic_table/data/repositories/periodic_table_repository.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/widgets/search_type.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/widgets/settings_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,6 +30,11 @@ class PeriodicTableProvider with ChangeNotifier {
   ThirdItemType _thirdItemType = ThirdItemType.name;
   String _selectedCategoryFilter = 'All';
   String _currentSearchQuery = '';
+  String? _currentSort;
+  String? _currentCategory;
+  String? _currentLetter;
+  int? _currentMinNumber;
+  int? _currentMaxNumber;
 
   List<ElementModel> get elements => _elementsToDisplay;
   bool get isLoading => _isLoading;
@@ -38,6 +43,11 @@ class PeriodicTableProvider with ChangeNotifier {
   SearchType get searchType => _searchType;
   ThirdItemType get thirdItemType => _thirdItemType;
   String get selectedCategoryFilter => _selectedCategoryFilter;
+  String? get currentSort => _currentSort;
+  String? get currentCategory => _currentCategory;
+  String? get currentLetter => _currentLetter;
+  int? get currentMinNumber => _currentMinNumber;
+  int? get currentMaxNumber => _currentMaxNumber;
 
   // تغییر Getter برای برگرداندن لیست مپ ها با کلید و متن نمایشی
   List<Map<String, String>> get categories {
@@ -195,7 +205,7 @@ class PeriodicTableProvider with ChangeNotifier {
 
     try {
       final repository = PeriodicTableRepository();
-      _allElements = await repository.loadPeriodicTableData();
+      _allElements = await repository.getElements();
       await _loadSettings();
       _applyFilters();
       _errorMessage = null;
@@ -206,6 +216,49 @@ class PeriodicTableProvider with ChangeNotifier {
     }
 
     _isLoading = false;
+    notifyListeners();
+  }
+
+  void sortElements(String sortBy) {
+    _currentSort = sortBy;
+    
+    switch (sortBy) {
+      case 'name':
+        _elementsToDisplay.sort((a, b) => a.name.compareTo(b.name));
+        break;
+      case 'number':
+        _elementsToDisplay.sort((a, b) => a.number.compareTo(b.number));
+        break;
+      case 'category':
+        _elementsToDisplay.sort((a, b) => a.category.compareTo(b.category));
+        break;
+    }
+    
+    notifyListeners();
+  }
+
+  void setCurrentCategory(String category) {
+    _currentCategory = category;
+    notifyListeners();
+  }
+
+  void setCurrentLetter(String letter) {
+    _currentLetter = letter;
+    notifyListeners();
+  }
+
+  void setCurrentNumberRange(int min, int max) {
+    _currentMinNumber = min;
+    _currentMaxNumber = max;
+    notifyListeners();
+  }
+
+  void resetSort() {
+    _currentSort = null;
+    _currentCategory = null;
+    _currentLetter = null;
+    _currentMinNumber = null;
+    _currentMaxNumber = null;
     notifyListeners();
   }
 }

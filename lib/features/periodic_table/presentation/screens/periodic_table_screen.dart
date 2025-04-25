@@ -6,6 +6,7 @@ import 'package:periodic_table_app/features/periodic_table/presentation/widgets/
 import 'package:periodic_table_app/features/periodic_table/presentation/widgets/search_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
+import 'package:periodic_table_app/utils/color_utils.dart';
 
 class PeriodicTableScreen extends StatefulWidget {
   const PeriodicTableScreen({super.key});
@@ -125,6 +126,134 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
         }
       });
     });
+  }
+
+  Widget _buildSortButton() {
+    return IconButton(
+      icon: const Icon(Icons.sort, color: Colors.white),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          backgroundColor: Colors.transparent,
+          builder: (context) => Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[900]!.withOpacity(0.9),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 8),
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[600],
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.sort_by_alpha, color: Colors.white),
+                  title: const Text('بر اساس نام', style: TextStyle(fontFamily: 'Vazir', color: Colors.white)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _sortElements('name');
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.numbers, color: Colors.white),
+                  title: const Text('بر اساس عدد اتمی', style: TextStyle(fontFamily: 'Vazir', color: Colors.white)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _sortElements('number');
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.category, color: Colors.white),
+                  title: const Text('بر اساس دسته‌بندی', style: TextStyle(fontFamily: 'Vazir', color: Colors.white)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _sortElements('category');
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _sortElements(String sortBy) {
+    final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+    provider.sortElements(sortBy);
+  }
+
+  Widget _buildElementCell(ElementModel element) {
+    final isActive = _isElementActive(element);
+    return Opacity(
+      opacity: isActive ? 1.0 : 0.3,
+      child: GestureDetector(
+        onTap: isActive ? () => _showElementDetails(element) : null,
+        child: Container(
+          width: 68,
+          height: 68,
+          margin: const EdgeInsets.all(2),
+          decoration: BoxDecoration(
+            color: ColorUtils.getCategoryColor(element.category),
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                element.symbol,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontFamily: 'Vazir',
+                ),
+              ),
+              Text(
+                element.number.toString(),
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.white70,
+                  fontFamily: 'Vazir',
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showElementDetails(ElementModel element) {
+    Navigator.pushNamed(
+      context,
+      '/element_details',
+      arguments: element,
+    );
+  }
+
+  bool _isElementActive(ElementModel element) {
+    final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+    return provider.currentSort == null || 
+           (provider.currentSort == 'category' && element.category == provider.currentCategory) ||
+           (provider.currentSort == 'name' && element.name.startsWith(provider.currentLetter ?? '')) ||
+           (provider.currentSort == 'number' && element.number >= (provider.currentMinNumber ?? 0) && element.number <= (provider.currentMaxNumber ?? 118));
   }
 
   @override
