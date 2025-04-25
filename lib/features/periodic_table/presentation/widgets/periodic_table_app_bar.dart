@@ -103,49 +103,78 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
             centerTitle: true,
             actions: [
               if (provider.categories.length > 1)
-               Container(
-                 constraints: const BoxConstraints(maxWidth: 150),
-                 child: Padding(
-                   padding: const EdgeInsets.only(left: 8.0, right: 4.0),
-                   child: DropdownButtonHideUnderline(
-                     child: DropdownButton<String>(
-                       value: provider.selectedCategoryFilter,
-                       icon: const Icon(Icons.filter_list, color: Colors.white),
-                       dropdownColor: Colors.blueGrey[800],
-                       style: const TextStyle(color: Colors.white, fontFamily: 'Vazir'),
-                       items: provider.categories.map((Map<String, String> categoryMap) {
-                         return DropdownMenuItem<String>(
-                           value: categoryMap['key']!,
-                           child: Text(
-                             categoryMap['display']!,
-                             style: const TextStyle(fontSize: 14),
-                             overflow: TextOverflow.ellipsis,
-                           ),
-                         );
-                       }).toList(),
-                       selectedItemBuilder: (BuildContext context) {
-                         return provider.categories.map<Widget>((Map<String, String> item) {
-                           return Container(
-                             alignment: Alignment.centerRight,
-                             constraints: const BoxConstraints(maxWidth: 100),
-                             child: Text(
-                               item['display']!,
-                               overflow: TextOverflow.ellipsis,
-                               style: const TextStyle(color: Colors.white, fontFamily: 'Vazir'),
-                             ),
-                           );
-                         }).toList();
-                       },
-                       onChanged: (String? newValue) {
-                         if (newValue != null) {
-                           Provider.of<PeriodicTableProvider>(context, listen: false)
-                             .selectCategoryFilter(newValue);
-                         }
-                       },
-                     ),
-                   ),
-                 ),
-               ),
+                IconButton(
+                  icon: const Icon(Icons.filter_list, color: Colors.white),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          backgroundColor: Colors.blueGrey[900],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          title: Container(
+                            alignment: Alignment.centerRight,
+                            child: const Text(
+                              'فیلتر دسته‌بندی',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Vazir',
+                              ),
+                            ),
+                          ),
+                          content: Container(
+                            width: double.maxFinite,
+                            constraints: BoxConstraints(
+                              maxHeight: MediaQuery.of(context).size.height * 0.6,
+                            ),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: provider.categories
+                                  .map((category) {
+                                    final isSelected = category['key'] == provider.selectedCategoryFilter;
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(vertical: 4),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: isSelected ? Colors.blueAccent : Colors.transparent,
+                                          width: 2,
+                                        ),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: ListTile(
+                                        title: Text(
+                                          category['display']!,
+                                          style: TextStyle(
+                                            color: isSelected ? Colors.blueAccent : Colors.white,
+                                            fontFamily: 'Vazir',
+                                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                          ),
+                                        ),
+                                        trailing: isSelected ? const Icon(
+                                          Icons.check_circle,
+                                          color: Colors.blueAccent,
+                                        ) : null,
+                                        onTap: () {
+                                          Provider.of<PeriodicTableProvider>(context, listen: false)
+                                            .selectCategoryFilter(category['key']!);
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    );
+                                  }).toList(),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
               IconButton(
                 icon: const Icon(Icons.settings, color: Colors.white),
                 onPressed: () => _showSettingsMenu(context),

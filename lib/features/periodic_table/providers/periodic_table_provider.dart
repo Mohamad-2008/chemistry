@@ -55,7 +55,11 @@ class PeriodicTableProvider with ChangeNotifier {
 
     final categoriesSet = <String>{}; // فقط کلیدهای انگلیسی
     for (var element in _allElements) {
-      if (element.number != 0) {
+      if (element.number != 0 && 
+          !element.category.toLowerCase().contains('unknown') && 
+          !element.category.toLowerCase().contains('predicted') && 
+          !element.category.toLowerCase().contains('probably') && 
+          element.category != 'n/a') {
         categoriesSet.add(element.category);
       }
     }

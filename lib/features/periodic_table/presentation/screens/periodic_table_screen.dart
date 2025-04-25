@@ -63,14 +63,12 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
   void _scrollToElement(ElementModel element) {
     if (!_isMounted) return;
 
-    // محاسبه موقعیت عنصر در جدول
     const cellSize = 68.0;
     const padding = 16.0;
     const zoomScale = 2.0;
     final x = (element.xpos - 1) * cellSize + padding;
     final y = (element.ypos - 1) * cellSize + padding;
 
-    // محاسبه مرکز صفحه با تنظیم موقعیت افقی
     final screenSize = MediaQuery.of(context).size;
     final matrix = Matrix4.identity()
       ..translate(
@@ -79,7 +77,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
       )
       ..scale(zoomScale);
 
-    // انیمیشن جابجایی
     final moveController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -99,7 +96,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
       }
     });
 
-    // انیمیشن بزرگ و کوچک شدن
     final scaleController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -113,11 +109,8 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
       curve: Curves.easeInOutCubic,
     ));
 
-    // شروع انیمیشن جابجایی
     moveController.forward().then((_) {
       moveController.dispose();
-      
-      // تأخیر 400 میلی‌ثانیه‌ای قبل از شروع انیمیشن بزرگ و کوچک شدن
       Future.delayed(const Duration(seconds: 5), () {
         if (_isMounted) {
           scaleController.forward().then((_) {
@@ -128,68 +121,38 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
     });
   }
 
+  void _sortElements(String sortBy) {
+    final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+    provider.sortElements(sortBy);
+  }
+
   Widget _buildSortButton() {
     return IconButton(
       icon: const Icon(Icons.sort, color: Colors.white),
       onPressed: () {
-        showModalBottomSheet(
+        final RenderBox button = context.findRenderObject() as RenderBox;
+        final RenderBox overlay = Navigator.of(context).overlay!.context.findRenderObject() as RenderBox;
+        final RelativeRect position = RelativeRect.fromRect(
+          Rect.fromPoints(
+            button.localToGlobal(Offset.zero, ancestor: overlay),
+            button.localToGlobal(button.size.bottomRight(Offset.zero), ancestor: overlay),
+          ),
+          Offset.zero & overlay.size,
+        );
+
+        showDialog(
           context: context,
-          backgroundColor: Colors.transparent,
-          builder: (context) => Container(
-            decoration: BoxDecoration(
-              color: Colors.grey[900]!.withOpacity(0.9),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 8),
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[600],
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.sort_by_alpha, color: Colors.white),
-                  title: const Text('بر اساس نام', style: TextStyle(fontFamily: 'Vazir', color: Colors.white)),
-                  onTap: () {
-                    Navigator.pop(context);
-                    _sortElements('name');
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.numbers, color: Colors.white),
-                  title: const Text('بر اساس عدد اتمی', style: TextStyle(fontFamily: 'Vazir', color: Colors.white)),
-                  onTap: () {
-                    Navigator.pop(context);
-                    _sortElements('number');
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.category, color: Colors.white),
-                  title: const Text('بر اساس دسته‌بندی', style: TextStyle(fontFamily: 'Vazir', color: Colors.white)),
-                  onTap: () {
-                    Navigator.pop(context);
-                    _sortElements('category');
-                  },
-                ),
-              ],
+          builder: (context) => AlertDialog(
+            backgroundColor: Colors.transparent,
+            contentPadding: EdgeInsets.zero,
+            content: _SortMenu(),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
             ),
           ),
         );
       },
     );
-  }
-
-  void _sortElements(String sortBy) {
-    final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
-    provider.sortElements(sortBy);
   }
 
   Widget _buildElementCell(ElementModel element) {
@@ -250,10 +213,10 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
 
   bool _isElementActive(ElementModel element) {
     final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
-    return provider.currentSort == null || 
-           (provider.currentSort == 'category' && element.category == provider.currentCategory) ||
-           (provider.currentSort == 'name' && element.name.startsWith(provider.currentLetter ?? '')) ||
-           (provider.currentSort == 'number' && element.number >= (provider.currentMinNumber ?? 0) && element.number <= (provider.currentMaxNumber ?? 118));
+    return provider.currentSort == null ||
+        (provider.currentSort == 'category' && element.category == provider.currentCategory) ||
+        (provider.currentSort == 'name' && element.name.startsWith(provider.currentLetter ?? '')) ||
+        (provider.currentSort == 'number' && element.number >= (provider.currentMinNumber ?? 0) && element.number <= (provider.currentMaxNumber ?? 118));
   }
 
   @override
@@ -392,6 +355,105 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
           ),
         );
       },
+    );
+  }
+}
+
+// New SortMenu widget for the floating dialog
+class _SortMenu extends StatelessWidget {
+  const _SortMenu();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 280,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.blueGrey[900]!.withOpacity(0.95),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.5),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+        border: Border.all(
+          color: Colors.white.withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              const Icon(
+                Icons.sort,
+                color: Colors.white,
+                size: 24,
+              ),
+              const SizedBox(width: 8),
+              const Text(
+                'مرتب‌سازی عناصر',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Vazir',
+                ),
+              ),
+              const Spacer(),
+              IconButton(
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.white70,
+                  size: 20,
+                ),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          ),
+          const Divider(color: Colors.white24),
+          const SizedBox(height: 8),
+          _buildSortItem(context, 'name', 'بر اساس نام', Icons.sort_by_alpha),
+          _buildSortItem(context, 'number', 'بر اساس عدد اتمی', Icons.numbers),
+          _buildSortItem(context, 'category', 'بر اساس دسته‌بندی', Icons.category),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSortItem(BuildContext context, String sortBy, String title, IconData icon) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: ListTile(
+        leading: Icon(
+          icon,
+          color: Colors.white70,
+          size: 24,
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontFamily: 'Vazir',
+            fontSize: 16,
+          ),
+        ),
+        onTap: () {
+          final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+          provider.sortElements(sortBy);
+          Navigator.pop(context);
+        },
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
     );
   }
 }

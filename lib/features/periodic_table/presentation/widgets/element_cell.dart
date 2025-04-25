@@ -216,7 +216,7 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
             left: 0,
             right: 0,
             child: Text(
-              widget.element!.category,
+              thirdItemValue,
               style: const TextStyle(
                 color: Colors.white70,
                 fontSize: 10,
