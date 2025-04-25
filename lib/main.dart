@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:particles_flutter/particles_flutter.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/screens/periodic_table_screen.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/screens/element_details_screen.dart';
 import 'package:periodic_table_app/core/models/element_model.dart';
@@ -76,9 +77,11 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: const SplashScreen(),
-        initialRoute: '/',
+        initialRoute: '/splash',
         onGenerateRoute: (settings) {
+          if (settings.name == '/splash') {
+            return MaterialPageRoute(builder: (_) => const SplashScreen());
+          }
           if (settings.name == '/') {
             return MaterialPageRoute(builder: (_) => const PeriodicTableScreen());
           }
@@ -118,6 +121,46 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => const ChatBotScreen());
           }
           return null;
+        },
+        builder: (context, child) {
+          if (child == null) return const SizedBox.shrink();
+
+          double screenHeight = MediaQuery.of(context).size.height;
+          double screenWidth = MediaQuery.of(context).size.width;
+
+          return Stack(
+            children: [
+              // لایه 1: پس زمینه ذرات (ساده شده و با IgnorePointer)
+              IgnorePointer(
+                ignoring: true, // از دریافت رویدادهای لمسی جلوگیری می کند
+                child: CircularParticle(
+                  key: UniqueKey(),
+                  awayRadius: 80,
+                  numberOfParticles: 50, // کاهش تعداد برای تست
+                  speedOfParticles: 1,
+                  height: screenHeight,
+                  width: screenWidth,
+                  onTapAnimation: false, // غیرفعال کردن انیمیشن لمس
+                  particleColor: Colors.white, 
+                  awayAnimationDuration: const Duration(milliseconds: 600),
+                  maxParticleSize: 3, // کمی کوچکتر
+                  isRandomColor: false,
+                  awayAnimationCurve: Curves.easeInOutBack,
+                  enableHover: false,
+                  hoverColor: Colors.white,
+                  hoverRadius: 90,
+                  connectDots: false, // غیرفعال کردن اتصال نقاط
+                ),
+              ),
+              // لایه 2: محتوای صفحه با پس زمینه شفاف
+              Theme(
+                data: Theme.of(context).copyWith(
+                  scaffoldBackgroundColor: Colors.transparent,
+                ),
+                child: child, 
+              ),
+            ],
+          );
         },
       ),
     );

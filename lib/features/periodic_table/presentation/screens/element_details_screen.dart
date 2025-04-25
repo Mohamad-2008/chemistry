@@ -4,7 +4,6 @@ import 'package:periodic_table_app/core/utils/color_utils.dart';
 import 'package:periodic_table_app/core/utils/translation_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:periodic_table_app/features/chat_bot/data/services/chat_bot_service.dart';
-import 'package:periodic_table_app/features/chat_bot/presentation/screens/chat_bot_screen.dart';
 
 class ElementDetailsScreen extends StatefulWidget {
   final ElementDetailsModel element;
@@ -1115,43 +1114,53 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
   }
 
   Widget _buildInfoCard(BuildContext context, String title, IconData icon, List<Widget> children) {
-    return Card(
-      elevation: 6,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Colors.grey[850]!,
-              Colors.grey[900]!,
+    final categoryColor = ColorUtils.getCategoryColor(widget.element.category);
+
+    return ScaleTransition(
+      scale: _boxScaleAnimation,
+      child: FadeTransition(
+        opacity: _fadeAnimation,
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Colors.grey[850]?.withOpacity(0.85),
+            borderRadius: BorderRadius.circular(12.0),
+            border: Border.all(
+              color: categoryColor,
+              width: 2.0,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.4),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
             ],
           ),
-        ),
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(icon, color: Colors.white70, size: 28),
-                const SizedBox(width: 8),
-                Text(
-                  TranslationUtils.translate(title),
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontFamily: 'Vazir',
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  if (icon != null)
+                    Icon(icon, color: Colors.white70, size: 20),
+                  if (icon != null) const SizedBox(width: 8),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontFamily: 'Vazir',
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            ...children,
-          ],
+                ],
+              ),
+              const Divider(color: Colors.white24, height: 24, thickness: 1),
+              ...children,
+            ],
+          ),
         ),
       ),
     );

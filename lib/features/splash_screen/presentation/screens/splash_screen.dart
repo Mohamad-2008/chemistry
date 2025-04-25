@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1A1A),
+      // backgroundColor: const Color(0xFF1A1A1A), // حذف رنگ پس زمینه برای شفافیت
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

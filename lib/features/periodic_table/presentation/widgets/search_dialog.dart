@@ -100,9 +100,9 @@ void showSearchDialog(BuildContext context, {required Function(ElementModel) onE
                     child: Consumer<PeriodicTableProvider>(
                       builder: (context, provider, _) {
                         return ListView.builder(
-                          itemCount: provider.filteredElements.length,
+                          itemCount: provider.elements.length,
                           itemBuilder: (context, index) {
-                            final element = provider.filteredElements[index];
+                            final element = provider.elements[index];
                             return ListTile(
                               title: Text(
                                 '${element.name} (${element.symbol})',

@@ -164,17 +164,18 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
     final provider = Provider.of<PeriodicTableProvider>(context);
     final thirdItemValue = provider.getThirdItemValue(widget.element!);
     final isSelected = widget.element == provider.selectedElement;
+    final categoryColor = _getCategoryColor(widget.element!.category);
 
     return Container(
       width: 64,
       height: 64,
       margin: const EdgeInsets.all(2),
       decoration: BoxDecoration(
-        color: _getCategoryColor(widget.element!.category),
+        color: const Color(0xFF212121),
         borderRadius: BorderRadius.circular(4),
         border: Border.all(
-          color: Colors.white.withOpacity(0.2),
-          width: 1,
+          color: categoryColor,
+          width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
@@ -215,7 +216,7 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
             left: 0,
             right: 0,
             child: Text(
-              thirdItemValue,
+              widget.element!.category,
               style: const TextStyle(
                 color: Colors.white70,
                 fontSize: 10,

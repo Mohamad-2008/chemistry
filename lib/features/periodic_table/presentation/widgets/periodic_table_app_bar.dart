@@ -50,6 +50,8 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<PeriodicTableProvider>(context);
+
     if (orientation != Orientation.portrait && !isVisible) {
       return const SizedBox.shrink();
     }
@@ -100,6 +102,50 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
             ),
             centerTitle: true,
             actions: [
+              if (provider.categories.length > 1)
+               Container(
+                 constraints: const BoxConstraints(maxWidth: 150),
+                 child: Padding(
+                   padding: const EdgeInsets.only(left: 8.0, right: 4.0),
+                   child: DropdownButtonHideUnderline(
+                     child: DropdownButton<String>(
+                       value: provider.selectedCategoryFilter,
+                       icon: const Icon(Icons.filter_list, color: Colors.white),
+                       dropdownColor: Colors.blueGrey[800],
+                       style: const TextStyle(color: Colors.white, fontFamily: 'Vazir'),
+                       items: provider.categories.map((Map<String, String> categoryMap) {
+                         return DropdownMenuItem<String>(
+                           value: categoryMap['key']!,
+                           child: Text(
+                             categoryMap['display']!,
+                             style: const TextStyle(fontSize: 14),
+                             overflow: TextOverflow.ellipsis,
+                           ),
+                         );
+                       }).toList(),
+                       selectedItemBuilder: (BuildContext context) {
+                         return provider.categories.map<Widget>((Map<String, String> item) {
+                           return Container(
+                             alignment: Alignment.centerRight,
+                             constraints: const BoxConstraints(maxWidth: 100),
+                             child: Text(
+                               item['display']!,
+                               overflow: TextOverflow.ellipsis,
+                               style: const TextStyle(color: Colors.white, fontFamily: 'Vazir'),
+                             ),
+                           );
+                         }).toList();
+                       },
+                       onChanged: (String? newValue) {
+                         if (newValue != null) {
+                           Provider.of<PeriodicTableProvider>(context, listen: false)
+                             .selectCategoryFilter(newValue);
+                         }
+                       },
+                     ),
+                   ),
+                 ),
+               ),
               IconButton(
                 icon: const Icon(Icons.settings, color: Colors.white),
                 onPressed: () => _showSettingsMenu(context),
