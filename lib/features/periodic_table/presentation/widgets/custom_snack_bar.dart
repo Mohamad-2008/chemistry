@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 class CustomSnackBar {
   static void show(BuildContext context, String message) {
+    // ابتدا تمام پیام‌های قبلی را پاک می‌کنیم
+    ScaffoldMessenger.of(context).clearSnackBars();
+    
+    // سپس پیام جدید را نمایش می‌دهیم
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: _AnimatedSnackBarContent(message: message),
@@ -49,6 +53,13 @@ class _AnimatedSnackBarContentState extends State<_AnimatedSnackBarContent>
     );
 
     _controller.forward();
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        _controller.reverse().then((_) {
+          // onDismiss();
+        });
+      }
+    });
   }
 
   @override
@@ -59,53 +70,58 @@ class _AnimatedSnackBarContentState extends State<_AnimatedSnackBarContent>
 
   @override
   Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _fadeAnimation,
-      child: SlideTransition(
-        position: _slideAnimation,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [
-                Color(0xFF1A237E), // آبی تیره
-                Color(0xFF4A148C), // بنفش تیره
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.blueAccent.withOpacity(0.5),
-                blurRadius: 12,
-                spreadRadius: 2,
-                offset: const Offset(0, 4),
+    return Positioned(
+      bottom: 16,
+      left: 16,
+      right: 16,
+      child: FadeTransition(
+        opacity: _fadeAnimation,
+        child: SlideTransition(
+          position: _slideAnimation,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  Color(0xFF1A237E), // آبی تیره
+                  Color(0xFF4A148C), // بنفش تیره
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
-            ],
-            border: Border.all(
-              color: Colors.blueAccent.withOpacity(0.5),
-              width: 1.5,
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _AnimatedIcon(),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  widget.message,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                  textDirection: TextDirection.rtl, // جهت‌گیری راست به چپ
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.blueAccent.withOpacity(0.5),
+                  blurRadius: 12,
+                  spreadRadius: 2,
+                  offset: const Offset(0, 4),
                 ),
+              ],
+              border: Border.all(
+                color: Colors.blueAccent.withOpacity(0.5),
+                width: 1.5,
               ),
-            ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _AnimatedIcon(),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    widget.message,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                    textDirection: TextDirection.rtl,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

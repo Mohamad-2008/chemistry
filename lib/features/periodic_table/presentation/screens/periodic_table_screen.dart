@@ -4,9 +4,11 @@ import 'package:periodic_table_app/features/periodic_table/presentation/widgets/
 import 'package:periodic_table_app/features/periodic_table/presentation/widgets/periodic_table_bottom_nav.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/widgets/periodic_table_grid.dart.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/widgets/search_dialog.dart';
+import 'package:periodic_table_app/features/periodic_table/presentation/widgets/custom_snack_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
 import 'package:periodic_table_app/utils/color_utils.dart';
+import 'package:periodic_table_app/features/chat_bot/presentation/screens/chat_bot_screen.dart';
 
 class PeriodicTableScreen extends StatefulWidget {
   const PeriodicTableScreen({super.key});
@@ -19,7 +21,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
     with TickerProviderStateMixin {
   bool _isAppBarVisible = true;
   late AnimationController _arrowController;
-  Orientation _lastOrientation = Orientation.portrait;
+  Orientation? orientation;
   final TransformationController _transformationController = TransformationController();
   bool _isMounted = false;
 
@@ -223,7 +225,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
   Widget build(BuildContext context) {
     return OrientationBuilder(
       builder: (context, orientation) {
-        if (_lastOrientation != orientation) {
+        if (this.orientation != orientation) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (_isMounted) {
               setState(() {
@@ -231,7 +233,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                   _isAppBarVisible = true;
                   _arrowController.forward();
                 }
-                _lastOrientation = orientation;
+                this.orientation = orientation;
               });
             }
           });
@@ -257,104 +259,500 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
               );
             },
           ),
-          body: LayoutBuilder(
-            builder: (context, constraints) {
-              return Stack(
-                children: [
-                  Consumer<PeriodicTableProvider>(
-                    builder: (context, provider, _) {
-                      if (provider.isLoading) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      if (provider.errorMessage != null) {
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                provider.errorMessage!,
-                                style: const TextStyle(color: Colors.red),
-                              ),
-                              ElevatedButton(
-                                onPressed: provider.loadPeriodicTableData,
-                                child: const Text('دوباره امتحان کنید'),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                      return InteractiveViewer(
-                        transformationController: _transformationController,
-                        constrained: false,
-                        boundaryMargin: const EdgeInsets.all(100),
-                        minScale: 0.5,
-                        maxScale: 6,
-                        panEnabled: true,
-                        scaleEnabled: true,
-                        onInteractionStart: (details) {
-                          if (orientation == Orientation.landscape &&
-                              _isAppBarVisible &&
-                              details.pointerCount == 1) {
-                            _toggleVisibility();
-                          }
-                        },
-                        child: GestureDetector(
-                          onTapUp: (details) {
-                            final RenderBox box = context.findRenderObject() as RenderBox;
-                            final localPosition = box.globalToLocal(details.globalPosition);
-                            ElementModel? selectedElement;
-                            for (final element in provider.elements) {
-                              final x = (element.xpos - 1) * 68.0 + 16.0;
-                              final y = (element.ypos - 1) * 68.0 + 16.0;
-                              if (localPosition.dx >= x &&
-                                  localPosition.dx <= x + 68.0 &&
-                                  localPosition.dy >= y &&
-                                  localPosition.dy <= y + 68.0) {
-                                selectedElement = element;
-                                break;
-                              }
-                            }
-                            if (selectedElement != null) {
-                              final element = selectedElement;
-                              provider.selectElement(element);
-                              _scrollToElement(element);
-                            }
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: PeriodicTableGrid(elements: provider.elements),
-                          ),
-                        ),
-                      );
+          body: Consumer<PeriodicTableProvider>(
+            builder: (context, provider, _) {
+              final currentRoute = provider.currentRoute;
+              switch (currentRoute) {
+                case '/':
+                  return _buildPeriodicTable();
+                case '/main_menu':
+                  return _buildMainMenu();
+                case '/chat_bot':
+                  return WillPopScope(
+                    onWillPop: () async {
+                      final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+                      provider.setCurrentRoute('/');
+                      return true;
                     },
-                  ),
-                  if (orientation == Orientation.landscape)
-                    Positioned(
-                      bottom: _isAppBarVisible ? 70 : 16,
-                      right: 16,
-                      child: FloatingActionButton(
-                        mini: true,
-                        backgroundColor: Colors.blueGrey[900]!.withOpacity(0.9),
-                        onPressed: _toggleVisibility,
-                        child: AnimatedBuilder(
-                          animation: _arrowController,
-                          builder: (_, child) => Transform.rotate(
-                            angle: _arrowController.value * 3.1416,
-                            child: const Icon(Icons.arrow_upward, color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
+                    child: const ChatBotScreen(),
+                  );
+                default:
+                  return _buildPeriodicTable();
+              }
+            },
+          ),
+          bottomNavigationBar: Consumer<PeriodicTableProvider>(
+            builder: (context, provider, _) {
+              if (provider.currentRoute == '/chat_bot') {
+                return const SizedBox.shrink();
+              }
+              return PeriodicTableBottomNav(
+                isVisible: _isAppBarVisible,
+                orientation: orientation,
+                contentBuilder: (route) => const SizedBox.shrink(),
               );
             },
           ),
-          bottomNavigationBar: PeriodicTableBottomNav(
-            isVisible: _isAppBarVisible,
-            orientation: orientation,
-          ),
         );
       },
+    );
+  }
+
+  Widget _buildPeriodicTable() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Stack(
+          children: [
+            Consumer<PeriodicTableProvider>(
+              builder: (context, provider, _) {
+                if (provider.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (provider.errorMessage != null) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          provider.errorMessage!,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                        ElevatedButton(
+                          onPressed: provider.loadPeriodicTableData,
+                          child: const Text('دوباره امتحان کنید'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                return InteractiveViewer(
+                  transformationController: _transformationController,
+                  constrained: false,
+                  boundaryMargin: const EdgeInsets.all(100),
+                  minScale: 0.5,
+                  maxScale: 6,
+                  panEnabled: true,
+                  scaleEnabled: true,
+                  onInteractionStart: (details) {
+                    if (orientation == Orientation.landscape &&
+                        _isAppBarVisible &&
+                        details.pointerCount == 1) {
+                      _toggleVisibility();
+                    }
+                  },
+                  child: GestureDetector(
+                    onTapUp: (details) {
+                      final RenderBox box = context.findRenderObject() as RenderBox;
+                      final localPosition = box.globalToLocal(details.globalPosition);
+                      ElementModel? selectedElement;
+                      for (final element in provider.elements) {
+                        final x = (element.xpos - 1) * 68.0 + 16.0;
+                        final y = (element.ypos - 1) * 68.0 + 16.0;
+                        if (localPosition.dx >= x &&
+                            localPosition.dx <= x + 68.0 &&
+                            localPosition.dy >= y &&
+                            localPosition.dy <= y + 68.0) {
+                          selectedElement = element;
+                          break;
+                        }
+                      }
+                      if (selectedElement != null) {
+                        final element = selectedElement;
+                        provider.selectElement(element);
+                        _scrollToElement(element);
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: PeriodicTableGrid(
+                        elements: provider.elements,
+                        isElementActive: (element) {
+                          return provider.currentSort == null ||
+                              (provider.currentSort == 'category' && element.category == provider.currentCategory) ||
+                              (provider.currentSort == 'name' && element.name.startsWith(provider.currentLetter ?? '')) ||
+                              (provider.currentSort == 'number' && element.number >= (provider.currentMinNumber ?? 0) && element.number <= (provider.currentMaxNumber ?? 118));
+                        },
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+            if (orientation == Orientation.landscape)
+              Positioned(
+                bottom: _isAppBarVisible ? 70 : 16,
+                right: 16,
+                child: FloatingActionButton(
+                  mini: true,
+                  backgroundColor: Colors.blueGrey[900]!.withOpacity(0.9),
+                  onPressed: _toggleVisibility,
+                  child: AnimatedBuilder(
+                    animation: _arrowController,
+                    builder: (_, child) => Transform.rotate(
+                      angle: _arrowController.value * 3.1416,
+                      child: const Icon(Icons.arrow_upward, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildMainMenu() {
+    return WillPopScope(
+      onWillPop: () async {
+        final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+        provider.setCurrentRoute('/main_menu');
+        return false;
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: const AssetImage('assets/images/background_pattern.png'),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Colors.blueGrey[900]!.withOpacity(0.9),
+              BlendMode.darken,
+            ),
+          ),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  _buildMenuGrid(),
+                  const SizedBox(height: 40),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMenuGrid() {
+    final menuItems = [
+      {
+        'title': 'چت بات شیمی',
+        'icon': Icons.chat_bubble_outline,
+        'color': Colors.purple,
+        'route': '/chat_bot',
+        'isWide': false,
+      },
+      {
+        'title': 'جدول تناوبی',
+        'icon': Icons.grid_on,
+        'color': Colors.blue,
+        'route': '/periodic_table',
+        'isWide': true,
+      },
+      {
+        'title': 'جستجوی عناصر',
+        'icon': Icons.search,
+        'color': Colors.green,
+        'route': '/element_search',
+        'isWide': false,
+      },
+      {
+        'title': 'ماشین حساب شیمی',
+        'icon': Icons.calculate,
+        'color': Colors.orange,
+        'route': '/calculator',
+        'isWide': false,
+      },
+      {
+        'title': 'فرمول‌های شیمی',
+        'icon': Icons.science,
+        'color': Colors.teal,
+        'route': '/formulas',
+        'isWide': false,
+      },
+      {
+        'title': 'تنظیمات',
+        'icon': Icons.settings,
+        'color': Colors.indigo,
+        'route': '/settings',
+        'isWide': false,
+      },
+      {
+        'title': 'پروفایل',
+        'icon': Icons.person,
+        'color': Colors.pink,
+        'route': '/profile',
+        'isWide': false,
+      },
+    ];
+
+    return Column(
+      children: [
+        _buildWideCard(menuItems[1]),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              child: _buildMenuCard(
+                title: menuItems[0]['title'] as String,
+                icon: menuItems[0]['icon'] as IconData,
+                color: menuItems[0]['color'] as Color,
+                onTap: () {
+                  Navigator.pushNamed(context, menuItems[0]['route'] as String).then((_) {
+                    final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+                    provider.setCurrentRoute('/main_menu');
+                  });
+                },
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: _buildMenuCard(
+                title: menuItems[2]['title'] as String,
+                icon: menuItems[2]['icon'] as IconData,
+                color: menuItems[2]['color'] as Color,
+                onTap: () {
+                  Navigator.pushNamed(context, menuItems[2]['route'] as String).then((_) {
+                    final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+                    provider.setCurrentRoute('/main_menu');
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              child: _buildMenuCard(
+                title: menuItems[3]['title'] as String,
+                icon: menuItems[3]['icon'] as IconData,
+                color: menuItems[3]['color'] as Color,
+                onTap: () {
+                  Navigator.pushNamed(context, menuItems[3]['route'] as String).then((_) {
+                    final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+                    provider.setCurrentRoute('/main_menu');
+                  });
+                },
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: _buildMenuCard(
+                title: menuItems[4]['title'] as String,
+                icon: menuItems[4]['icon'] as IconData,
+                color: menuItems[4]['color'] as Color,
+                onTap: () {
+                  Navigator.pushNamed(context, menuItems[4]['route'] as String).then((_) {
+                    final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+                    provider.setCurrentRoute('/main_menu');
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              child: _buildMenuCard(
+                title: menuItems[5]['title'] as String,
+                icon: menuItems[5]['icon'] as IconData,
+                color: menuItems[5]['color'] as Color,
+                onTap: () {
+                  Navigator.pushNamed(context, menuItems[5]['route'] as String).then((_) {
+                    final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+                    provider.setCurrentRoute('/main_menu');
+                  });
+                },
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: _buildMenuCard(
+                title: menuItems[6]['title'] as String,
+                icon: menuItems[6]['icon'] as IconData,
+                color: menuItems[6]['color'] as Color,
+                onTap: () {
+                  Navigator.pushNamed(context, menuItems[6]['route'] as String).then((_) {
+                    final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+                    provider.setCurrentRoute('/main_menu');
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildWideCard(Map<String, dynamic> item) {
+    return Card(
+      elevation: 8,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: InkWell(
+        onTap: () {
+          try {
+            Navigator.pushNamed(context, item['route'] as String).then((_) {
+              final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+              provider.setCurrentRoute('/main_menu');
+            });
+          } catch (e) {
+            debugPrint('Navigation error: $e');
+            CustomSnackBar.show(
+              context,
+              'خطا در انتقال به صفحه مورد نظر',
+            );
+          }
+        },
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          height: 120,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                (item['color'] as Color).withOpacity(0.9),
+                (item['color'] as Color).withOpacity(0.7),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: (item['color'] as Color).withOpacity(0.3),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
+              ),
+            ],
+            border: Border.all(
+              color: Colors.white.withOpacity(0.2),
+              width: 1,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    item['icon'] as IconData,
+                    color: Colors.white,
+                    size: 32,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    item['title'] as String,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Vazir',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMenuCard({
+    required String title,
+    required IconData icon,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return Card(
+      elevation: 8,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: InkWell(
+        onTap: () {
+          try {
+            onTap();
+          } catch (e) {
+            debugPrint('Navigation error: $e');
+            CustomSnackBar.show(
+              context,
+              'خطا در انتقال به صفحه مورد نظر',
+            );
+          }
+        },
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          height: 120,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                color.withOpacity(0.9),
+                color.withOpacity(0.7),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: color.withOpacity(0.3),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
+              ),
+            ],
+            border: Border.all(
+              color: Colors.white.withOpacity(0.2),
+              width: 1,
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  icon,
+                  color: Colors.white,
+                  size: 32,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Vazir',
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

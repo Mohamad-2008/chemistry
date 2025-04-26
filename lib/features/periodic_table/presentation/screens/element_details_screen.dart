@@ -246,7 +246,12 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                 _buildSliverAppBar(context),
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).padding.top,
+                      left: 16.0,
+                      right: 16.0,
+                      bottom: 16.0,
+                    ),
                     child: FadeTransition(
                       opacity: _fadeAnimation,
                       child: Column(
@@ -707,7 +712,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                               height: 40,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white.withOpacity(0.7)),
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white.withOpacity(0.9)),
                               ),
                             ),
                         ],
@@ -723,10 +728,9 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
   }
 
   Widget _buildSliverAppBar(BuildContext context) {
-    final categoryColor = ColorUtils.getCategoryColor(widget.element.category);
-    final secondaryCategoryColor = ColorUtils.getCategoryColor(widget.element.category).withOpacity(0.6); // Lighter shade for secondary category
+    final categoryColor = ColorUtils.getCategoryColor(widget.element.category).withOpacity(0.6);
+    final secondaryCategoryColor = ColorUtils.getCategoryColor(widget.element.category).withOpacity(0.5);
 
-    // Split categories by comma
     final categories = widget.element.category.split(',').map((c) => c.trim().toUpperCase()).toList();
 
     return Directionality(
@@ -736,7 +740,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
         floating: false,
         pinned: true,
         stretch: true,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: Colors.black,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
           onPressed: () => Navigator.pop(context),
@@ -906,13 +910,13 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                           decoration: BoxDecoration(
                                             color: index == 0
-                                                ? categoryColor.withOpacity(0.8)
+                                                ? categoryColor.withOpacity(0.7)
                                                 : secondaryCategoryColor,
                                             borderRadius: BorderRadius.circular(5),
                                             boxShadow: [
                                               BoxShadow(
                                                 color: Colors.black.withOpacity(0.4),
-                                                blurRadius: 2,
+                                                blurRadius: 3,
                                                 offset: const Offset(2, 2),
                                               ),
                                             ],
@@ -1075,13 +1079,13 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                             : _buildFallbackImage(context),
                       ),
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [
-                              Colors.transparent,
-                              Colors.black.withOpacity(0.7),
+                              Colors.black54,
+                              Colors.black12,
                             ],
                           ),
                         ),

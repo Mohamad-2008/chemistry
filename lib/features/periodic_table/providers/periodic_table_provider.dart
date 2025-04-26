@@ -35,6 +35,7 @@ class PeriodicTableProvider with ChangeNotifier {
   String? _currentLetter;
   int? _currentMinNumber;
   int? _currentMaxNumber;
+  String _currentRoute = '/';
 
   List<ElementModel> get elements => _elementsToDisplay;
   bool get isLoading => _isLoading;
@@ -48,6 +49,7 @@ class PeriodicTableProvider with ChangeNotifier {
   String? get currentLetter => _currentLetter;
   int? get currentMinNumber => _currentMinNumber;
   int? get currentMaxNumber => _currentMaxNumber;
+  String get currentRoute => _currentRoute;
 
   // تغییر Getter برای برگرداندن لیست مپ ها با کلید و متن نمایشی
   List<Map<String, String>> get categories {
@@ -263,6 +265,11 @@ class PeriodicTableProvider with ChangeNotifier {
     _currentLetter = null;
     _currentMinNumber = null;
     _currentMaxNumber = null;
+    notifyListeners();
+  }
+
+  void setCurrentRoute(String route) {
+    _currentRoute = route;
     notifyListeners();
   }
 }

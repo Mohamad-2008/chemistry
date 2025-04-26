@@ -22,11 +22,12 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.12.0
 
 flutter:
   uses-material-design: true
   assets:
+    - assets/
     - assets/data/
     - assets/data/periodic_table.json
     - assets/images/app_icon.png
@@ -43,14 +44,15 @@ flutter:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/heisenberg_logo_minimal.png"
+
+  image_path: "assets/heisenberg_logo_minimal2.png"
   min_sdk_android: 21
   remove_alpha_ios: true
-  adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/heisenberg_logo_minimal.png"
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: "assets/heisenberg_logo_minimal2.png"
   web:
     generate: false
   windows:
-    generate: false
+    generate: true
   macos:
     generate: false

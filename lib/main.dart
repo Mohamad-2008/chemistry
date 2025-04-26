@@ -9,7 +9,6 @@ import 'package:periodic_table_app/core/models/element_details_model.dart';
 import 'package:periodic_table_app/features/periodic_table/data/periodic_table_repository.dart';
 import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
 import 'package:periodic_table_app/features/chat_bot/presentation/screens/chat_bot_screen.dart';
-import 'package:periodic_table_app/features/splash_screen/presentation/screens/splash_screen.dart';
 import 'package:periodic_table_app/utils/particle_painter.dart';
 
 void main() {
@@ -79,11 +78,8 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        initialRoute: '/splash',
+        initialRoute: '/', // مسیر اولیه به جدول تناوبی تغییر کرد
         onGenerateRoute: (settings) {
-          if (settings.name == '/splash') {
-            return MaterialPageRoute(builder: (_) => const SplashScreen());
-          }
           if (settings.name == '/') {
             return MaterialPageRoute(builder: (_) => const PeriodicTableScreen());
           }
@@ -151,21 +147,21 @@ class MyApp extends StatelessWidget {
                   children: [
                     // ذرات آبی
                     ParticleAnimation(
-                      numberOfParticles: 20,
+                      numberOfParticles: 40,
                       particleColor: Colors.blue,
                       maxParticleSize: 2,
                       speed: 1,
                     ),
                     // ذرات بنفش
                     ParticleAnimation(
-                      numberOfParticles: 15,
+                      numberOfParticles: 40,
                       particleColor: Colors.purple,
                       maxParticleSize: 3,
                       speed: 1.2,
                     ),
                     // ذرات زرد
                     ParticleAnimation(
-                      numberOfParticles: 25,
+                      numberOfParticles: 40,
                       particleColor: Colors.yellow,
                       maxParticleSize: 1.5,
                       speed: 0.8,
