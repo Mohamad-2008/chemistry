@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
 import 'dart:math';
 import 'dart:convert';
 import 'package:flutter/services.dart';
@@ -113,7 +111,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
   }
 
   void _scrollToCurrentStep() {
-    final double itemWidth = 60.0; // عرض تقریبی هر آیتم در تایم‌لاین
+    const double itemWidth = 60.0; // عرض تقریبی هر آیتم در تایم‌لاین
     final double targetPosition = _currentStep * itemWidth;
     
     _timelineController.animateTo(
@@ -173,7 +171,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                   color: Colors.amber,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Vazir',
                 ),
               ),
             ),
@@ -225,7 +222,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                           color: Colors.amber,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'Vazir',
                         ),
                       ),
                       Text(
@@ -233,7 +229,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                         style: TextStyle(
                           color: Colors.grey[400],
                           fontSize: 14,
-                          fontFamily: 'Vazir',
                         ),
                       ),
                     ],
@@ -304,7 +299,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                                           color: Colors.amber,
                                           fontSize: 24,
                                           fontWeight: FontWeight.bold,
-                                          fontFamily: 'Vazir',
                                         ),
                                       ),
                                     ),
@@ -315,7 +309,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                                   style: TextStyle(
                                     color: Colors.grey[600],
                                     fontSize: 14,
-                                    fontFamily: 'Vazir',
                                   ),
                                 ),
                               ],
@@ -329,7 +322,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                               )
                             else if (_timelineData.isNotEmpty) ...[
                               // تایم‌لاین
-                              Container(
+                              SizedBox(
                                 width: double.infinity,
                                 height: 80,
                                 child: ListView.builder(
@@ -400,7 +393,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                                                   style: TextStyle(
                                                     color: isActive ? typeColor : Colors.grey,
                                                     fontSize: 12,
-                                                    fontFamily: 'Vazir',
                                                   ),
                                                 ),
                                               ],
@@ -426,7 +418,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                                     style: const TextStyle(
                                       color: Colors.amber,
                                       fontSize: 16,
-                                      fontFamily: 'Vazir',
                                     ),
                                   ),
                                   IconButton(
@@ -496,7 +487,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                     color: typeColor,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    fontFamily: 'Vazir',
                   ),
                 ),
               ),
@@ -507,7 +497,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                   color: typeColor,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Vazir',
                 ),
               ),
               const SizedBox(height: 12),
@@ -516,7 +505,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                 style: TextStyle(
                   color: Colors.grey[300],
                   fontSize: 14,
-                  fontFamily: 'Vazir',
                 ),
                 textAlign: TextAlign.right,
               ),
@@ -534,7 +522,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                       color: Colors.amber,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Vazir',
                     ),
                   ),
                 ),
@@ -551,7 +538,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                     style: TextStyle(
                       color: Colors.grey[300],
                       fontSize: 14,
-                      fontFamily: 'Vazir',
                     ),
                   ),
                 )).toList(),
@@ -570,7 +556,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                       color: Colors.amber,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Vazir',
                     ),
                   ),
                 ),
@@ -589,7 +574,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                         style: TextStyle(
                           color: Colors.grey[300],
                           fontSize: 14,
-                          fontFamily: 'Vazir',
                         ),
                       ),
                       if (item['activity']['پاسخ'] != null) ...[
@@ -605,7 +589,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                             style: TextStyle(
                               color: Colors.grey[400],
                               fontSize: 12,
-                              fontFamily: 'Vazir',
                             ),
                           ),
                         ),
@@ -628,7 +611,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                       color: Colors.amber,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Vazir',
                     ),
                   ),
                 ),
@@ -645,7 +627,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                     style: TextStyle(
                       color: Colors.grey[300],
                       fontSize: 14,
-                      fontFamily: 'Vazir',
                     ),
                   ),
                 )).toList(),

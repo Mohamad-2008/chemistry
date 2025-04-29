@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
 import 'package:periodic_table_app/utils/color_utils.dart';
 import 'package:periodic_table_app/features/chat_bot/presentation/screens/chat_bot_screen.dart';
+import 'package:periodic_table_app/features/profile/presentation/screens/profile_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PeriodicTableScreen extends StatefulWidget {
   const PeriodicTableScreen({super.key});
@@ -147,7 +149,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
           builder: (context) => AlertDialog(
             backgroundColor: Colors.transparent,
             contentPadding: EdgeInsets.zero,
-            content: _SortMenu(),
+            content: const _SortMenu(),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
@@ -187,7 +189,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
-                  fontFamily: 'Vazir',
                 ),
               ),
               Text(
@@ -195,7 +196,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                 style: const TextStyle(
                   fontSize: 12,
                   color: Colors.white70,
-                  fontFamily: 'Vazir',
                 ),
               ),
             ],
@@ -276,6 +276,8 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                     },
                     child: const ChatBotScreen(),
                   );
+                case '/profile':
+                  return const ProfileScreen();
                 default:
                   return _buildPeriodicTable();
               }
@@ -319,7 +321,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                         ),
                         ElevatedButton(
                           onPressed: provider.loadPeriodicTableData,
-                          child: const Text('دوباره امتحان کنید'),
+                          child: Text(AppLocalizations.of(context)!.tryAgainButton),
                         ),
                       ],
                     ),
@@ -366,12 +368,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                       padding: const EdgeInsets.all(16.0),
                       child: PeriodicTableGrid(
                         elements: provider.elements,
-                        isElementActive: (element) {
-                          return provider.currentSort == null ||
-                              (provider.currentSort == 'category' && element.category == provider.currentCategory) ||
-                              (provider.currentSort == 'name' && element.name.startsWith(provider.currentLetter ?? '')) ||
-                              (provider.currentSort == 'number' && element.number >= (provider.currentMinNumber ?? 0) && element.number <= (provider.currentMaxNumber ?? 118));
-                        },
                       ),
                     ),
                   ),
@@ -409,16 +405,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
         return false;
       },
       child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: const AssetImage('assets/images/background_pattern.png'),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-              Colors.blueGrey[900]!.withOpacity(0.9),
-              BlendMode.darken,
-            ),
-          ),
-        ),
         child: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
@@ -438,58 +424,59 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
   }
 
   Widget _buildMenuGrid() {
+    final l10n = AppLocalizations.of(context)!;
     final menuItems = [
       {
-        'title': 'چت بات شیمی',
+        'title': l10n.chatBotTitle,
         'icon': Icons.chat_bubble_outline,
         'color': Colors.purple,
         'route': '/chat_bot',
         'isWide': false,
       },
       {
-        'title': 'جدول تناوبی',
+        'title': l10n.periodicTableTitle,
         'icon': Icons.grid_on,
         'color': Colors.blue,
         'route': '/periodic_table',
         'isWide': true,
       },
       {
-        'title': 'کتاب شیمی',
+        'title': l10n.chemistryBookTitle,
         'icon': Icons.book,
         'color': Colors.amber,
         'route': '/chemistry_book',
         'isWide': true,
       },
       {
-        'title': 'جستجوی عناصر',
+        'title': l10n.elementSearchTitle,
         'icon': Icons.search,
         'color': Colors.green,
         'route': '/element_search',
         'isWide': false,
       },
       {
-        'title': 'ماشین حساب',
+        'title': l10n.calculatorTitle,
         'icon': Icons.calculate,
         'color': Colors.orange,
         'route': '/calculator',
         'isWide': false,
       },
       {
-        'title': 'فرمول‌های شیمی',
+        'title': l10n.formulasTitle,
         'icon': Icons.science,
         'color': Colors.teal,
         'route': '/formulas',
         'isWide': false,
       },
       {
-        'title': 'تنظیمات',
+        'title': l10n.settingsTitle,
         'icon': Icons.settings,
         'color': Colors.indigo,
         'route': '/settings',
         'isWide': false,
       },
       {
-        'title': 'پروفایل',
+        'title': l10n.profileTitle,
         'icon': Icons.person,
         'color': Colors.pink,
         'route': '/profile',
@@ -631,7 +618,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
             debugPrint('Navigation error: $e');
             CustomSnackBar.show(
               context,
-              'خطا در انتقال به صفحه مورد نظر',
+              AppLocalizations.of(context)!.navigationErrorSnackbar,
             );
           }
         },
@@ -672,7 +659,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Vazir',
                     ),
                     textAlign: TextAlign.right,
                   ),
@@ -717,7 +703,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
             debugPrint('Navigation error: $e');
             CustomSnackBar.show(
               context,
-              'خطا در انتقال به صفحه مورد نظر',
+              AppLocalizations.of(context)!.navigationErrorSnackbar,
             );
           }
         },
@@ -768,7 +754,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                   color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Vazir',
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -786,6 +771,7 @@ class _SortMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       width: 280,
       padding: const EdgeInsets.all(16),
@@ -815,13 +801,12 @@ class _SortMenu extends StatelessWidget {
                 size: 24,
               ),
               const SizedBox(width: 8),
-              const Text(
-                'مرتب‌سازی عناصر',
-                style: TextStyle(
+              Text(
+                l10n.sortElementsTitle,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Vazir',
                 ),
               ),
               const Spacer(),
@@ -837,9 +822,9 @@ class _SortMenu extends StatelessWidget {
           ),
           const Divider(color: Colors.white24),
           const SizedBox(height: 8),
-          _buildSortItem(context, 'name', 'بر اساس نام', Icons.sort_by_alpha),
-          _buildSortItem(context, 'number', 'بر اساس عدد اتمی', Icons.numbers),
-          _buildSortItem(context, 'category', 'بر اساس دسته‌بندی', Icons.category),
+          _buildSortItem(context, 'name', l10n.sortByName, Icons.sort_by_alpha),
+          _buildSortItem(context, 'number', l10n.sortByAtomicNumber, Icons.numbers),
+          _buildSortItem(context, 'category', l10n.sortByCategory, Icons.category),
         ],
       ),
     );
@@ -861,7 +846,6 @@ class _SortMenu extends StatelessWidget {
           title,
           style: const TextStyle(
             color: Colors.white,
-            fontFamily: 'Vazir',
             fontSize: 16,
           ),
         ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:periodic_table_app/features/periodic_table/presentation/widgets/custom_snack_bar.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/widgets/settings_menu.dart';
 import 'package:provider/provider.dart';
 import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isVisible;
@@ -51,6 +51,7 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<PeriodicTableProvider>(context);
+    final l10n = AppLocalizations.of(context)!;
 
     if (orientation != Orientation.portrait && !isVisible) {
       return const SizedBox.shrink();
@@ -87,16 +88,14 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
                   ),
                 ),
               ),
-              title: const Text(
-                'جدول تناوبی',
+              title: Text(
+                l10n.periodicTableTitle,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Vazir',
                 ),
               ),
-              centerTitle: false,
               actions: [
                 if (provider.categories.length > 1)
                   IconButton(
@@ -112,13 +111,12 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
                             ),
                             title: Container(
                               alignment: Alignment.centerRight,
-                              child: const Text(
-                                'فیلتر دسته‌بندی',
+                              child: Text(
+                                l10n.filterCategoryTitle,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: 'Vazir',
                                 ),
                               ),
                             ),
@@ -147,7 +145,6 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
                                             category['display']!,
                                             style: TextStyle(
                                               color: isSelected ? Colors.blueAccent : Colors.white,
-                                              fontFamily: 'Vazir',
                                               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                                             ),
                                           ),

@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:periodic_table_app/features/chat_bot/data/models/chat_message_model.dart';
 import 'package:periodic_table_app/features/chat_bot/data/services/chat_bot_service.dart';
 import 'package:periodic_table_app/features/chat_bot/data/services/chat_storage_service.dart';
 import 'package:uuid/uuid.dart';
 import 'package:periodic_table_app/core/models/element_details_model.dart';
-import 'dart:math' as math;
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:provider/provider.dart';
-import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
-import 'package:periodic_table_app/features/periodic_table/presentation/widgets/custom_snack_bar.dart';
 
 class ChatBotScreen extends StatefulWidget {
   final ElementDetailsModel? element;
@@ -77,25 +71,13 @@ class _ChatBotScreenState extends State<ChatBotScreen> with SingleTickerProvider
   }
 
   Future<void> _clearConversation() async {
-    try {
-      await _storageService.clearConversation();
-      setState(() {
-        _messages.clear();
-        _displayedTexts.clear();
-      });
-      await _storageService.setFirstTime(true);
-      _addWelcomeMessage();
-      CustomSnackBar.show(
-        context,
-        'گفتگو با موفقیت پاک شد',
-      );
-    } catch (e) {
-      debugPrint('Error clearing conversation: $e');
-      CustomSnackBar.show(
-        context,
-        'خطا در پاک کردن گفتگو',
-      );
-    }
+    await _storageService.clearConversation();
+    setState(() {
+      _messages.clear();
+      _displayedTexts.clear();
+    });
+    await _storageService.setFirstTime(true);
+    _addWelcomeMessage();
   }
 
   @override
@@ -142,39 +124,31 @@ class _ChatBotScreenState extends State<ChatBotScreen> with SingleTickerProvider
   Future<void> _handleSendPressed() async {
     if (_textController.text.trim().isEmpty) return;
 
-    try {
-      final textMessage = types.TextMessage(
-        author: _user,
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-        id: const Uuid().v4(),
-        text: _textController.text,
-      );
+    final textMessage = types.TextMessage(
+      author: _user,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+      id: const Uuid().v4(),
+      text: _textController.text,
+    );
 
-      setState(() {
-        _messages.insert(0, textMessage);
-        _displayedTexts[textMessage.id] = textMessage.text;
-        _isTyping = true;
-        _textController.clear();
-      });
+    setState(() {
+      _messages.insert(0, textMessage);
+      _displayedTexts[textMessage.id] = textMessage.text;
+      _isTyping = true;
+      _textController.clear();
+    });
 
-      final response = await _chatBotService.sendMessage(textMessage.text);
-      final botMessage = response.toChatMessage() as types.TextMessage;
+    final response = await _chatBotService.sendMessage(textMessage.text);
+    final botMessage = response.toChatMessage();
 
-      setState(() {
-        _messages.insert(0, botMessage);
-        _isTyping = false;
-        _displayedTexts[botMessage.id] = '';
-      });
-      
-      _animateText(botMessage);
-      _saveConversation();
-    } catch (e) {
-      debugPrint('Error sending message: $e');
-      CustomSnackBar.show(
-        context,
-        'خطا در ارسال پیام',
-      );
-    }
+    setState(() {
+      _messages.insert(0, botMessage);
+      _isTyping = false;
+      _displayedTexts[botMessage.id] = '';
+    });
+    
+    _animateText(botMessage);
+    _saveConversation();
   }
 
   Widget _buildMessageBubble(types.TextMessage message) {
@@ -222,7 +196,6 @@ class _ChatBotScreenState extends State<ChatBotScreen> with SingleTickerProvider
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
-                    fontFamily: 'Vazir',
                   ),
                 ),
               ),
@@ -235,229 +208,202 @@ class _ChatBotScreenState extends State<ChatBotScreen> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
-        provider.setCurrentRoute('/main_menu');
-        return true;
-      },
-      child: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            flexibleSpace: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.black.withOpacity(1.0),
-                    Colors.black.withOpacity(0.96),
-                    Colors.black.withOpacity(0.84),
-                    Colors.black.withOpacity(0.72),
-                    Colors.black.withOpacity(0.60),
-                    Colors.black.withOpacity(0.48),
-                    Colors.black.withOpacity(0.36),
-                    // Colors.black.withOpacity(0.24),
-                    // Colors.black.withOpacity(0.12),
-                  ],
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        appBar: AppBar(
+          title: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.blueGrey[800],
+                  shape: BoxShape.circle,
                 ),
+                child: const Icon(Icons.science, color: Colors.white),
               ),
-            ),
-          
-            elevation: 0,
-            leading: IconButton(
-              icon: const Icon(Icons.chevron_left_rounded, color: Colors.white, size: 32),
-              onPressed: () => Navigator.pop(context),
-            ),
-            title: const Text(
-              'چت بات شیمی',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Vazir',
-              ),
-            ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.refresh, color: Colors.white),
-                onPressed: _clearConversation,
+              const SizedBox(width: 12),
+              const Text(
+                'چت بات شیمی',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
-          body: Stack(
-            children: [
-              Positioned.fill(
-                child: CustomPaint(
-                  painter: DotsPainter(),
-                ),
-              ),
-              Column(
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                      reverse: true,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      itemCount: _messages.length + (_isTyping ? 1 : 0),
-                      itemBuilder: (context, index) {
-                        if (index == 0 && _isTyping) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8),
-                                  child: Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blueGrey[800],
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Icon(Icons.science, color: Colors.white),
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blueGrey[900],
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              ],
+          backgroundColor: Colors.blueGrey[900],
+          elevation: 0,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: AlertDialog(
+                      title: const Text(
+                        'شروع چت جدید',
+                        style: TextStyle(
+                          fontSize: 24,
+                        ),
+                      ),
+                      content: const Text(
+                        'آیا مطمئن هستید که می‌خواهید چت جدیدی شروع کنید؟',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text(
+                            'انصراف',
+                            style: TextStyle(
+                              fontSize: 18,
                             ),
-                          );
-                        }
-                        return _buildMessageBubble(_messages[index - (_isTyping ? 1 : 0)]);
-                      },
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            _clearConversation();
+                          },
+                          child: const Text(
+                            'شروع جدید',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                );
+              },
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                reverse: true,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                itemCount: _messages.length + (_isTyping ? 1 : 0),
+                itemBuilder: (context, index) {
+                  if (index == 0 && _isTyping) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.blueGrey[800],
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(Icons.science, color: Colors.white),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.blueGrey[900],
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return _buildMessageBubble(_messages[index - (_isTyping ? 1 : 0)]);
+                },
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.blueGrey[900],
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 10,
+                    offset: const Offset(0, -5),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blueGrey[800],
+                        borderRadius: BorderRadius.circular(25),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        controller: _textController,
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'پیام خود را بنویسید...',
+                          hintStyle: TextStyle(
+                            color: Colors.white.withOpacity(0.5),
+                          ),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                        ),
+                        onSubmitted: (_) => _handleSendPressed(),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                      color: Colors.blueGrey[900],
+                      color: Colors.blueGrey[800],
+                      shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.2),
-                          blurRadius: 10,
-                          offset: const Offset(0, -5),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
                         ),
                       ],
                     ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.blueGrey[800],
-                              borderRadius: BorderRadius.circular(25),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: TextField(
-                              controller: _textController,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Vazir',
-                              ),
-                              decoration: InputDecoration(
-                                hintText: 'پیام خود را بنویسید...',
-                                hintStyle: TextStyle(
-                                  color: Colors.white.withOpacity(0.5),
-                                  fontFamily: 'Vazir',
-                                ),
-                                border: InputBorder.none,
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                              ),
-                              onSubmitted: (_) => _handleSendPressed(),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.blueGrey[800],
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 8,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: IconButton(
-                            icon: const Icon(Icons.send, color: Colors.white),
-                            onPressed: _handleSendPressed,
-                          ),
-                        ),
-                      ],
+                    child: IconButton(
+                      icon: const Icon(Icons.send, color: Colors.white),
+                      onPressed: _handleSendPressed,
                     ),
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
-  }
-}
-
-class DotsPainter extends CustomPainter {
-  final List<Dot> dots = List.generate(30, (index) => Dot());
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.blueGrey[800]!.withOpacity(0.1)
-      ..style = PaintingStyle.fill;
-
-    for (final dot in dots) {
-      dot.update();
-      canvas.drawCircle(
-        Offset(dot.x * size.width, dot.y * size.height),
-        dot.size,
-        paint,
-      );
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
-}
-
-class Dot {
-  double x = math.Random().nextDouble();
-  double y = math.Random().nextDouble();
-  double size = math.Random().nextDouble() * 2 + 1;
-  double speedX = (math.Random().nextDouble() - 0.5) * 0.005;
-  double speedY = (math.Random().nextDouble() - 0.5) * 0.005;
-
-  void update() {
-    x += speedX * 0.5;
-    y += speedY * 0.5;
-
-    if (x < 0 || x > 1) speedX *= -1;
-    if (y < 0 || y > 1) speedY *= -1;
   }
 } 

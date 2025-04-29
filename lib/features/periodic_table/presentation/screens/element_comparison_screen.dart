@@ -253,7 +253,6 @@ class _ElementComparisonScreenState extends State<ElementComparisonScreen>
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: categoryColor,
-                    fontFamily: 'Vazir',
                   ),
                 ),
               ),
@@ -279,7 +278,6 @@ class _ElementComparisonScreenState extends State<ElementComparisonScreen>
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: categoryColor,
-                        fontFamily: 'Vazir',
                       ),
                     ),
                   ),
@@ -292,7 +290,6 @@ class _ElementComparisonScreenState extends State<ElementComparisonScreen>
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      fontFamily: 'Vazir',
                     ),
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
@@ -304,7 +301,6 @@ class _ElementComparisonScreenState extends State<ElementComparisonScreen>
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.white.withOpacity(0.7),
-                    fontFamily: 'Vazir',
                   ),
                 ),
               ],
@@ -347,7 +343,6 @@ class _ElementComparisonScreenState extends State<ElementComparisonScreen>
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
-                    fontFamily: 'Vazir',
                   ),
                 ),
               ],
@@ -375,7 +370,6 @@ class _ElementComparisonScreenState extends State<ElementComparisonScreen>
             style: const TextStyle(
               fontSize: 16,
               color: Colors.white,
-              fontFamily: 'Vazir',
             ),
           ),
           const SizedBox(height: 8),
@@ -397,7 +391,6 @@ class _ElementComparisonScreenState extends State<ElementComparisonScreen>
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.white.withOpacity(0.9),
-                      fontFamily: 'Vazir',
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -420,7 +413,6 @@ class _ElementComparisonScreenState extends State<ElementComparisonScreen>
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.white.withOpacity(0.9),
-                      fontFamily: 'Vazir',
                     ),
                     textAlign: TextAlign.center,
                   ),

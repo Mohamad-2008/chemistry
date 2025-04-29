@@ -61,35 +61,35 @@ void showSearchDialog(BuildContext context, {required Function(ElementModel) onE
                         itemBuilder: (BuildContext context) => <PopupMenuEntry<SearchType>>[
                           const PopupMenuItem<SearchType>(
                             value: SearchType.name,
-                            child: Text('نام', style: TextStyle(color: Colors.white), textDirection: TextDirection.rtl),
+                            child: Text('نام', style: TextStyle(color: Colors.white)),
                           ),
                           const PopupMenuItem<SearchType>(
                             value: SearchType.symbol,
-                            child: Text('نماد', style: TextStyle(color: Colors.white), textDirection: TextDirection.rtl),
+                            child: Text('نماد', style: TextStyle(color: Colors.white)),
                           ),
                           const PopupMenuItem<SearchType>(
                             value: SearchType.atomicNumber,
-                            child: Text('عدد اتمی', style: TextStyle(color: Colors.white), textDirection: TextDirection.rtl),
+                            child: Text('عدد اتمی', style: TextStyle(color: Colors.white)),
                           ),
                           const PopupMenuItem<SearchType>(
                             value: SearchType.atomicMass,
-                            child: Text('جرم اتمی', style: TextStyle(color: Colors.white), textDirection: TextDirection.rtl),
+                            child: Text('جرم اتمی', style: TextStyle(color: Colors.white)),
                           ),
                           const PopupMenuItem<SearchType>(
                             value: SearchType.category,
-                            child: Text('دسته', style: TextStyle(color: Colors.white), textDirection: TextDirection.rtl),
+                            child: Text('دسته', style: TextStyle(color: Colors.white)),
                           ),
                           const PopupMenuItem<SearchType>(
                             value: SearchType.phase,
-                            child: Text('فاز', style: TextStyle(color: Colors.white), textDirection: TextDirection.rtl),
+                            child: Text('فاز', style: TextStyle(color: Colors.white)),
                           ),
                           const PopupMenuItem<SearchType>(
                             value: SearchType.meltingPoint,
-                            child: Text('نقطه ذوب', style: TextStyle(color: Colors.white), textDirection: TextDirection.rtl),
+                            child: Text('نقطه ذوب', style: TextStyle(color: Colors.white)),
                           ),
                           const PopupMenuItem<SearchType>(
                             value: SearchType.boilingPoint,
-                            child: Text('نقطه جوش', style: TextStyle(color: Colors.white), textDirection: TextDirection.rtl),
+                            child: Text('نقطه جوش', style: TextStyle(color: Colors.white)),
                           ),
                         ],
                       ),
@@ -108,7 +108,6 @@ void showSearchDialog(BuildContext context, {required Function(ElementModel) onE
                                 '${element.name} (${element.symbol})',
                                 style: const TextStyle(
                                   color: Colors.white,
-                                  fontFamily: 'Vazir',
                                 ),
                                 textDirection: TextDirection.rtl,
                               ),

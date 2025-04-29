@@ -1,0 +1,182 @@
+{
+  "@@locale": "fa",
+  "appTitle": "شیمیست",
+  "settingsTitle": "تنظیمات",
+  "darkMode": "حالت تاریک",
+  "language": "زبان",
+  "profileTitle": "پروفایل کاربر",
+  "profilePageMessage": "اینجا صفحه پروفایل کاربر است.",
+
+  "chatBotTitle": "چت بات شیمی",
+  "periodicTableTitle": "جدول تناوبی",
+  "chemistryBookTitle": "کتاب شیمی",
+  "elementSearchTitle": "جستجوی عناصر",
+  "calculatorTitle": "ماشین حساب",
+  "formulasTitle": "فرمول‌های شیمی",
+  "navigationErrorSnackbar": "خطا در انتقال به صفحه مورد نظر",
+  "sortElementsTitle": "مرتب‌سازی عناصر",
+  "sortByName": "بر اساس نام",
+  "sortByAtomicNumber": "بر اساس عدد اتمی",
+  "sortByCategory": "بر اساس دسته‌بندی",
+  "tryAgainButton": "دوباره امتحان کنید",
+  "errorLoadingElementDetailsPrefix": "خطا در بارگذاری جزئیات عنصر:",
+  "elementDetailsNotFound": "جزئیات عنصر یافت نشد",
+  "errorInvalidArgsElementDetails": "خطا: آرگومان نامعتبر برای جزئیات عنصر",
+  "errorPageNotFoundPrefix": "صفحه مورد نظر یافت نشد:",
+  "errorTitle": "خطا",
+  "filterCategoryTitle": "فیلتر دسته‌بندی",
+  "enterSearchQueryPlaceholder": "{searchType} را وارد کنید",
+  "@enterSearchQueryPlaceholder": {
+    "placeholders": {
+      "searchType": {
+        "type": "String"
+      }
+    }
+  },
+  "nameSearchType": "نام",
+  "symbolSearchType": "نماد",
+  "atomicNumberSearchType": "عدد اتمی",
+  "atomicMassSearchType": "جرم اتمی",
+  "categorySearchType": "دسته",
+  "phaseSearchType": "فاز",
+  "meltingPointSearchType": "نقطه ذوب",
+  "boilingPointSearchType": "نقطه جوش",
+  "closeButton": "بستن",
+  "displaySettingsTitle": "تنظیمات نمایش",
+  "elementType_name": "نام عنصر",
+  "elementType_atomicMass": "جرم مولی",
+  "elementType_category": "دسته",
+  "elementType_phase": "فاز",
+  "elementType_meltingPoint": "نقطه ذوب",
+  "elementType_boilingPoint": "نقطه جوش",
+  "settingsSavedSnackbar": "تنظیمات با موفقیت ذخیره شد",
+  "chatWelcomeMessage": "سلام! من دستیار هوشمند شیمی شما هستم. چطور می‌توانم کمکتان کنم؟",
+  "chatWelcomeMessageElement": "سلام! من دستیار هوشمند شیمی شما هستم. می‌بینم که شما در حال بررسی عنصر {elementName} هستید. چطور می‌توانم در مورد این عنصر کمکتان کنم؟",
+  "@chatWelcomeMessageElement": {
+    "placeholders": {
+      "elementName": {
+        "type": "String"
+      }
+    }
+  },
+  "startNewChatTitle": "شروع چت جدید",
+  "startNewChatConfirmation": "آیا مطمئن هستید که می‌خواهید چت جدیدی شروع کنید؟",
+  "cancelButton": "انصراف",
+  "startNewButton": "شروع جدید",
+  "writeYourMessageHint": "پیام خود را بنویسید...",
+  "selectElementToCompareTitle": "انتخاب عنصر برای مقایسه",
+  "searchElementByHint": "جستجوی عنصر بر اساس {searchType}...",
+  "@searchElementByHint": {
+    "placeholders": {
+      "searchType": {
+        "type": "String"
+      }
+    }
+  },
+  "compareElementsTitle": "مقایسه عناصر",
+  "generalInfoTitle": "اطلاعات کلی",
+  "physicalPropertiesTitle": "خواص فیزیکی",
+  "chemicalPropertiesTitle": "خواص شیمیایی",
+  "atomicPropertiesTitle": "خواص اتمی",
+  "historicalInfoTitle": "اطلاعات تاریخی",
+  "summaryTitle": "خلاصه",
+  "atomicNumberLabel": "عدد اتمی",
+  "symbolLabel": "نماد",
+  "categoryLabel": "دسته‌بندی",
+  "groupLabel": "گروه",
+  "periodLabel": "دوره",
+  "atomicMassLabel": "جرم اتمی",
+  "phaseLabel": "فاز",
+  "appearanceLabel": "ظاهر",
+  "densityLabel": "چگالی",
+  "meltingPointLabel": "نقطه ذوب",
+  "boilingPointLabel": "نقطه جوش",
+  "electronegativityLabel": "الکترونگاتیوی",
+  "ionizationEnergyLabel": "انرژی یونش",
+  "oxidationStateLabel": "حالت اکسایش",
+  "electronConfigurationLabel": "پیکربندی الکترونی",
+  "atomicRadiusLabel": "شعاع اتمی",
+  "covalentRadiusLabel": "شعاع کووالانسی",
+  "halfLifeLabel": "نیمه‌عمر",
+  "discoveredByLabel": "کاشف",
+  "namedByLabel": "نام‌گذاری شده توسط",
+  "sourceLabel": "منبع",
+  "descriptionLabel": "توضیحات",
+  "noSummaryAvailable": "خلاصه‌ای موجود نیست.",
+  "unknownValue": "نامشخص",
+  "askAboutElementHint": "سوال خود را در مورد {elementName} بپرسید...",
+  "@askAboutElementHint": {
+    "placeholders": {
+      "elementName": {
+        "type": "String"
+      }
+    }
+  },
+  "whatToKnowAboutElementHint": "می‌خواهید در مورد {elementName} چه بدانید؟",
+  "@whatToKnowAboutElementHint": {
+    "placeholders": {
+      "elementName": {
+        "type": "String"
+      }
+    }
+  },
+  "questionAboutElementHint": "درباره {elementName} سوال دارید؟",
+  "@questionAboutElementHint": {
+    "placeholders": {
+      "elementName": {
+        "type": "String"
+      }
+    }
+  },
+  "knowElementBetterHint": "{elementName} را بهتر بشناسید...",
+  "@knowElementBetterHint": {
+    "placeholders": {
+      "elementName": {
+        "type": "String"
+      }
+    }
+  },
+  "cannotOpenLinkSnackbar": "نمی‌توان لینک را باز کرد: {url}",
+  "@cannotOpenLinkSnackbar": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "viewFullAnswerButton": "مشاهده کامل پاسخ",
+
+  "selectModuleTitle": "انتخاب پودمان",
+  "module1Title": "پودمان یک",
+  "module2Title": "پودمان دو",
+  "module3Title": "پودمان سه",
+  "module4Title": "پودمان چهار",
+  "module5Title": "پودمان پنج",
+  "module1Subtitle": "ساختار اتم",
+  "module2Subtitle": "فرایندهای شیمیایی",
+  "module3Subtitle": "پیوند یونی",
+  "module4Subtitle": "پیوند کووالانسی",
+  "module5Subtitle": "مولکول‌های قطبی و ناقطبی",
+  "pagesLabel": "صفحات:",
+  "stepLabel": "مرحله {current} از {total}",
+  "@stepLabel": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "componentsTitle": "اجزاء",
+  "activityTitle": "فعالیت",
+  "answerLabel": "پاسخ:",
+  "questionsTitle": "سوالات",
+  "timelineTypeIntro": "مقدمه",
+  "timelineTypeMainTopic": "مبحث اصلی",
+  "timelineTypeNote": "نکته",
+  "timelineTypeClassActivity": "کار در کلاس",
+  "timelineTypeResearch": "تحقیق کنید",
+  "timelineTypeExperiment": "آزمایش",
+  "timelineTypeIonicBond": "پیوند یونی",
+  "timelineTypeCovalentBond": "پیوند کووالانسی",
+  "timelineTypeLearnMore": "بیشتر بدانید",
+  "timelineTypeEvaluation": "ارزشیابی"
+} 

@@ -1,0 +1,184 @@
+{
+  "@@locale": "en",
+  "appTitle": "Chemist",
+  "settingsTitle": "Settings",
+  "darkMode": "Dark Mode",
+  "language": "Language",
+  "profileTitle": "User Profile",
+  "profilePageMessage": "This is the user profile page.",
+
+  "chatBotTitle": "Chemistry Chat Bot",
+  "periodicTableTitle": "Periodic Table",
+  "chemistryBookTitle": "Chemistry Book",
+  "elementSearchTitle": "Element Search",
+  "calculatorTitle": "Calculator",
+  "formulasTitle": "Chemical Formulas",
+  "navigationErrorSnackbar": "Error navigating to the requested page",
+  "sortElementsTitle": "Sort Elements",
+  "sortByName": "By Name",
+  "sortByAtomicNumber": "By Atomic Number",
+  "sortByCategory": "By Category",
+  "tryAgainButton": "Try Again",
+  "errorLoadingElementDetailsPrefix": "Error loading element details:",
+  "elementDetailsNotFound": "Element details not found",
+  "errorInvalidArgsElementDetails": "Error: Invalid arguments for element details",
+  "errorPageNotFoundPrefix": "Page not found:",
+  "errorTitle": "Error",
+  "filterCategoryTitle": "Filter Category",
+  "enterSearchQueryPlaceholder": "Enter {searchType}",
+  "@enterSearchQueryPlaceholder": {
+    "description": "Placeholder text for the search input",
+    "placeholders": {
+      "searchType": {
+        "type": "String",
+        "example": "Name"
+      }
+    }
+  },
+  "nameSearchType": "Name",
+  "symbolSearchType": "Symbol",
+  "atomicNumberSearchType": "Atomic Number",
+  "atomicMassSearchType": "Atomic Mass",
+  "categorySearchType": "Category",
+  "phaseSearchType": "Phase",
+  "meltingPointSearchType": "Melting Point",
+  "boilingPointSearchType": "Boiling Point",
+  "closeButton": "Close",
+  "displaySettingsTitle": "Display Settings",
+  "elementType_name": "Element Name",
+  "elementType_atomicMass": "Molar Mass",
+  "elementType_category": "Category",
+  "elementType_phase": "Phase",
+  "elementType_meltingPoint": "Melting Point",
+  "elementType_boilingPoint": "Boiling Point",
+  "settingsSavedSnackbar": "Settings saved successfully",
+  "chatWelcomeMessage": "Hello! I am your Chemistry AI assistant. How can I help you?",
+  "chatWelcomeMessageElement": "Hello! I am your Chemistry AI assistant. I see you are looking at {elementName}. How can I help you with this element?",
+  "@chatWelcomeMessageElement": {
+    "placeholders": {
+      "elementName": {
+        "type": "String"
+      }
+    }
+  },
+  "startNewChatTitle": "Start New Chat",
+  "startNewChatConfirmation": "Are you sure you want to start a new chat?",
+  "cancelButton": "Cancel",
+  "startNewButton": "Start New",
+  "writeYourMessageHint": "Write your message...",
+  "selectElementToCompareTitle": "Select Element to Compare",
+  "searchElementByHint": "Search element by {searchType}...",
+  "@searchElementByHint": {
+     "placeholders": {
+      "searchType": {
+        "type": "String"
+      }
+    }
+  },
+  "compareElementsTitle": "Compare Elements",
+  "generalInfoTitle": "General Information",
+  "physicalPropertiesTitle": "Physical Properties",
+  "chemicalPropertiesTitle": "Chemical Properties",
+  "atomicPropertiesTitle": "Atomic Properties",
+  "historicalInfoTitle": "Historical Information",
+  "summaryTitle": "Summary",
+  "atomicNumberLabel": "Atomic Number",
+  "symbolLabel": "Symbol",
+  "categoryLabel": "Category",
+  "groupLabel": "Group",
+  "periodLabel": "Period",
+  "atomicMassLabel": "Atomic Mass",
+  "phaseLabel": "Phase",
+  "appearanceLabel": "Appearance",
+  "densityLabel": "Density",
+  "meltingPointLabel": "Melting Point",
+  "boilingPointLabel": "Boiling Point",
+  "electronegativityLabel": "Electronegativity",
+  "ionizationEnergyLabel": "Ionization Energy",
+  "oxidationStateLabel": "Oxidation State",
+  "electronConfigurationLabel": "Electron Configuration",
+  "atomicRadiusLabel": "Atomic Radius",
+  "covalentRadiusLabel": "Covalent Radius",
+  "halfLifeLabel": "Half-life",
+  "discoveredByLabel": "Discovered By",
+  "namedByLabel": "Named By",
+  "sourceLabel": "Source",
+  "descriptionLabel": "Description",
+  "noSummaryAvailable": "No summary available.",
+  "unknownValue": "Unknown",
+  "askAboutElementHint": "Ask about {elementName}...",
+   "@askAboutElementHint": {
+     "placeholders": {
+      "elementName": {
+        "type": "String"
+      }
+    }
+  },
+  "whatToKnowAboutElementHint": "What do you want to know about {elementName}?",
+   "@whatToKnowAboutElementHint": {
+     "placeholders": {
+      "elementName": {
+        "type": "String"
+      }
+    }
+  },
+  "questionAboutElementHint": "Have questions about {elementName}?",
+   "@questionAboutElementHint": {
+     "placeholders": {
+      "elementName": {
+        "type": "String"
+      }
+    }
+  },
+  "knowElementBetterHint": "Know {elementName} better...",
+   "@knowElementBetterHint": {
+     "placeholders": {
+      "elementName": {
+        "type": "String"
+      }
+    }
+  },
+  "cannotOpenLinkSnackbar": "Could not launch: {url}",
+   "@cannotOpenLinkSnackbar": {
+     "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "viewFullAnswerButton": "View Full Answer",
+
+  "selectModuleTitle": "Select Module",
+  "module1Title": "Module One",
+  "module2Title": "Module Two",
+  "module3Title": "Module Three",
+  "module4Title": "Module Four",
+  "module5Title": "Module Five",
+  "module1Subtitle": "Atomic Structure",
+  "module2Subtitle": "Chemical Processes",
+  "module3Subtitle": "Ionic Bonding",
+  "module4Subtitle": "Covalent Bonding",
+  "module5Subtitle": "Polar and Nonpolar Molecules",
+  "pagesLabel": "Pages:",
+  "stepLabel": "Step {current} of {total}",
+  "@stepLabel": {
+     "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "componentsTitle": "Components",
+  "activityTitle": "Activity",
+  "answerLabel": "Answer:",
+  "questionsTitle": "Questions",
+  "timelineTypeIntro": "Introduction",
+  "timelineTypeMainTopic": "Main Topic",
+  "timelineTypeNote": "Note",
+  "timelineTypeClassActivity": "Class Activity",
+  "timelineTypeResearch": "Research",
+  "timelineTypeExperiment": "Experiment",
+  "timelineTypeIonicBond": "Ionic Bond",
+  "timelineTypeCovalentBond": "Covalent Bond",
+  "timelineTypeLearnMore": "Learn More",
+  "timelineTypeEvaluation": "Evaluation"
+} 

@@ -82,7 +82,6 @@
 //                   color: Colors.white,
 //                   fontSize: 24,
 //                   fontWeight: FontWeight.bold,
-//                   fontFamily: 'Lalezar',
 //                 ),
 //               ),
 //             ],
