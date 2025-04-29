@@ -454,6 +454,13 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
         'isWide': true,
       },
       {
+        'title': 'کتاب شیمی',
+        'icon': Icons.book,
+        'color': Colors.amber,
+        'route': '/chemistry_book',
+        'isWide': true,
+      },
+      {
         'title': 'جستجوی عناصر',
         'icon': Icons.search,
         'color': Colors.green,
@@ -461,7 +468,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
         'isWide': false,
       },
       {
-        'title': 'ماشین حساب شیمی',
+        'title': 'ماشین حساب',
         'icon': Icons.calculate,
         'color': Colors.orange,
         'route': '/calculator',
@@ -492,7 +499,21 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
 
     return Column(
       children: [
-        _buildWideCard(menuItems[1]),
+        Row(
+          children: [
+            Expanded(
+              child: _buildWideCard(menuItems[1]),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              child: _buildWideCard(menuItems[2]),
+            ),
+          ],
+        ),
         const SizedBox(height: 16),
         Row(
           children: [
@@ -512,24 +533,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
             const SizedBox(width: 16),
             Expanded(
               child: _buildMenuCard(
-                title: menuItems[2]['title'] as String,
-                icon: menuItems[2]['icon'] as IconData,
-                color: menuItems[2]['color'] as Color,
-                onTap: () {
-                  Navigator.pushNamed(context, menuItems[2]['route'] as String).then((_) {
-                    final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
-                    provider.setCurrentRoute('/main_menu');
-                  });
-                },
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Row(
-          children: [
-            Expanded(
-              child: _buildMenuCard(
                 title: menuItems[3]['title'] as String,
                 icon: menuItems[3]['icon'] as IconData,
                 color: menuItems[3]['color'] as Color,
@@ -541,7 +544,11 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                 },
               ),
             ),
-            const SizedBox(width: 16),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
             Expanded(
               child: _buildMenuCard(
                 title: menuItems[4]['title'] as String,
@@ -555,11 +562,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                 },
               ),
             ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Row(
-          children: [
+            const SizedBox(width: 16),
             Expanded(
               child: _buildMenuCard(
                 title: menuItems[5]['title'] as String,
@@ -573,7 +576,11 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                 },
               ),
             ),
-            const SizedBox(width: 16),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
             Expanded(
               child: _buildMenuCard(
                 title: menuItems[6]['title'] as String,
@@ -581,6 +588,20 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                 color: menuItems[6]['color'] as Color,
                 onTap: () {
                   Navigator.pushNamed(context, menuItems[6]['route'] as String).then((_) {
+                    final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+                    provider.setCurrentRoute('/main_menu');
+                  });
+                },
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: _buildMenuCard(
+                title: menuItems[7]['title'] as String,
+                icon: menuItems[7]['icon'] as IconData,
+                color: menuItems[7]['color'] as Color,
+                onTap: () {
+                  Navigator.pushNamed(context, menuItems[7]['route'] as String).then((_) {
                     final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
                     provider.setCurrentRoute('/main_menu');
                   });
@@ -642,7 +663,21 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                Expanded(
+                  child: Text(
+                    item['title'] as String,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Vazir',
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+                const SizedBox(width: 16),
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
@@ -653,18 +688,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                     item['icon'] as IconData,
                     color: Colors.white,
                     size: 32,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Text(
-                    item['title'] as String,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Vazir',
-                    ),
                   ),
                 ),
               ],

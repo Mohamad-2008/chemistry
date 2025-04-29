@@ -4,6 +4,7 @@ import 'package:periodic_table_app/features/periodic_table/presentation/screens/
 import 'package:periodic_table_app/features/periodic_table/presentation/screens/element_details_screen.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/screens/element_search_screen.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/screens/element_comparison_screen.dart';
+import 'package:periodic_table_app/features/periodic_table/presentation/screens/chemistry_book_screen.dart';
 import 'package:periodic_table_app/core/models/element_model.dart';
 import 'package:periodic_table_app/core/models/element_details_model.dart';
 import 'package:periodic_table_app/features/periodic_table/data/periodic_table_repository.dart';
@@ -132,6 +133,9 @@ class MyApp extends StatelessWidget {
           }
           if (settings.name == '/chat_bot') {
             return MaterialPageRoute(builder: (_) => const ChatBotScreen());
+          }
+          if (settings.name == '/chemistry_book') {
+            return MaterialPageRoute(builder: (_) => const ChemistryBookScreen());
           }
           return null;
         },

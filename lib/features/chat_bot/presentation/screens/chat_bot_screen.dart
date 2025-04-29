@@ -248,6 +248,26 @@ class _ChatBotScreenState extends State<ChatBotScreen> with SingleTickerProvider
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black.withOpacity(1.0),
+                    Colors.black.withOpacity(0.96),
+                    Colors.black.withOpacity(0.84),
+                    Colors.black.withOpacity(0.72),
+                    Colors.black.withOpacity(0.60),
+                    Colors.black.withOpacity(0.48),
+                    Colors.black.withOpacity(0.36),
+                    // Colors.black.withOpacity(0.24),
+                    // Colors.black.withOpacity(0.12),
+                  ],
+                ),
+              ),
+            ),
+          
             elevation: 0,
             leading: IconButton(
               icon: const Icon(Icons.chevron_left_rounded, color: Colors.white, size: 32),
