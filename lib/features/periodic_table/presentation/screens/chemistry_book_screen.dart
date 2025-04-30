@@ -1,9 +1,9 @@
+
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
 import 'dart:math';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChemistryBookScreen extends StatefulWidget {
   const ChemistryBookScreen({super.key});
@@ -19,12 +19,13 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
   bool _isLoading = true;
   bool _showPodmanSelection = true;
   late ScrollController _timelineController;
+  Map<int, double> _podmanProgress = {};
 
   final List<Map<String, dynamic>> _podmans = [
     {
       'id': 1,
       'title': 'پودمان یک',
-      'subtitle': 'ساختار اتم',
+      'subtitle': 'ساختار اتم و مفاهیم پایه شیمی',
       'isAvailable': true,
     },
     {
@@ -36,20 +37,20 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
     {
       'id': 3,
       'title': 'پودمان سه',
-      'subtitle': 'پیوند یونی',
-      'isAvailable': false,
+      'subtitle': 'محلول و کلوئید',
+      'isAvailable': true,
     },
     {
       'id': 4,
       'title': 'پودمان چهار',
-      'subtitle': 'پیوند کووالانسی',
-      'isAvailable': false,
+      'subtitle': 'الکتروشیمی',
+      'isAvailable': true,
     },
     {
       'id': 5,
       'title': 'پودمان پنج',
-      'subtitle': 'مولکول‌های قطبی و ناقطبی',
-      'isAvailable': false,
+      'subtitle': 'ترکیب‌های کربن‌دار',
+      'isAvailable': true,
     },
   ];
 
@@ -57,6 +58,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
   void initState() {
     super.initState();
     _timelineController = ScrollController();
+    _loadProgress();
   }
 
   @override
@@ -65,16 +67,83 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
     super.dispose();
   }
 
+  Future<void> _loadProgress() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      for (var podman in _podmans) {
+        final progress = prefs.getDouble('podman_${podman['id']}_progress') ?? 0.0;
+        _podmanProgress[podman['id']] = progress;
+      }
+    });
+  }
+
+  Future<void> _saveProgress(int podmanId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final progress = _timelineData.isNotEmpty
+        ? (_currentStep + 1) / _timelineData.length
+        : 0.0;
+    await prefs.setDouble('podman_${podmanId}_progress', progress);
+    setState(() {
+      _podmanProgress[podmanId] = progress;
+    });
+  }
+
   Future<void> _loadTimelineData(int podmanId) async {
     try {
       final String response = await rootBundle.loadString('assets/data/podman$podmanId.json');
       final data = json.decode(response);
+      List<dynamic> timeline = data['timeline'] ?? [];
+      final pedagogicalFeatures = data['pedagogical_features'] ?? {};
+
+      // اضافه کردن نکات کناری به‌عنوان مرحله اضافی
+      if (pedagogicalFeatures['نکات کناری'] != null && (pedagogicalFeatures['نکات کناری'] as List).isNotEmpty) {
+        timeline.add({
+          'id': timeline.length + 1,
+          'type': 'نکات کناری',
+          'title': 'نکات کناری',
+          'content': (pedagogicalFeatures['نکات کناری'] as List).join('\n'),
+        });
+      }
+
+      // اضافه کردن خود را بیازمایید به‌عنوان مرحله اضافی
+      if (pedagogicalFeatures['خود را بیازمایید'] != null && (pedagogicalFeatures['خود را بیازمایید'] as List).isNotEmpty) {
+        timeline.add({
+          'id': timeline.length + 1,
+          'type': 'خود را بیازمایید',
+          'title': 'خود را بیازمایید',
+          'content': (pedagogicalFeatures['خود را بیازمایید'] as List).join('\n'),
+        });
+      }
+
+      // اضافه کردن مثال‌های حل شده به‌عنوان مرحله اضافی
+      if (pedagogicalFeatures['مثال‌های حل شده'] != null && (pedagogicalFeatures['مثال‌های حل شده'] as List).isNotEmpty) {
+        timeline.add({
+          'id': timeline.length + 1,
+          'type': 'مثال‌های حل شده',
+          'title': 'مثال‌های حل شده',
+          'content': (pedagogicalFeatures['مثال‌های حل شده'] as List).join('\n'),
+        });
+      }
+
       setState(() {
-        _timelineData = data['timeline'];
-        _metadata = data['metadata'];
+        _timelineData = timeline;
+        _metadata = {...data['metadata'] ?? {}, 'podman_id': podmanId};
         _isLoading = false;
         _showPodmanSelection = false;
       });
+
+      // بازیابی پیشرفت ذخیره‌شده
+      final prefs = await SharedPreferences.getInstance();
+      final savedStep = prefs.getInt('podman_${podmanId}_step') ?? 0;
+      if (savedStep < timeline.length) {
+        setState(() {
+          _currentStep = savedStep;
+        });
+        _scrollToCurrentStep();
+      }
+
+      // ذخیره پیشرفت اولیه
+      await _saveProgress(podmanId);
     } catch (e) {
       setState(() {
         _isLoading = false;
@@ -94,28 +163,37 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
     }
   }
 
-  void _nextStep() {
+  void _nextStep(int podmanId) {
     if (_currentStep < _timelineData.length - 1) {
       setState(() {
         _currentStep++;
       });
       _scrollToCurrentStep();
+      _saveProgress(podmanId);
+      _saveCurrentStep(podmanId);
     }
   }
 
-  void _previousStep() {
+  void _previousStep(int podmanId) {
     if (_currentStep > 0) {
       setState(() {
         _currentStep--;
       });
       _scrollToCurrentStep();
+      _saveProgress(podmanId);
+      _saveCurrentStep(podmanId);
     }
   }
 
+  Future<void> _saveCurrentStep(int podmanId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('podman_${podmanId}_step', _currentStep);
+  }
+
   void _scrollToCurrentStep() {
-    final double itemWidth = 60.0; // عرض تقریبی هر آیتم در تایم‌لاین
+    final double itemWidth = 75;
     final double targetPosition = _currentStep * itemWidth;
-    
+
     _timelineController.animateTo(
       targetPosition,
       duration: const Duration(milliseconds: 300),
@@ -130,6 +208,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
       case 'مبحث اصلی':
         return Colors.amber;
       case 'نکته':
+      case 'نکات کناری':
         return Colors.green;
       case 'کار در کلاس':
         return Colors.deepOrangeAccent;
@@ -144,6 +223,21 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
         return Colors.teal;
       case 'ارزشیابی':
         return Colors.deepOrange;
+      case 'تمرین':
+        return Colors.purpleAccent;
+      case 'کاربرد':
+        return Colors.cyan;
+      case 'مثال کاربردی':
+        return Colors.indigo;
+      case 'مفهومی پیشرفته':
+      case 'مبحث پیشرفته':
+        return Colors.blueGrey;
+      case 'مفهوم سبز':
+        return Colors.greenAccent;
+      case 'خود را بیازمایید':
+        return Colors.orange;
+      case 'مثال‌های حل شده':
+        return Colors.teal;
       default:
         return Colors.amber;
     }
@@ -154,7 +248,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
               icon: const Icon(
@@ -181,7 +275,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
         ),
         const SizedBox(height: 20),
         ..._podmans.map((podman) => GestureDetector(
-          onTap: podman['isAvailable'] ? () => _loadTimelineData(podman['id']) : null,
+          onTap: () => _loadTimelineData(podman['id']),
           child: Card(
             elevation: 4,
             margin: const EdgeInsets.symmetric(vertical: 8),
@@ -212,9 +306,28 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(
-                    podman['isAvailable'] ? Icons.lock_open : Icons.lock,
-                    color: podman['isAvailable'] ? Colors.amber : Colors.grey,
+                  SizedBox(
+                    width: 40,
+                    height: 40,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        CircularProgressIndicator(
+                          value: _podmanProgress[podman['id']] ?? 0.0,
+                          backgroundColor: Colors.grey[400],
+                          color: Colors.amber,
+                          strokeWidth: 4,
+                        ),
+                        Text(
+                          '${((_podmanProgress[podman['id']] ?? 0.0) * 100).toInt()}%',
+                          style: const TextStyle(
+                            color: Colors.amber,
+                            fontSize: 12,
+                            fontFamily: 'Vazir',
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -257,7 +370,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
       child: Scaffold(
         body: Stack(
           children: [
-            // پس‌زمینه با دونه‌های رنگی متحرک
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -273,7 +385,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                 painter: DotsPainter(),
               ),
             ),
-            // محتوای اصلی
             SafeArea(
               child: SingleChildScrollView(
                 child: Padding(
@@ -281,162 +392,188 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                   child: _showPodmanSelection
                       ? _buildPodmanSelection()
                       : Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(
-                                        Icons.chevron_left,
-                                        color: Colors.amber,
-                                        size: 28,
-                                      ),
-                                      onPressed: () => _handleBack(context),
-                                    ),
-                                    Directionality(
-                                      textDirection: TextDirection.rtl,
-                                      child: Text(
-                                        _metadata['title'] ?? 'پودمان اول',
-                                        style: const TextStyle(
-                                          color: Colors.amber,
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Vazir',
-                                        ),
-                                        textAlign: TextAlign.right,
-                                      ),
-                                    ),
-                                  ],
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      // هدر بدون تغییر
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            icon: const Icon(
+                              Icons.chevron_left,
+                              color: Colors.amber,
+                              size: 32,
+                            ),
+                            onPressed: () => _handleBack(context),
+                          ),
+                          Column(
+                            textDirection: TextDirection.rtl,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Directionality(
+                                textDirection: TextDirection.rtl,
+                                child: Text(
+                                  _metadata['title'] ?? 'پودمان اول',
+                                  style: const TextStyle(
+                                    color: Colors.amber,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Vazir',
+                                  ),
+                                  textAlign: TextAlign.right,
                                 ),
+                              ),
+                              if (_metadata['author'] != null)
                                 Text(
-                                  'صفحات: ${_metadata['pages'] ?? ''}',
+                                  'نویسنده: ${_metadata['author']}',
                                   style: TextStyle(
                                     color: Colors.grey[600],
                                     fontSize: 14,
                                     fontFamily: 'Vazir',
                                   ),
+                                  textDirection: TextDirection.rtl,
                                   textAlign: TextAlign.right,
                                 ),
-                              ],
-                            ),
-                            const SizedBox(height: 30),
-                            if (_isLoading)
-                              const Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.amber,
+                              Text(
+                                'صفحات: ${_metadata['pages'] ?? ''}',
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 14,
+                                  fontFamily: 'Vazir',
                                 ),
-                              )
-                            else if (_timelineData.isNotEmpty) ...[
-                              // تایم‌لاین
-                              Container(
-                                width: double.infinity,
-                                height: 80,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  controller: _timelineController,
-                                  physics: const AlwaysScrollableScrollPhysics(),
-                                  padding: EdgeInsets.zero,
-                                  itemCount: _timelineData.length,
-                                  itemBuilder: (context, index) {
-                                    final item = _timelineData[index];
-                                    final isActive = index <= _currentStep;
-                                    final typeColor = _getTypeColor(item['type']);
-                                    
-                                    return Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        if (index > 0) ...[
+                                textDirection: TextDirection.rtl,
+                                textAlign: TextAlign.right,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      if (_isLoading)
+                        const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.amber,
+                          ),
+                        )
+                      else if (_timelineData.isNotEmpty) ...[
+                        Container(
+                          height: 80,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            controller: _timelineController,
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            itemCount: _timelineData.length,
+                            itemBuilder: (context, index) {
+                              final item = _timelineData[index];
+                              final isActive = index <= _currentStep;
+                              final typeColor = _getTypeColor(item['type']);
+
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                  left: index == 0 ? 10 : 0,
+                                  right: index == _timelineData.length - 1 ? 10 : 0,
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    if (index > 0) ...[
+                                      Container(
+                                        width: 30,
+                                        height: 2,
+                                        color: isActive ? typeColor : Colors.grey,
+                                        margin: const EdgeInsets.only(bottom: 20, right: 5, left: 5),
+                                      ),
+                                    ],
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _currentStep = index;
+                                        });
+                                        _scrollToCurrentStep();
+                                        _saveProgress(_metadata['podman_id'] ?? 1);
+                                        _saveCurrentStep(_metadata['podman_id'] ?? 1);
+                                      },
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
                                           Container(
-                                            width: 30,
-                                            height: 2,
-                                            color: isActive ? typeColor : Colors.grey,
-                                            margin: const EdgeInsets.only(bottom: 20, left: 5,right: 5),
+                                            width: 40,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              color: isActive ? typeColor : Colors.grey,
+                                              shape: BoxShape.circle,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: isActive ? typeColor.withOpacity(0.9) : Colors.grey,
+                                                  blurRadius: 12,
+                                                  offset: const Offset(0, 0),
+                                                ),
+                                              ],
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                '${index + 1}',
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            item['page'] != null ? 'ص ${item['page']}' : '',
+                                            style: TextStyle(
+                                              color: isActive ? typeColor : Colors.grey,
+                                              fontSize: 12,
+                                              fontFamily: 'Vazir',
+                                            ),
+                                            textDirection: TextDirection.rtl,
                                           ),
                                         ],
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              _currentStep = index;
-                                            });
-                                            _scrollToCurrentStep();
-                                          },
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Container(
-                                                width: 40,
-                                                height: 40,
-                                                decoration: BoxDecoration(
-                                                  color: isActive ? typeColor : Colors.grey,
-                                                  shape: BoxShape.circle,
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: typeColor.withOpacity(0.3),
-                                                      blurRadius: 8,
-                                                      offset: const Offset(0, 4),
-                                                    ),
-                                                  ],
-                                                ),
-                                                child: Center(
-                                                  child: Text(
-                                                    '${index + 1}',
-                                                    style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(height: 4),
-                                              Text(
-                                                'ص ${item['page']}',
-                                                style: TextStyle(
-                                                  color: isActive ? typeColor : Colors.grey,
-                                                  fontSize: 12,
-                                                  fontFamily: 'Vazir',
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              // دکمه‌های ناوبری
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.arrow_back_ios, color: Colors.amber),
-                                    onPressed: _previousStep,
-                                  ),
-                                  Text(
-                                    'مرحله ${_currentStep + 1} از ${_timelineData.length}',
-                                    style: const TextStyle(
-                                      color: Colors.amber,
-                                      fontSize: 16,
-                                      fontFamily: 'Vazir',
+                                      ),
                                     ),
-                                    textAlign: TextAlign.right,
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.arrow_forward_ios, color: Colors.amber),
-                                    onPressed: _nextStep,
-                                  ),
-                                ],
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                Icons.arrow_back_ios,
+                                color: _currentStep == 0 ? Colors.grey : Colors.amber,
                               ),
-                              const SizedBox(height: 20),
-                              // محتوای مرحله فعلی
-                              _buildTimelineItem(_timelineData[_currentStep]),
-                            ],
+                              onPressed: () => _previousStep(_metadata['podman_id'] ?? 1),
+                            ),
+                            Text(
+                              'مرحله ${_currentStep + 1} از ${_timelineData.length}',
+                              style: const TextStyle(
+                                color: Colors.amber,
+                                fontSize: 16,
+                                fontFamily: 'Vazir',
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                Icons.arrow_forward_ios,
+                                color: _currentStep == _timelineData.length - 1 ? Colors.grey : Colors.amber,
+                              ),
+                              onPressed: () => _nextStep(_metadata['podman_id'] ?? 1),
+                            ),
                           ],
                         ),
+                        const SizedBox(height: 20),
+                        _buildTimelineItem(_timelineData[_currentStep]),
+                      ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -445,10 +582,9 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
       ),
     );
   }
-
   Widget _buildTimelineItem(Map<String, dynamic> item) {
-    final typeColor = _getTypeColor(item['type']);
-    
+    final typeColor = _getTypeColor(item['type'] ?? '');
+
     return Card(
       elevation: 8,
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -469,9 +605,9 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: typeColor.withOpacity(0.1),
+              color: typeColor.withOpacity(0.7),
               blurRadius: 10,
-              offset: const Offset(0, 5),
+              offset: const Offset(0, 0),
             ),
           ],
         ),
@@ -480,44 +616,57 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: typeColor.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  item['type'] ?? '',
-                  style: TextStyle(
-                    color: typeColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Vazir',
+              if (item['type'] != null) ...[
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: typeColor.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: Text(
+                      item['type'] ?? '',
+                      style: TextStyle(
+                        color: typeColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Vazir',
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                item['title'] ?? '',
-                style: TextStyle(
-                  color: typeColor,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Vazir',
+                const SizedBox(height: 12),
+              ],
+              if (item['title'] != null) ...[
+                Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: Text(
+                    item['title'] ?? '',
+                    style: TextStyle(
+                      color: typeColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Vazir',
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
                 ),
-                textAlign: TextAlign.right,
-              ),
-              const SizedBox(height: 12),
-              Text(
-                item['content'] ?? '',
-                style: TextStyle(
-                  color: Colors.grey[300],
-                  fontSize: 14,
-                  fontFamily: 'Vazir',
+                const SizedBox(height: 12),
+              ],
+              if (item['content'] != null) ...[
+                Text(
+                  item['content'] ?? '',
+                  style: TextStyle(
+                    color: Colors.grey[300],
+                    fontSize: 14,
+                    fontFamily: 'Vazir',
+                  ),
+                  textDirection: TextDirection.rtl,
+                  textAlign: TextAlign.right,
                 ),
-                textAlign: TextAlign.right,
-              ),
-              if (item['components'] != null) ...[
+              ],
+              if (item['components'] != null && (item['components'] as Map<String, dynamic>).isNotEmpty) ...[
                 const SizedBox(height: 16),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -526,6 +675,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Text(
+                    textDirection: TextDirection.rtl,
                     'اجزاء',
                     style: TextStyle(
                       color: Colors.amber,
@@ -544,6 +694,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
+                    textDirection: TextDirection.rtl,
                     '${entry.key}: ${entry.value}',
                     style: TextStyle(
                       color: Colors.grey[300],
@@ -553,7 +704,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                   ),
                 )).toList(),
               ],
-              if (item['activity'] != null) ...[
+              if (item['activity'] != null && (item['activity']['مسئله'] != null || item['activity']['پاسخ'] != null)) ...[
                 const SizedBox(height: 16),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -561,8 +712,9 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                     color: typeColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: const Text(
+                  child: Text(
                     'فعالیت',
+                    textDirection: TextDirection.rtl,
                     style: TextStyle(
                       color: Colors.amber,
                       fontSize: 16,
@@ -581,14 +733,18 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(
-                        item['activity']['مسئله'] ?? '',
-                        style: TextStyle(
-                          color: Colors.grey[300],
-                          fontSize: 14,
-                          fontFamily: 'Vazir',
+                      if (item['activity']['مسئله'] != null) ...[
+                        Text(
+                          item['activity']['مسئله'],
+                          style: TextStyle(
+                            color: Colors.grey[300],
+                            fontSize: 14,
+                            fontFamily: 'Vazir',
+                          ),
+                          textDirection: TextDirection.rtl,
+                          textAlign: TextAlign.right,
                         ),
-                      ),
+                      ],
                       if (item['activity']['پاسخ'] != null) ...[
                         const SizedBox(height: 8),
                         Container(
@@ -598,6 +754,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Text(
+                            textDirection: TextDirection.rtl,
                             'پاسخ: ${item['activity']['پاسخ']}',
                             style: TextStyle(
                               color: Colors.grey[400],
@@ -611,7 +768,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                   ),
                 ),
               ],
-              if (item['questions'] != null) ...[
+              if (item['questions'] != null && (item['questions'] as List).isNotEmpty) ...[
                 const SizedBox(height: 16),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -620,6 +777,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Text(
+                    textDirection: TextDirection.rtl,
                     'سوالات',
                     style: TextStyle(
                       color: Colors.amber,
@@ -638,6 +796,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
+                    textDirection: TextDirection.rtl,
                     question['text'] ?? '',
                     style: TextStyle(
                       color: Colors.grey[300],
@@ -673,4 +832,4 @@ class DotsPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-} 
+}
