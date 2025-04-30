@@ -4,8 +4,13 @@ import 'package:periodic_table_app/features/periodic_table/presentation/widgets/
 
 class PeriodicTableGrid extends StatelessWidget {
   final List<ElementModel> elements;
+  final bool Function(ElementModel) isElementActive; // تابع برای بررسی وضعیت فعال
 
-  const PeriodicTableGrid({super.key, required this.elements});
+  const PeriodicTableGrid({
+    super.key,
+    required this.elements,
+    required this.isElementActive,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +25,8 @@ class PeriodicTableGrid extends StatelessWidget {
     // اضافه کردن ارجاع به لانتانیدها و آکتینیدها
     grid[5][2] = ElementModel(
       name: 'لانتانیدها',
-      symbol: 'لانتانیدها', // تغییر از * به لانتانیدها
-      number: 0, // عدد صفر برای نمایش ندادن (در ElementCell تنظیم می‌کنیم که نمایش داده نشود)
+      symbol: 'لانتانیدها',
+      number: 0,
       xpos: 3,
       ypos: 6,
       category: 'lanthanide',
@@ -31,8 +36,8 @@ class PeriodicTableGrid extends StatelessWidget {
 
     grid[6][2] = ElementModel(
       name: 'آکتینیدها',
-      symbol: 'آکتینیدها', // تغییر از * به آکتینیدها
-      number: 0, // عدد صفر برای نمایش ندادن (در ElementCell تنظیم می‌کنیم که نمایش داده نشود)
+      symbol: 'آکتینیدها',
+      number: 0,
       xpos: 3,
       ypos: 7,
       category: 'actinide',
@@ -47,7 +52,7 @@ class PeriodicTableGrid extends StatelessWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(width: 42), // فضای خالی برای ستون دوره‌ها (عرض کمتر)
+            const SizedBox(width: 42),
             ...List.generate(18, (index) {
               return Container(
                 width: 64,
@@ -90,10 +95,9 @@ class PeriodicTableGrid extends StatelessWidget {
             // نوار دوره‌ها (کنار)
             Column(
               children: [
-                // دوره‌های 1 تا 7
                 ...List.generate(7, (index) {
                   return Container(
-                    width: 40, // عرض کمتر
+                    width: 40,
                     height: 64,
                     margin: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
@@ -124,9 +128,8 @@ class PeriodicTableGrid extends StatelessWidget {
                   );
                 }),
                 const SizedBox(height: 16),
-                // لانتانیدها و آکتینیدها
                 Container(
-                  width: 40, // عرض کمتر
+                  width: 40,
                   height: 64,
                   margin: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
@@ -144,12 +147,12 @@ class PeriodicTableGrid extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: const Center(
+                  child: Center(
                     child: RotatedBox(
                       quarterTurns: 3,
                       child: Text(
                         'لانتانیدها',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
@@ -159,7 +162,7 @@ class PeriodicTableGrid extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  width: 40, // عرض کمتر
+                  width: 40,
                   height: 64,
                   margin: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
@@ -177,12 +180,12 @@ class PeriodicTableGrid extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: const Center(
+                  child: Center(
                     child: RotatedBox(
                       quarterTurns: 3,
                       child: Text(
                         'آکتینیدها',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
@@ -202,7 +205,10 @@ class PeriodicTableGrid extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: List.generate(18, (colIndex) {
                       final element = grid[rowIndex][colIndex];
-                      return ElementCell(element: element);
+                      return ElementCell(
+                        element: element,
+                        isActive: element != null ? isElementActive(element) : true,
+                      );
                     }),
                   );
                 }),
@@ -215,7 +221,10 @@ class PeriodicTableGrid extends StatelessWidget {
                       const SizedBox(width: 70),
                       ...List.generate(15, (colIndex) {
                         final element = grid[rowIndex + 8][colIndex + 2];
-                        return ElementCell(element: element);
+                        return ElementCell(
+                          element: element,
+                          isActive: element != null ? isElementActive(element) : true,
+                        );
                       }),
                     ],
                   );

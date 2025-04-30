@@ -104,6 +104,7 @@ class _SettingsMenuState extends State<SettingsMenu> {
                   color: Colors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'Vazir',
                 ),
               ),
               const Spacer(),
@@ -148,6 +149,7 @@ class _SettingsMenuState extends State<SettingsMenu> {
           type.title,
           style: TextStyle(
             color: isSelected ? Colors.blueAccent : Colors.white,
+            fontFamily: 'Vazir',
             fontSize: 16,
           ),
         ),

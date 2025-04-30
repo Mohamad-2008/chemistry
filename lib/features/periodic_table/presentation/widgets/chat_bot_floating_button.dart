@@ -31,9 +31,9 @@ class _ChatBotFloatingButtonState extends State<ChatBotFloatingButton> {
       child: Row(
         children: [
           if (_isExpanded)
-            const Expanded(
+            Expanded(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
                   'چت بات شیمی',
                   style: TextStyle(

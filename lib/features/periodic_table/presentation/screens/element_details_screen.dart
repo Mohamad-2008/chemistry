@@ -28,12 +28,11 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
   bool _showChatInput = false;
   bool _isFirstAnswer = true;
   bool _isExpanded = false;
-  final GlobalKey _answerBoxKey = GlobalKey(); // کلید برای باکس جواب
-  final GlobalKey _chatInputKey = GlobalKey(); // کلید برای تکست‌فیلد
-  double _answerBoxHeight = 0.0; // متغیر برای ذخیره ارتفاع باکس جواب
-  double _chatInputHeight = 0.0; // متغیر برای ذخیره ارتفاع تکست‌فیلد
+  final GlobalKey _answerBoxKey = GlobalKey();
+  final GlobalKey _chatInputKey = GlobalKey();
+  double _answerBoxHeight = 0.0;
+  double _chatInputHeight = 0.0;
 
-  // اضافه کردن انیمیشن‌های جدید
   late Animation<double> _boxScaleAnimation;
   late Animation<double> _buttonScaleAnimation;
 
@@ -52,15 +51,15 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
-    
+
     _boxScaleAnimation = Tween<double>(begin: 0.95, end: 1.0).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
-    
+
     _buttonScaleAnimation = Tween<double>(begin: 0.9, end: 1.0).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
-    
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         _animationController.forward();
@@ -147,7 +146,6 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
       _isLoading = true;
     });
 
-    // بستن کیبورد
     FocusScope.of(context).unfocus();
 
     final chatBotService = ChatBotService(element: widget.element);
@@ -182,6 +180,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
         text: text,
         style: const TextStyle(
           fontSize: 14,
+          fontFamily: 'Vazir',
         ),
       ),
       maxLines: 6,
@@ -207,8 +206,8 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
               bottom: !_showChatInput
                   ? 10
                   : _showChatInput && _answers.isEmpty
-                  ? _getHeight(_chatInputKey)
-                  : _getHeight(_chatInputKey) + _getHeight(_answerBoxKey) + 20,
+                      ? _getHeight(_chatInputKey)
+                      : _getHeight(_chatInputKey) + _getHeight(_answerBoxKey) + 20,
             ),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
@@ -239,14 +238,20 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
               },
             ),
           ),
-        ),        body: Stack(
+        ),
+        body: Stack(
           children: [
             CustomScrollView(
               slivers: [
                 _buildSliverAppBar(context),
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).padding.top,
+                      left: 16.0,
+                      right: 16.0,
+                      bottom: 16.0,
+                    ),
                     child: FadeTransition(
                       opacity: _fadeAnimation,
                       child: Column(
@@ -456,11 +461,11 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                                       ),
                                       onPressed: _currentAnswerIndex > 0
                                           ? () {
-                                        setState(() {
-                                          _currentAnswerIndex--;
-                                          _displayedAnswer = _answers[_currentAnswerIndex];
-                                        });
-                                      }
+                                              setState(() {
+                                                _currentAnswerIndex--;
+                                                _displayedAnswer = _answers[_currentAnswerIndex];
+                                              });
+                                            }
                                           : null,
                                     ),
                                     Container(
@@ -473,6 +478,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                                         '${_currentAnswerIndex + 1}/${_answers.length}',
                                         style: const TextStyle(
                                           color: Colors.white,
+                                          fontFamily: 'Vazir',
                                           fontSize: 14,
                                         ),
                                       ),
@@ -482,17 +488,19 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                                         IconButton(
                                           icon: Icon(
                                             Icons.arrow_forward_ios,
-                                            color: _currentAnswerIndex < _answers.length - 1 ? Colors.white : Colors.white30,
+                                            color: _currentAnswerIndex < _answers.length - 1
+                                                ? Colors.white
+                                                : Colors.white30,
                                             size: 20,
                                           ),
                                           onPressed: _currentAnswerIndex < _answers.length - 1
                                               ? () {
-                                        setState(() {
-                                          _currentAnswerIndex++;
-                                          _displayedAnswer = _answers[_currentAnswerIndex];
-                                        });
-                                      }
-                                          : null,
+                                                  setState(() {
+                                                    _currentAnswerIndex++;
+                                                    _displayedAnswer = _answers[_currentAnswerIndex];
+                                                  });
+                                                }
+                                              : null,
                                         ),
                                         IconButton(
                                           icon: Icon(
@@ -521,6 +529,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 16,
+                                          fontFamily: 'Vazir',
                                           height: 1.5,
                                         ),
                                       ),
@@ -547,6 +556,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 14,
+                                          fontFamily: 'Vazir',
                                           height: 1.4,
                                         ),
                                         maxLines: 6,
@@ -582,6 +592,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                                                   style: TextStyle(
                                                     color: Colors.white.withOpacity(0.9),
                                                     fontSize: 12,
+                                                    fontFamily: 'Vazir',
                                                   ),
                                                 ),
                                               ],
@@ -599,7 +610,6 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                   ),
                 ),
               ),
-
             if (_showChatInput)
               Positioned(
                 key: _chatInputKey,
@@ -651,12 +661,14 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                             controller: _questionController,
                             style: const TextStyle(
                               color: Colors.white,
+                              fontFamily: 'Vazir',
                               fontSize: 14,
                             ),
                             decoration: InputDecoration(
                               hintText: _hintTexts[_currentHintIndex],
                               hintStyle: TextStyle(
                                 color: Colors.white.withOpacity(0.5),
+                                fontFamily: 'Vazir',
                                 fontSize: 14,
                               ),
                               border: InputBorder.none,
@@ -700,7 +712,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                               height: 40,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white.withOpacity(0.7)),
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white.withOpacity(0.9)),
                               ),
                             ),
                         ],
@@ -716,7 +728,10 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
   }
 
   Widget _buildSliverAppBar(BuildContext context) {
-    final categoryColor = ColorUtils.getCategoryColor(widget.element.category);
+    final categoryColor = ColorUtils.getCategoryColor(widget.element.category).withOpacity(0.6);
+    final secondaryCategoryColor = ColorUtils.getCategoryColor(widget.element.category).withOpacity(0.5);
+
+    final categories = widget.element.category.split(',').map((c) => c.trim().toUpperCase()).toList();
 
     return Directionality(
       textDirection: TextDirection.ltr,
@@ -725,20 +740,33 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
         floating: false,
         pinned: true,
         stretch: true,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: Colors.black,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
           Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: IconButton(
-                icon: const Icon(Icons.info_outline, color: Colors.white),
-                onPressed: () {
-                  _launchURL(widget.element.source);
-                },
-              )
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: IconButton(
+              icon: const Icon(Icons.compare_arrows, color: Colors.white),
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  '/element_search',
+                  arguments: widget.element,
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: IconButton(
+              icon: const Icon(Icons.info_outline, color: Colors.white),
+              onPressed: () {
+                _launchURL(widget.element.source);
+              },
+            ),
           ),
         ],
         flexibleSpace: LayoutBuilder(
@@ -807,6 +835,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                                             fontWeight: FontWeight.w600,
                                             fontSize: 14,
                                             color: Colors.white,
+                                            fontFamily: 'Vazir',
                                             shadows: [
                                               Shadow(
                                                 blurRadius: 6,
@@ -825,6 +854,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                                                 fontSize: 36,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white,
+                                                fontFamily: 'Vazir',
                                                 shadows: [
                                                   Shadow(
                                                     blurRadius: 6,
@@ -840,6 +870,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white,
+                                                fontFamily: 'Vazir',
                                                 shadows: [
                                                   Shadow(
                                                     blurRadius: 6,
@@ -858,6 +889,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                                             fontSize: 10,
                                             color: Colors.white,
                                             fontWeight: FontWeight.w500,
+                                            fontFamily: 'Vazir',
                                             shadows: [
                                               Shadow(
                                                 blurRadius: 6,
@@ -869,27 +901,42 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                                         ),
                                       ],
                                     ),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                      decoration: BoxDecoration(
-                                        color: categoryColor.withOpacity(0.8),
-                                        borderRadius: BorderRadius.circular(5),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black.withOpacity(0.4),
-                                            blurRadius: 2,
-                                            offset: const Offset(2, 2),
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: List.generate(categories.length, (index) {
+                                        return Container(
+                                          margin: EdgeInsets.only(bottom: index == 0 && categories.length > 1 ? 4 : 0),
+                                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                          decoration: BoxDecoration(
+                                            color: index == 0
+                                                ? categoryColor.withOpacity(0.7)
+                                                : secondaryCategoryColor,
+                                            borderRadius: BorderRadius.circular(5),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black.withOpacity(0.4),
+                                                blurRadius: 3,
+                                                offset: const Offset(2, 2),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                      child: Text(
-                                        TranslationUtils.translate(widget.element.category.toUpperCase()),
-                                        style: const TextStyle(
-                                          fontSize: 8,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
+                                          constraints: BoxConstraints(
+                                            maxWidth: MediaQuery.of(context).size.width * 0.4,
+                                          ),
+                                          child: Text(
+                                            TranslationUtils.translate(categories[index]),
+                                            style: const TextStyle(
+                                              fontSize: 8,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontFamily: 'Vazir',
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                          ),
+                                        );
+                                      }),
                                     ),
                                   ],
                                 ),
@@ -939,6 +986,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white,
+                                            fontFamily: 'Vazir',
                                           ),
                                         ),
                                       ),
@@ -957,6 +1005,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white,
+                                                fontFamily: 'Vazir',
                                                 shadows: [
                                                   Shadow(
                                                     blurRadius: 4.0,
@@ -973,6 +1022,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white,
+                                                fontFamily: 'Vazir',
                                                 shadows: [
                                                   Shadow(
                                                     blurRadius: 4.0,
@@ -990,6 +1040,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                                           style: const TextStyle(
                                             fontSize: 14,
                                             color: Colors.white70,
+                                            fontFamily: 'Vazir',
                                             shadows: [
                                               Shadow(
                                                 blurRadius: 4.0,
@@ -1017,20 +1068,24 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                         tag: 'element_${widget.element.number}',
                         child: widget.element.imageUrl.isNotEmpty
                             ? Image.network(
-                          widget.element.imageUrl,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => _buildFallbackImage(context),
-                        )
+                                widget.element.imageUrl,
+                                fit: BoxFit.cover,
+                                loadingBuilder: (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return _buildFallbackImage(context);
+                                },
+                                errorBuilder: (context, error, stackTrace) => _buildFallbackImage(context),
+                              )
                             : _buildFallbackImage(context),
                       ),
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [
-                              Colors.transparent,
-                              Colors.black.withOpacity(0.7),
+                              Colors.black54,
+                              Colors.black12,
                             ],
                           ),
                         ),
@@ -1056,41 +1111,45 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
   }
 
   Widget _buildFallbackImage(BuildContext context) {
-    return Container(
+    final categoryColor = ColorUtils.getCategoryColor(widget.element.category);
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            ColorUtils.getCategoryColor(widget.element.category),
-            ColorUtils.getCategoryColor(widget.element.category).withOpacity(0.7),
+            categoryColor,
+            categoryColor.withOpacity(0.7),
           ],
         ),
       ),
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              widget.element.symbol,
-              style: const TextStyle(
-                fontSize: 80,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                shadows: [
-                  Shadow(blurRadius: 10.0, color: Colors.black54),
-                ],
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(
+              opacity: animation,
+              child: ScaleTransition(
+                scale: animation,
+                child: child,
               ),
-            ),
-            Text(
-              TranslationUtils.translate(widget.element.name),
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: Colors.white70,
-              ),
-            ),
-          ],
+            );
+          },
+          child: Image.asset(
+            'assets/images/atom.png',
+            key: const ValueKey('atom_image'),
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) {
+              return Icon(
+                Icons.image_not_supported,
+                key: const ValueKey('error_icon'),
+                size: 50,
+                color: Colors.white.withOpacity(0.8),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -1126,14 +1185,15 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
             children: [
               Row(
                 children: [
-                  Icon(icon, color: Colors.white70, size: 20),
-                  const SizedBox(width: 8),
+                  if (icon != null) Icon(icon, color: Colors.white70, size: 20),
+                  if (icon != null) const SizedBox(width: 8),
                   Text(
                     title,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
+                      fontFamily: 'Vazir',
                     ),
                   ),
                 ],
@@ -1165,6 +1225,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                     color: Colors.white,
+                    fontFamily: 'Vazir',
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -1174,6 +1235,7 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                     fontSize: 16,
                     color: Colors.white70,
                     height: 1.4,
+                    fontFamily: 'Vazir',
                   ),
                 ),
               ],
@@ -1185,6 +1247,6 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
   }
 
   String _formatCategory(String category) {
-    return category.split(' ').map((word) => word[0].toUpperCase() + word.substring(1)).join(' ');
+    return category.split(',').map((c) => c.trim().split(' ').map((word) => word[0].toUpperCase() + word.substring(1)).join(' ')).join(', ');
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
 import 'dart:math';
 import 'dart:convert';
 import 'package:flutter/services.dart';
@@ -111,7 +113,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
   }
 
   void _scrollToCurrentStep() {
-    const double itemWidth = 60.0; // عرض تقریبی هر آیتم در تایم‌لاین
+    final double itemWidth = 60.0; // عرض تقریبی هر آیتم در تایم‌لاین
     final double targetPosition = _currentStep * itemWidth;
     
     _timelineController.animateTo(
@@ -124,20 +126,20 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
   Color _getTypeColor(String type) {
     switch (type) {
       case 'مقدمه':
-        return Colors.blue;
+        return Colors.blue.shade300;
       case 'مبحث اصلی':
         return Colors.amber;
       case 'نکته':
         return Colors.green;
       case 'کار در کلاس':
-        return Colors.purple;
+        return Colors.deepOrangeAccent;
       case 'تحقیق کنید':
         return Colors.orange;
       case 'آزمایش':
         return Colors.red;
       case 'پیوند یونی':
       case 'پیوند کووالانسی':
-        return Colors.indigo;
+        return Colors.blueAccent.shade200;
       case 'بیشتر بدانید':
         return Colors.teal;
       case 'ارزشیابی':
@@ -171,6 +173,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                   color: Colors.amber,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'Vazir',
                 ),
               ),
             ),
@@ -222,6 +225,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                           color: Colors.amber,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
+                          fontFamily: 'Vazir',
                         ),
                       ),
                       Text(
@@ -229,6 +233,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                         style: TextStyle(
                           color: Colors.grey[400],
                           fontSize: 14,
+                          fontFamily: 'Vazir',
                         ),
                       ),
                     ],
@@ -299,7 +304,9 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                                           color: Colors.amber,
                                           fontSize: 24,
                                           fontWeight: FontWeight.bold,
+                                          fontFamily: 'Vazir',
                                         ),
+                                        textAlign: TextAlign.right,
                                       ),
                                     ),
                                   ],
@@ -309,7 +316,9 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                                   style: TextStyle(
                                     color: Colors.grey[600],
                                     fontSize: 14,
+                                    fontFamily: 'Vazir',
                                   ),
+                                  textAlign: TextAlign.right,
                                 ),
                               ],
                             ),
@@ -322,84 +331,78 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                               )
                             else if (_timelineData.isNotEmpty) ...[
                               // تایم‌لاین
-                              SizedBox(
+                              Container(
                                 width: double.infinity,
                                 height: 80,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   controller: _timelineController,
                                   physics: const AlwaysScrollableScrollPhysics(),
-                                  padding: const EdgeInsets.symmetric(horizontal: 0),
+                                  padding: EdgeInsets.zero,
                                   itemCount: _timelineData.length,
                                   itemBuilder: (context, index) {
                                     final item = _timelineData[index];
                                     final isActive = index <= _currentStep;
                                     final typeColor = _getTypeColor(item['type']);
                                     
-                                    return Padding(
-                                      padding: EdgeInsets.only(
-                                        left: index == 0 ? 0 : 0,
-                                        right: index == _timelineData.length - 1 ? 0 : 0,
-                                        
-                                      ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          if (index > 0) ...[
-                                            Container(
-                                              width: 30,
-                                              height: 2,
-                                              color: isActive ? typeColor : Colors.grey,
-                                              margin: const EdgeInsets.only(bottom: 20),
-                                            ),
-                                          ],
-                                          GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                _currentStep = index;
-                                              });
-                                              _scrollToCurrentStep();
-                                            },
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Container(
-                                                  width: 40,
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                    color: isActive ? typeColor : Colors.grey,
-                                                    shape: BoxShape.circle,
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: typeColor.withOpacity(0.3),
-                                                        blurRadius: 8,
-                                                        offset: const Offset(0, 4),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  child: Center(
-                                                    child: Text(
-                                                      '${index + 1}',
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
+                                    return Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        if (index > 0) ...[
+                                          Container(
+                                            width: 30,
+                                            height: 2,
+                                            color: isActive ? typeColor : Colors.grey,
+                                            margin: const EdgeInsets.only(bottom: 20, left: 5,right: 5),
+                                          ),
+                                        ],
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _currentStep = index;
+                                            });
+                                            _scrollToCurrentStep();
+                                          },
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Container(
+                                                width: 40,
+                                                height: 40,
+                                                decoration: BoxDecoration(
+                                                  color: isActive ? typeColor : Colors.grey,
+                                                  shape: BoxShape.circle,
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: typeColor.withOpacity(0.3),
+                                                      blurRadius: 8,
+                                                      offset: const Offset(0, 4),
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    '${index + 1}',
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight: FontWeight.bold,
                                                     ),
                                                   ),
                                                 ),
-                                                const SizedBox(height: 4),
-                                                Text(
-                                                  'ص ${item['page']}',
-                                                  style: TextStyle(
-                                                    color: isActive ? typeColor : Colors.grey,
-                                                    fontSize: 12,
-                                                  ),
+                                              ),
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                'ص ${item['page']}',
+                                                style: TextStyle(
+                                                  color: isActive ? typeColor : Colors.grey,
+                                                  fontSize: 12,
+                                                  fontFamily: 'Vazir',
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     );
                                   },
                                 ),
@@ -418,7 +421,9 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                                     style: const TextStyle(
                                       color: Colors.amber,
                                       fontSize: 16,
+                                      fontFamily: 'Vazir',
                                     ),
+                                    textAlign: TextAlign.right,
                                   ),
                                   IconButton(
                                     icon: const Icon(Icons.arrow_forward_ios, color: Colors.amber),
@@ -487,6 +492,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                     color: typeColor,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'Vazir',
                   ),
                 ),
               ),
@@ -497,7 +503,9 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                   color: typeColor,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'Vazir',
                 ),
+                textAlign: TextAlign.right,
               ),
               const SizedBox(height: 12),
               Text(
@@ -505,6 +513,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                 style: TextStyle(
                   color: Colors.grey[300],
                   fontSize: 14,
+                  fontFamily: 'Vazir',
                 ),
                 textAlign: TextAlign.right,
               ),
@@ -522,6 +531,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                       color: Colors.amber,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'Vazir',
                     ),
                   ),
                 ),
@@ -538,6 +548,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                     style: TextStyle(
                       color: Colors.grey[300],
                       fontSize: 14,
+                      fontFamily: 'Vazir',
                     ),
                   ),
                 )).toList(),
@@ -556,6 +567,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                       color: Colors.amber,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'Vazir',
                     ),
                   ),
                 ),
@@ -574,6 +586,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                         style: TextStyle(
                           color: Colors.grey[300],
                           fontSize: 14,
+                          fontFamily: 'Vazir',
                         ),
                       ),
                       if (item['activity']['پاسخ'] != null) ...[
@@ -589,6 +602,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                             style: TextStyle(
                               color: Colors.grey[400],
                               fontSize: 12,
+                              fontFamily: 'Vazir',
                             ),
                           ),
                         ),
@@ -611,6 +625,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                       color: Colors.amber,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'Vazir',
                     ),
                   ),
                 ),
@@ -627,6 +642,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                     style: TextStyle(
                       color: Colors.grey[300],
                       fontSize: 14,
+                      fontFamily: 'Vazir',
                     ),
                   ),
                 )).toList(),

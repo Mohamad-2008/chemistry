@@ -31,20 +31,21 @@ class _ChatBotFloatingButtonState extends State<ChatBotFloatingButton> {
       child: Row(
         children: [
           if (_isExpanded)
-            const Expanded(
+            Expanded(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
                   'چت بات شیمی',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
+                    fontFamily: 'Vazir',
                   ),
                 ),
               ),
             ),
           IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.chat_bubble_outline,
               color: Colors.white,
             ),

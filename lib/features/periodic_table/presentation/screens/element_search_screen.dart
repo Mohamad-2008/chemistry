@@ -185,12 +185,13 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
+            Text(
               'انتخاب نوع جستجو',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
+                fontFamily: 'Vazir',
               ),
             ),
             const SizedBox(height: 16),
@@ -203,6 +204,7 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
                       type.title,
                       style: const TextStyle(
                         color: Colors.white,
+                        fontFamily: 'Vazir',
                       ),
                     ),
                     trailing: _selectedSearchType == type
@@ -325,6 +327,8 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
           title: Text(
             'انتخاب عنصر برای مقایسه',
             style: TextStyle(
+              fontFamily: 'Vazir',
+              color: Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.bold,
               shadows: [
@@ -393,11 +397,13 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
                                 : null,
                             style: const TextStyle(
                               color: Colors.white,
+                              fontFamily: 'Vazir',
                               fontSize: 16,
                             ),
               decoration: InputDecoration(
                               hintText: 'جستجوی عنصر بر اساس ${_selectedSearchType.title}...',
                               hintStyle: TextStyle(
+                                fontFamily: 'Vazir',
                                 color: Colors.white.withOpacity(0.6),
                               ),
                               prefixIcon: Icon(
@@ -464,6 +470,7 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
                                 _currentSuggestions[index],
                                 style: const TextStyle(
                                   color: Colors.white,
+                                  fontFamily: 'Vazir',
                                 ),
                               ),
                               onTap: () {
@@ -555,6 +562,7 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
                                               fontSize: 24,
                                               fontWeight: FontWeight.bold,
                                               color: categoryColor,
+                                              fontFamily: 'Vazir',
                                             ),
                                           ),
                                         ),
@@ -570,6 +578,7 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white,
+                                                fontFamily: 'Vazir',
                                               ),
                                             ),
                                             const SizedBox(height: 4),
@@ -578,6 +587,7 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 color: Colors.white.withOpacity(0.7),
+                                                fontFamily: 'Vazir',
                                               ),
                                             ),
                                           ],
