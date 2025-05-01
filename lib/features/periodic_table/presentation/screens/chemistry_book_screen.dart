@@ -1,9 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:periodic_table_app/features/chat_bot/tts_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lottie/lottie.dart';
 
 class ChemistryBookScreen extends StatefulWidget {
   const ChemistryBookScreen({super.key});
@@ -20,6 +21,8 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
   bool _showPodmanSelection = true;
   late ScrollController _timelineController;
   Map<int, double> _podmanProgress = {};
+  late TtsService _ttsService;
+  final TextEditingController _textController = TextEditingController();
 
   final List<Map<String, dynamic>> _podmans = [
     {
@@ -58,13 +61,51 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
   void initState() {
     super.initState();
     _timelineController = ScrollController();
+    _ttsService = TtsService();
+    _ttsService.addListener(() {
+      setState(() {});
+    });
     _loadProgress();
   }
 
   @override
   void dispose() {
     _timelineController.dispose();
+    _ttsService.removeListener(() {
+      setState(() {});
+    });
+    _ttsService.dispose();
+    _textController.dispose();
     super.dispose();
+  }
+
+  // Start teaching with user input and current topic
+  void _startTeaching() {
+    if (_ttsService.isPlaying || _ttsService.isProcessing) return;
+
+    String teachingText = '';
+    if (_timelineData.isNotEmpty) {
+      final currentTopic = _timelineData[_currentStep];
+      final topicTitle = currentTopic['title'] ?? '';
+      final topicContent = currentTopic['content'] ?? '';
+      teachingText = '$topicTitle: $topicContent';
+    }
+
+    final userInput = _textController.text.trim();
+    if (userInput.isNotEmpty) {
+      teachingText = teachingText.isNotEmpty
+          ? 'مبحث: $teachingText\nورودی کاربر: $userInput'
+          : userInput;
+    }
+
+    _ttsService.textToSpeech(teachingText.isNotEmpty ? teachingText : 'محتوایی برای آموزش یافت نشد.');
+    setState(() {});
+  }
+
+  // Stop the current playback
+  void _stopTeaching() {
+    _ttsService.stop();
+    setState(() {});
   }
 
   Future<void> _loadProgress() async {
@@ -95,7 +136,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
       List<dynamic> timeline = data['timeline'] ?? [];
       final pedagogicalFeatures = data['pedagogical_features'] ?? {};
 
-      // اضافه کردن نکات کناری به‌عنوان مرحله اضافی
       if (pedagogicalFeatures['نکات کناری'] != null && (pedagogicalFeatures['نکات کناری'] as List).isNotEmpty) {
         timeline.add({
           'id': timeline.length + 1,
@@ -104,8 +144,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
           'content': (pedagogicalFeatures['نکات کناری'] as List).join('\n'),
         });
       }
-
-      // اضافه کردن خود را بیازمایید به‌عنوان مرحله اضافی
       if (pedagogicalFeatures['خود را بیازمایید'] != null && (pedagogicalFeatures['خود را بیازمایید'] as List).isNotEmpty) {
         timeline.add({
           'id': timeline.length + 1,
@@ -114,8 +152,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
           'content': (pedagogicalFeatures['خود را بیازمایید'] as List).join('\n'),
         });
       }
-
-      // اضافه کردن مثال‌های حل شده به‌عنوان مرحله اضافی
       if (pedagogicalFeatures['مثال‌های حل شده'] != null && (pedagogicalFeatures['مثال‌های حل شده'] as List).isNotEmpty) {
         timeline.add({
           'id': timeline.length + 1,
@@ -132,7 +168,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
         _showPodmanSelection = false;
       });
 
-      // بازیابی پیشرفت ذخیره‌شده
       final prefs = await SharedPreferences.getInstance();
       final savedStep = prefs.getInt('podman_${podmanId}_step') ?? 0;
       if (savedStep < timeline.length) {
@@ -142,7 +177,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
         _scrollToCurrentStep();
       }
 
-      // ذخیره پیشرفت اولیه
       await _saveProgress(podmanId);
     } catch (e) {
       setState(() {
@@ -394,7 +428,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                       : Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      // هدر بدون تغییر
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -571,6 +604,258 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                         ),
                         const SizedBox(height: 20),
                         _buildTimelineItem(_timelineData[_currentStep]),
+                        // Chatbot Section
+                        const SizedBox(height: 16),
+                        Card(
+                          elevation: 8,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.grey[900]!.withOpacity(0.95),
+                                  Colors.grey[800]!.withOpacity(0.85),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.amber.withOpacity(0.3),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 0),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const Directionality(
+                                  textDirection: TextDirection.rtl,
+                                  child: Text(
+                                    'آموزش صوتی',
+                                    style: TextStyle(
+                                      color: Colors.amber,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Vazir',
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                Directionality(
+                                  textDirection: TextDirection.rtl,
+                                  child: TextField(
+                                    controller: _textController,
+                                    textDirection: TextDirection.rtl,
+                                    decoration: InputDecoration(
+                                      hintText: 'متن خود را وارد کنید یا برای مبحث جاری خالی بگذارید',
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[500],
+                                        fontFamily: 'Vazir',
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.grey[850],
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 12,
+                                      ),
+                                    ),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Vazir',
+                                    ),
+                                    maxLines: 2,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                Center(
+                                  child: _ttsService.isProcessing
+                                      ? Column(
+                                    children: [
+                                      Container(
+                                        width: 100,
+                                        height: 100,
+                                        child: Lottie.asset(
+                                          'assets/lottie/loading.json',
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                      if (_ttsService.currentText.isNotEmpty) ...[
+                                        const SizedBox(height: 8),
+                                        Container(
+                                          padding: const EdgeInsets.all(12),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[850],
+                                            borderRadius: BorderRadius.circular(15),
+                                          ),
+                                          child: Directionality(
+                                            textDirection: TextDirection.rtl,
+                                            child: Text(
+                                              _ttsService.currentText,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14,
+                                                fontFamily: 'Vazir',
+                                              ),
+                                              textAlign: TextAlign.right,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ],
+                                  )
+                                      : _ttsService.isPlaying
+                                      ? Column(
+                                    children: [
+                                      Container(
+                                        width: 100,
+                                        height: 100,
+                                        child: Lottie.asset(
+                                          'assets/lottie/speaking.json',
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      GestureDetector(
+                                        onTap: _stopTeaching,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Colors.red,
+                                                Colors.red.shade700,
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ),
+                                            borderRadius: BorderRadius.circular(15),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.red.withOpacity(0.5),
+                                                blurRadius: 8,
+                                                offset: const Offset(0, 4),
+                                              ),
+                                            ],
+                                          ),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const Icon(
+                                                Icons.stop,
+                                                color: Colors.white,
+                                                size: 24,
+                                              ),
+                                              const SizedBox(width: 8),
+                                              const Text(
+                                                'توقف',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'Vazir',
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      if (_ttsService.currentText.isNotEmpty) ...[
+                                        const SizedBox(height: 8),
+                                        Container(
+                                          padding: const EdgeInsets.all(12),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[850],
+                                            borderRadius: BorderRadius.circular(15),
+                                          ),
+                                          child: Directionality(
+                                            textDirection: TextDirection.rtl,
+                                            child: Text(
+                                              _ttsService.currentText,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14,
+                                                fontFamily: 'Vazir',
+                                              ),
+                                              textAlign: TextAlign.right,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ],
+                                  )
+                                      : GestureDetector(
+                                    onTap: _startTeaching,
+                                    child: AnimatedContainer(
+                                      duration: const Duration(milliseconds: 200),
+                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Colors.amber,
+                                            Colors.amber.shade700,
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ),
+                                        borderRadius: BorderRadius.circular(15),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.amber.withOpacity(0.5),
+                                            blurRadius: 8,
+                                            offset: const Offset(0, 4),
+                                          ),
+                                        ],
+                                      ),
+                                      transform: Matrix4.identity(),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Icon(
+                                            Icons.play_arrow,
+                                            color: Colors.white,
+                                            size: 24,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          const Text(
+                                            'شروع آموزش',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Vazir',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                Directionality(
+                                  textDirection: TextDirection.rtl,
+                                  child: Text(
+                                    'وضعیت: ${_ttsService.status}',
+                                    style: TextStyle(
+                                      color: Colors.grey[400],
+                                      fontSize: 14,
+                                      fontFamily: 'Vazir',
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
                     ],
                   ),
@@ -582,6 +867,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
       ),
     );
   }
+
   Widget _buildTimelineItem(Map<String, dynamic> item) {
     final typeColor = _getTypeColor(item['type'] ?? '');
 
