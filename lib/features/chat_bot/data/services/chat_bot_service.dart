@@ -4,8 +4,7 @@ import 'package:periodic_table_app/features/chat_bot/data/models/chat_message_mo
 import 'package:periodic_table_app/core/models/element_details_model.dart';
 
 class ChatBotService {
-  static const String _apiKey = 'AIzaSyBUodT_V76AxIr1iU40_RQdZwifq__jk2w';
-  static const String _baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+  static const String _baseUrl = 'https://text.pollinations.ai/';
   final ElementDetailsModel? element;
   late Dio _dio;
 
@@ -41,9 +40,12 @@ class ChatBotService {
 سوال: $message
 ''';
 
-      print('Sending request to Gemini...');
+      // محدود کردن طول پرامپت به 1000 کاراکتر
+      final trimmedPrompt = prompt.length > 1000 ? prompt.substring(0, 1000) : prompt;
+
+      print('Sending request to Pollinations AI... Prompt: $trimmedPrompt');
       final response = await _dio.post(
-        '$_baseUrl?key=$_apiKey',
+        _baseUrl,
         options: Options(
           headers: {
             'Content-Type': 'application/json',
@@ -51,19 +53,12 @@ class ChatBotService {
           validateStatus: (status) => true,
         ),
         data: jsonEncode({
-          'contents': [
+          'messages': [
             {
-              'parts': [
-                {'text': prompt}
-              ]
+              'role': 'user',
+              'content': trimmedPrompt,
             }
           ],
-          'generationConfig': {
-            'temperature': 0.7,
-            'topK': 40,
-            'topP': 0.95,
-            'maxOutputTokens': 2048,
-          }
         }),
       );
 
@@ -71,27 +66,28 @@ class ChatBotService {
       print('Response body: ${response.data}');
 
       if (response.statusCode == 200) {
-        final data = response.data;
-        if (data['candidates'] != null &&
-            data['candidates'].isNotEmpty &&
-            data['candidates'][0]['content'] != null &&
-            data['candidates'][0]['content']['parts'] != null &&
-            data['candidates'][0]['content']['parts'].isNotEmpty) {
-
-          final text = data['candidates'][0]['content']['parts'][0]['text'] ?? 'متاسفم، پاسخی دریافت نشد.';
-
-          return ChatMessageModel(
-            text: text,
-            createdAt: DateTime.now(),
-            authorId: 'bot',
-          );
+        // فرض می‌کنیم پاسخ یک JSON با کلید 'text' یا متن خام است
+        String text;
+        if (response.data is String) {
+          text = response.data;
+        } else if (response.data is Map && response.data['text'] != null) {
+          text = response.data['text'];
+        } else if (response.data is Map && response.data['messages'] != null && response.data['messages'] is List && response.data['messages'].isNotEmpty) {
+          text = response.data['messages'].last['content'] ?? 'متاسفم، پاسخی دریافت نشد.';
         } else {
-          throw Exception('پاسخ نامعتبر از سرور دریافت شد');
+          text = 'متاسفم، پاسخی دریافت نشد.';
         }
+
+        return ChatMessageModel(
+          text: text.trim(),
+          createdAt: DateTime.now(),
+          authorId: 'bot',
+        );
       } else {
-        throw Exception('خطا در ارتباط با سرور: ${response.statusCode}');
+        throw Exception('خطا در ارتباط با سرور: ${response.statusCode}, جزئیات: ${response.data}');
       }
     } catch (e) {
+      print('Error: $e');
       return ChatMessageModel(
         text: 'خطا در ارتباط با سرور: ${e.toString()}',
         createdAt: DateTime.now(),
