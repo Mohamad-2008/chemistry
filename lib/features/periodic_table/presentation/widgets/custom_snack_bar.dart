@@ -2,19 +2,26 @@ import 'package:flutter/material.dart';
 
 class CustomSnackBar {
   static void show(BuildContext context, String message) {
-    // ابتدا تمام پیام‌های قبلی را پاک می‌کنیم
-    ScaffoldMessenger.of(context).clearSnackBars();
-    
-    // سپس پیام جدید را نمایش می‌دهیم
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: _AnimatedSnackBarContent(message: message),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 3),
-      ),
-    );
+    try {
+      // اطمینان از وجود ScaffoldMessenger در درخت ویجت‌ها
+      if (ScaffoldMessenger.of(context).mounted) {
+        print('CustomSnackBar: Showing snackbar with message: $message');
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: _AnimatedSnackBarContent(message: message),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            behavior: SnackBarBehavior.floating,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      } else {
+        print('CustomSnackBar: ScaffoldMessenger not mounted');
+      }
+    } catch (e) {
+      print('CustomSnackBar: Error showing snackbar: $e');
+    }
   }
 }
 
@@ -52,14 +59,16 @@ class _AnimatedSnackBarContentState extends State<_AnimatedSnackBarContent>
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 
-    _controller.forward();
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
-        _controller.reverse().then((_) {
-          // onDismiss();
-        });
-      }
-    });
+    try {
+      _controller.forward();
+      Future.delayed(const Duration(seconds: 3), () {
+        if (mounted) {
+          _controller.reverse();
+        }
+      });
+    } catch (e) {
+      print('AnimatedSnackBarContent: Error in animation: $e');
+    }
   }
 
   @override
@@ -70,58 +79,55 @@ class _AnimatedSnackBarContentState extends State<_AnimatedSnackBarContent>
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      bottom: 16,
-      left: 16,
-      right: 16,
-      child: FadeTransition(
-        opacity: _fadeAnimation,
-        child: SlideTransition(
-          position: _slideAnimation,
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [
-                  Color(0xFF1A237E), // آبی تیره
-                  Color(0xFF4A148C), // بنفش تیره
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.blueAccent.withOpacity(0.5),
-                  blurRadius: 12,
-                  spreadRadius: 2,
-                  offset: const Offset(0, 4),
-                ),
+    // حذف Positioned برای جلوگیری از تداخل با SnackBarBehavior.floating
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: SlideTransition(
+        position: _slideAnimation,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [
+                Color(0xFF1A237E), // آبی تیره
+                Color(0xFF4A148C), // بنفش تیره
               ],
-              border: Border.all(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
                 color: Colors.blueAccent.withOpacity(0.5),
-                width: 1.5,
+                blurRadius: 12,
+                spreadRadius: 2,
+                offset: const Offset(0, 4),
               ),
+            ],
+            border: Border.all(
+              color: Colors.blueAccent.withOpacity(0.5),
+              width: 1.5,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _AnimatedIcon(),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    widget.message,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                    textDirection: TextDirection.rtl,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _AnimatedIcon(),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  widget.message,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
+                  textAlign: TextAlign.center,
+                  textDirection: TextDirection.rtl,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -145,11 +151,17 @@ class _AnimatedIconState extends State<_AnimatedIcon>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1000),
-    )..repeat(reverse: true);
+    );
 
     _scaleAnimation = Tween<double>(begin: 0.8, end: 1.2).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
+
+    try {
+      _controller.repeat(reverse: true);
+    } catch (e) {
+      print('AnimatedIcon: Error in animation: $e');
+    }
   }
 
   @override

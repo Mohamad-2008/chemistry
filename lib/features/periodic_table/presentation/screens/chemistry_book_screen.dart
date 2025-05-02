@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:periodic_table_app/features/chat_bot/tts_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
 
 class ChemistryBookScreen extends StatefulWidget {
   final int? initialPodmanId;
@@ -93,7 +95,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen>
     super.dispose();
   }
 
-  // Handle submission based on selected mode
   void _handleSubmit() {
     if (_ttsService.isPlaying || _ttsService.isProcessing) return;
 
@@ -112,18 +113,24 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen>
           : userInput;
     }
 
+    // Get user profile from PeriodicTableProvider
+    final userProfile = Provider.of<PeriodicTableProvider>(context, listen: false).getUserProfileForAI();
+
     if (_ttsService.selectedMode == 'teaching') {
       _ttsService.textToSpeech(
-          inputText.isNotEmpty ? inputText : 'محتوایی برای آموزش یافت نشد.');
+        inputText.isNotEmpty ? inputText : 'محتوایی برای آموزش یافت نشد.',
+        userProfile: userProfile,
+      );
     } else {
       _ttsService.generateImage(
-          inputText.isNotEmpty ? inputText : 'تصویری از یک آزمایش شیمی');
+        inputText.isNotEmpty ? inputText : 'تصویری از یک آزمایش شیمی',
+        userProfile: userProfile,
+      );
     }
     _textController.clear();
     setState(() {});
   }
 
-  // Stop the current playback
   void _stopTeaching() {
     _ttsService.stop();
     setState(() {});
@@ -446,7 +453,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen>
         ),
         child: Column(
           children: [
-            // First Row: TextField
             Directionality(
               textDirection: TextDirection.rtl,
               child: TextField(
@@ -508,7 +514,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen>
               ),
             ),
             const SizedBox(height: 12),
-            // Second Row: Mode Selection and Submit Button
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -709,6 +714,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen>
 
   @override
   Widget build(BuildContext context) {
+    _animationController.forward();
     return WillPopScope(
       onWillPop: () async {
         _handleBack(context);
@@ -793,7 +799,8 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen>
                                           fontWeight: FontWeight.w400,
                                           fontFamily: 'Vazir',
                                         ),
-                                        textDirection: TextDirection.rtl,
+                                        textDirection:
+                                        TextDirection.rtl,
                                       ),
                                     ],
                                   ),
@@ -1014,7 +1021,6 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen>
                               SizedBox(
                                 height: 10,
                               ),
-                              // Lottie and Image Display
                               if (_ttsService.isProcessing)
                                 Align(
                                   alignment: Alignment.topRight,
@@ -1193,8 +1199,8 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen>
                                     ),
                                   ),
                               Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: _buildAIInputBar()
+                                alignment: Alignment.bottomCenter,
+                                child: _buildAIInputBar(),
                               )
                             ],
                           ],

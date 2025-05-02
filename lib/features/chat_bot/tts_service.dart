@@ -12,8 +12,8 @@ class TtsService with ChangeNotifier {
   bool _isProcessing = false;
   String _status = 'آماده';
   String _currentText = '';
-  String? _generatedImageUrl; // برای ذخیره URL تصویر تولیدشده
-  String _selectedMode = 'teaching'; // حالت انتخاب‌شده: 'teaching' یا 'image'
+  String? _generatedImageUrl;
+  String _selectedMode = 'teaching';
 
   bool get isPlaying => _isPlaying;
   bool get isProcessing => _isProcessing;
@@ -24,12 +24,12 @@ class TtsService with ChangeNotifier {
 
   void setMode(String mode) {
     _selectedMode = mode;
-    _generatedImageUrl = null; // ریست کردن تصویر هنگام تغییر حالت
+    _generatedImageUrl = null;
     _status = 'آماده';
     notifyListeners();
   }
 
-  Future<void> textToSpeech(String inputText) async {
+  Future<void> textToSpeech(String inputText, {Map<String, dynamic>? userProfile}) async {
     if (inputText.isEmpty) {
       _status = 'خطا: محتوایی برای پخش یافت نشد';
       _isProcessing = false;
@@ -47,7 +47,10 @@ class TtsService with ChangeNotifier {
     notifyListeners();
 
     try {
-      final encodedPrompt = Uri.encodeComponent(inputText);
+      // Build personalized prompt
+      String prompt = _buildPersonalizedPrompt(inputText, userProfile, isTts: true);
+      final encodedPrompt = Uri.encodeComponent(prompt);
+
       final response = await http.get(
         Uri.parse('$_ttsUrl/$encodedPrompt?model=openai-audio&voice=nova'),
         headers: {'Content-Type': 'application/json'},
@@ -62,7 +65,6 @@ class TtsService with ChangeNotifier {
         final filePath = '${dir.path}/chemistry_lesson.mp3';
         final file = File(filePath);
 
-        // حذف فایل قدیمی اگر وجود داشته باشد
         if (await file.exists()) {
           await file.delete();
           print('TTS: Deleted old audio file');
@@ -71,7 +73,6 @@ class TtsService with ChangeNotifier {
         await file.writeAsBytes(response.bodyBytes);
         print('TTS: Audio file saved at $filePath');
 
-        // ریست کردن AudioPlayer قبل از پخش جدید
         await _audioPlayer.stop();
         print('TTS: AudioPlayer stopped before new playback');
 
@@ -105,7 +106,7 @@ class TtsService with ChangeNotifier {
     }
   }
 
-  Future<void> generateImage(String prompt) async {
+  Future<void> generateImage(String prompt, {Map<String, dynamic>? userProfile}) async {
     if (prompt.isEmpty) {
       _status = 'خطا: پرامپت خالی است';
       _isProcessing = false;
@@ -121,7 +122,10 @@ class TtsService with ChangeNotifier {
     notifyListeners();
 
     try {
-      final encodedPrompt = Uri.encodeComponent(prompt);
+      // Build personalized prompt
+      String personalizedPrompt = _buildPersonalizedPrompt(prompt, userProfile, isTts: false);
+      final encodedPrompt = Uri.encodeComponent(personalizedPrompt);
+
       final response = await http.get(
         Uri.parse('$_imageUrl/$encodedPrompt'),
         headers: {'Content-Type': 'application/json'},
@@ -151,6 +155,37 @@ class TtsService with ChangeNotifier {
       print('ImageGen: Final state, isProcessing: $_isProcessing, status: $_status');
       notifyListeners();
     }
+  }
+
+  String _buildPersonalizedPrompt(String inputText, Map<String, dynamic>? userProfile, {required bool isTts}) {
+    String userInfo = userProfile != null
+        ? '''
+اطلاعات کاربر:
+- نام: ${userProfile['userName']}
+- رشته تحصیلی: ${userProfile['fieldOfStudy']}
+- مقطع تحصیلی: ${userProfile['educationLevel']}
+- سطح دانش شیمی: ${userProfile['chemistryKnowledgeLevel']}
+- هدف آموزشی: ${userProfile['educationalGoal']}
+- علاقه‌مندی‌های علمی: ${userProfile['scientificInterests']}
+'''
+        : 'اطلاعات کاربر در دسترس نیست.';
+
+    String instruction = isTts
+        ? '''
+شما یک دستیار هوشمند شیمی هستید. لطفاً محتوای زیر را به‌صورت آموزشی و متناسب با اطلاعات کاربر ارائه دهید.
+پاسخ‌ها باید با توجه به سطح دانش شیمی، هدف آموزشی و علاقه‌مندی‌های کاربر تنظیم شوند.
+محتوا: $inputText
+$userInfo
+'''
+        : '''
+شما یک دستیار هوشمند شیمی هستید. لطفاً تصویری مرتبط با محتوای زیر تولید کنید که متناسب با اطلاعات کاربر باشد.
+تصویر باید با توجه به سطح دانش شیمی، هدف آموزشی و علاقه‌مندی‌های کاربر طراحی شود.
+محتوا: $inputText
+$userInfo
+''';
+
+    // Limit prompt length to 1000 characters to avoid API issues
+    return instruction.length > 1000 ? instruction.substring(0, 1000) : instruction;
   }
 
   Future<void> stop() async {

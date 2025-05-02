@@ -12,13 +12,21 @@ class ChatBotService {
     _dio = Dio();
   }
 
-  Future<ChatMessageModel> sendMessage(String message) async {
+  Future<ChatMessageModel> sendMessage(String message, {Map<String, dynamic>? userProfile}) async {
     try {
       final prompt = element != null
           ? '''
 شما یک دستیار هوشمند شیمی هستید. کاربر در حال بررسی عنصر ${element!.name} (${element!.symbol}) است.
-لطفاً به سوالات زیر در مورد این عنصر پاسخ دهید. اگر سوال خارج از حوزه شیمی یا این عنصر باشد،
-لطفاً توضیح دهید که فقط به سوالات شیمی و در مورد این عنصر پاسخ می‌دهید.
+لطفاً به سوالات زیر در مورد این عنصر پاسخ دهید، با توجه به اطلاعات کاربر و سطح دانش، هدف آموزشی و علاقه‌مندی‌های او.
+اگر سوال خارج از حوزه شیمی یا این عنصر باشد، توضیح دهید که فقط به سوالات شیمی و در مورد این عنصر پاسخ می‌دهید.
+
+اطلاعات کاربر:
+- نام: ${userProfile?['userName'] ?? 'کاربر ناشناس'}
+- رشته تحصیلی: ${userProfile?['fieldOfStudy'] ?? 'نامشخص'}
+- مقطع تحصیلی: ${userProfile?['educationLevel'] ?? 'نامشخص'}
+- سطح دانش شیمی: ${userProfile?['chemistryKnowledgeLevel'] ?? 'مبتدی'}
+- هدف آموزشی: ${userProfile?['educationalGoal'] ?? 'یادگیری عمومی'}
+- علاقه‌مندی‌های علمی: ${userProfile?['scientificInterests'] ?? 'هیچ‌کدام'}
 
 اطلاعات عنصر:
 - نام: ${element!.name}
@@ -34,8 +42,16 @@ class ChatBotService {
 سوال: $message
 '''
           : '''
-شما یک دستیار هوشمند شیمی هستید. لطفاً به سوالات زیر فقط در زمینه شیمی پاسخ دهید.
-اگر سوال خارج از حوزه شیمی باشد، لطفاً توضیح دهید که فقط به سوالات شیمی پاسخ می‌دهید.
+شما یک دستیار هوشمند شیمی هستید. لطفاً به سوالات زیر فقط در زمینه شیمی پاسخ دهید، با توجه به اطلاعات کاربر و سطح دانش، هدف آموزشی و علاقه‌مندی‌های او.
+اگر سوال خارج از حوزه شیمی باشد، توضیح دهید که فقط به سوالات شیمی پاسخ می‌دهید.
+
+اطلاعات کاربر:
+- نام: ${userProfile?['userName'] ?? 'کاربر ناشناس'}
+- رشته تحصیلی: ${userProfile?['fieldOfStudy'] ?? 'نامشخص'}
+- مقطع تحصیلی: ${userProfile?['educationLevel'] ?? 'نامشخص'}
+- سطح دانش شیمی: ${userProfile?['chemistryKnowledgeLevel'] ?? 'مبتدی'}
+- هدف آموزشی: ${userProfile?['educationalGoal'] ?? 'یادگیری عمومی'}
+- علاقه‌مندی‌های علمی: ${userProfile?['scientificInterests'] ?? 'هیچ‌کدام'}
 
 سوال: $message
 ''';
@@ -66,7 +82,6 @@ class ChatBotService {
       print('Response body: ${response.data}');
 
       if (response.statusCode == 200) {
-        // فرض می‌کنیم پاسخ یک JSON با کلید 'text' یا متن خام است
         String text;
         if (response.data is String) {
           text = response.data;

@@ -304,4 +304,18 @@ class PeriodicTableProvider with ChangeNotifier {
     _educationalGoal = educationalGoal ?? _educationalGoal;
     notifyListeners();
   }
+
+  // Added method to provide user profile for AI personalization
+  Map<String, dynamic> getUserProfileForAI() {
+    return {
+      'userName': _userName ?? 'کاربر ناشناس',
+      'fieldOfStudy': _fieldOfStudy ?? 'نامشخص',
+      'educationLevel': _educationLevel ?? 'نامشخص',
+      'chemistryKnowledgeLevel': _chemistryKnowledgeLevel ?? 'مبتدی',
+      'educationalGoal': _educationalGoal ?? 'یادگیری عمومی',
+      'scientificInterests': _scientificInterests.isNotEmpty
+          ? _scientificInterests.join(', ')
+          : 'هیچ‌کدام',
+    };
+  }
 }
