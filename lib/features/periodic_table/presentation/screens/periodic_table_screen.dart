@@ -17,8 +17,7 @@ class PeriodicTableScreen extends StatefulWidget {
   _PeriodicTableScreenState createState() => _PeriodicTableScreenState();
 }
 
-class _PeriodicTableScreenState extends State<PeriodicTableScreen>
-    with TickerProviderStateMixin {
+class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerProviderStateMixin {
   bool _isAppBarVisible = true;
   late AnimationController _arrowController;
   Orientation? orientation;
@@ -39,6 +38,8 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
     } else {
       _arrowController.reverse();
     }
+    // لود اطلاعات کاربر هنگام شروع
+    Provider.of<PeriodicTableProvider>(context, listen: false).loadUserProfile();
   }
 
   @override
@@ -218,7 +219,9 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
     return provider.currentSort == null ||
         (provider.currentSort == 'category' && element.category == provider.currentCategory) ||
         (provider.currentSort == 'name' && element.name.startsWith(provider.currentLetter ?? '')) ||
-        (provider.currentSort == 'number' && element.number >= (provider.currentMinNumber ?? 0) && element.number <= (provider.currentMaxNumber ?? 118));
+        (provider.currentSort == 'number' &&
+            element.number >= (provider.currentMinNumber ?? 0) &&
+            element.number <= (provider.currentMaxNumber ?? 118));
   }
 
   @override
@@ -271,8 +274,8 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                   return WillPopScope(
                     onWillPop: () async {
                       final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
-                      provider.setCurrentRoute('/');
-                      return true;
+                      provider.setCurrentRoute('/main_menu');
+                      return false;
                     },
                     child: const ChatBotScreen(),
                   );
@@ -334,9 +337,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                   panEnabled: true,
                   scaleEnabled: true,
                   onInteractionStart: (details) {
-                    if (orientation == Orientation.landscape &&
-                        _isAppBarVisible &&
-                        details.pointerCount == 1) {
+                    if (orientation == Orientation.landscape && _isAppBarVisible && details.pointerCount == 1) {
                       _toggleVisibility();
                     }
                   },
@@ -369,8 +370,11 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                         isElementActive: (element) {
                           return provider.currentSort == null ||
                               (provider.currentSort == 'category' && element.category == provider.currentCategory) ||
-                              (provider.currentSort == 'name' && element.name.startsWith(provider.currentLetter ?? '')) ||
-                              (provider.currentSort == 'number' && element.number >= (provider.currentMinNumber ?? 0) && element.number <= (provider.currentMaxNumber ?? 118));
+                              (provider.currentSort == 'name' &&
+                                  element.name.startsWith(provider.currentLetter ?? '')) ||
+                              (provider.currentSort == 'number' &&
+                                  element.number >= (provider.currentMinNumber ?? 0) &&
+                                  element.number <= (provider.currentMaxNumber ?? 118));
                         },
                       ),
                     ),
@@ -410,8 +414,8 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
       },
       child: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: const AssetImage('assets/images/background_pattern.png'),
+          image:  DecorationImage(
+            image: AssetImage('assets/images/background_pattern.png'),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
               Colors.blueGrey[900]!.withOpacity(0.9),
@@ -780,7 +784,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
   }
 }
 
-// New SortMenu widget for the floating dialog
 class _SortMenu extends StatelessWidget {
   const _SortMenu();
 

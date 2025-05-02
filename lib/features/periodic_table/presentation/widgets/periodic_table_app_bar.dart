@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:periodic_table_app/features/periodic_table/presentation/screens/profile_setup_screen.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/widgets/custom_snack_bar.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/widgets/settings_menu.dart';
 import 'package:provider/provider.dart';
 import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isVisible;
@@ -48,6 +50,11 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
     });
   }
 
+  Future<String?> _getUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('user_name');
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<PeriodicTableProvider>(context);
@@ -87,7 +94,53 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
                   ),
                 ),
               ),
-              title: const Text(
+              title: provider.currentRoute == '/main_menu'
+                  ? FutureBuilder<String?>(
+                future: _getUserName(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator(color: Colors.white);
+                  }
+                  final userName = snapshot.data;
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          final prefs = await SharedPreferences.getInstance();
+                          final hasProfile = prefs.getString('user_name')?.isNotEmpty ?? false;
+                          Navigator.pushNamed(
+                            context,
+                            hasProfile ? '/profile' : '/profile_setup',
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 28,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              userName != null && userName.isNotEmpty
+                                  ? userName
+                                  : 'ورود به حساب کاربری',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Vazir',
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              )
+                  : const Text(
                 'جدول تناوبی',
                 style: TextStyle(
                   color: Colors.white,
@@ -97,7 +150,8 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
                 ),
               ),
               centerTitle: false,
-              actions: [
+              actions: provider.currentRoute == '/'
+                  ? [
                 if (provider.categories.length > 1)
                   IconButton(
                     icon: const Icon(Icons.filter_list, color: Colors.white),
@@ -130,39 +184,40 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
                               child: SingleChildScrollView(
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
-                                  children: provider.categories
-                                    .map((category) {
-                                      final isSelected = category['key'] == provider.selectedCategoryFilter;
-                                      return Container(
-                                        margin: const EdgeInsets.symmetric(vertical: 4),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: isSelected ? Colors.blueAccent : Colors.transparent,
-                                            width: 2,
-                                          ),
-                                          borderRadius: BorderRadius.circular(8),
+                                  children: provider.categories.map((category) {
+                                    final isSelected = category['key'] == provider.selectedCategoryFilter;
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(vertical: 4),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: isSelected ? Colors.blueAccent : Colors.transparent,
+                                          width: 2,
                                         ),
-                                        child: ListTile(
-                                          title: Text(
-                                            category['display']!,
-                                            style: TextStyle(
-                                              color: isSelected ? Colors.blueAccent : Colors.white,
-                                              fontFamily: 'Vazir',
-                                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                                            ),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: ListTile(
+                                        title: Text(
+                                          category['display']!,
+                                          style: TextStyle(
+                                            color: isSelected ? Colors.blueAccent : Colors.white,
+                                            fontFamily: 'Vazir',
+                                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                                           ),
-                                          trailing: isSelected ? const Icon(
-                                            Icons.check_circle,
-                                            color: Colors.blueAccent,
-                                          ) : null,
-                                          onTap: () {
-                                            Provider.of<PeriodicTableProvider>(context, listen: false)
+                                        ),
+                                        trailing: isSelected
+                                            ? const Icon(
+                                          Icons.check_circle,
+                                          color: Colors.blueAccent,
+                                        )
+                                            : null,
+                                        onTap: () {
+                                          Provider.of<PeriodicTableProvider>(context, listen: false)
                                               .selectCategoryFilter(category['key']!);
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                      );
-                                    }).toList(),
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    );
+                                  }).toList(),
                                 ),
                               ),
                             ),
@@ -179,7 +234,8 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
                   icon: const Icon(Icons.search, color: Colors.white),
                   onPressed: onSearchPressed,
                 ),
-              ],
+              ]
+                  : [],
             ),
           ),
         ),

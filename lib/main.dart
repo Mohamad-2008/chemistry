@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:periodic_table_app/features/periodic_table/presentation/screens/profile_screen.dart';
+import 'package:periodic_table_app/features/periodic_table/presentation/screens/profile_setup_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/screens/periodic_table_screen.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/screens/element_details_screen.dart';
@@ -34,6 +36,13 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'جدول تناوبی عناصر',
+        routes: {
+          '/': (context) => const PeriodicTableScreen(),
+          '/main_menu': (context) => const PeriodicTableScreen(),
+          '/chat_bot': (context) => const ChatBotScreen(),
+          '/profile_setup': (context) => const ProfileSetupScreen(),
+          '/profile': (context) => const ProfileScreen(),
+        },
         theme: ThemeData(
           primarySwatch: Colors.blue,
           scaffoldBackgroundColor: const Color(0xFF1A1A1A),

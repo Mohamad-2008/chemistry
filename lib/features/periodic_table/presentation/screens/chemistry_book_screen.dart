@@ -7,13 +7,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lottie/lottie.dart';
 
 class ChemistryBookScreen extends StatefulWidget {
-  const ChemistryBookScreen({super.key});
+  final int? initialPodmanId;
+  const ChemistryBookScreen({super.key, this.initialPodmanId});
 
   @override
   State<ChemistryBookScreen> createState() => _ChemistryBookScreenState();
 }
 
-class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
+class _ChemistryBookScreenState extends State<ChemistryBookScreen>
+    with SingleTickerProviderStateMixin {
   List<dynamic> _timelineData = [];
   Map<String, dynamic> _metadata = {};
   int _currentStep = 0;
@@ -23,6 +25,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
   Map<int, double> _podmanProgress = {};
   late TtsService _ttsService;
   final TextEditingController _textController = TextEditingController();
+  late AnimationController _animationController;
 
   final List<Map<String, dynamic>> _podmans = [
     {
@@ -62,15 +65,26 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
     super.initState();
     _timelineController = ScrollController();
     _ttsService = TtsService();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
     _ttsService.addListener(() {
       setState(() {});
     });
     _loadProgress();
+    if (widget.initialPodmanId != null) {
+      _showPodmanSelection = false;
+      _loadTimelineData(widget.initialPodmanId!);
+    } else {
+      _animationController.forward();
+    }
   }
 
   @override
   void dispose() {
     _timelineController.dispose();
+    _animationController.dispose();
     _ttsService.removeListener(() {
       setState(() {});
     });
@@ -79,26 +93,33 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
     super.dispose();
   }
 
-  // Start teaching with user input and current topic
-  void _startTeaching() {
+  // Handle submission based on selected mode
+  void _handleSubmit() {
     if (_ttsService.isPlaying || _ttsService.isProcessing) return;
 
-    String teachingText = '';
+    String inputText = '';
     if (_timelineData.isNotEmpty) {
       final currentTopic = _timelineData[_currentStep];
       final topicTitle = currentTopic['title'] ?? '';
       final topicContent = currentTopic['content'] ?? '';
-      teachingText = '$topicTitle: $topicContent';
+      inputText = '$topicTitle: $topicContent';
     }
 
     final userInput = _textController.text.trim();
     if (userInput.isNotEmpty) {
-      teachingText = teachingText.isNotEmpty
-          ? 'مبحث: $teachingText\nورودی کاربر: $userInput'
+      inputText = inputText.isNotEmpty
+          ? 'مبحث: $inputText\nورودی کاربر: $userInput'
           : userInput;
     }
 
-    _ttsService.textToSpeech(teachingText.isNotEmpty ? teachingText : 'محتوایی برای آموزش یافت نشد.');
+    if (_ttsService.selectedMode == 'teaching') {
+      _ttsService.textToSpeech(
+          inputText.isNotEmpty ? inputText : 'محتوایی برای آموزش یافت نشد.');
+    } else {
+      _ttsService.generateImage(
+          inputText.isNotEmpty ? inputText : 'تصویری از یک آزمایش شیمی');
+    }
+    _textController.clear();
     setState(() {});
   }
 
@@ -112,7 +133,8 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       for (var podman in _podmans) {
-        final progress = prefs.getDouble('podman_${podman['id']}_progress') ?? 0.0;
+        final progress =
+            prefs.getDouble('podman_${podman['id']}_progress') ?? 0.0;
         _podmanProgress[podman['id']] = progress;
       }
     });
@@ -131,12 +153,14 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
 
   Future<void> _loadTimelineData(int podmanId) async {
     try {
-      final String response = await rootBundle.loadString('assets/data/podman$podmanId.json');
+      final String response =
+      await rootBundle.loadString('assets/data/podman$podmanId.json');
       final data = json.decode(response);
       List<dynamic> timeline = data['timeline'] ?? [];
       final pedagogicalFeatures = data['pedagogical_features'] ?? {};
 
-      if (pedagogicalFeatures['نکات کناری'] != null && (pedagogicalFeatures['نکات کناری'] as List).isNotEmpty) {
+      if (pedagogicalFeatures['نکات کناری'] != null &&
+          (pedagogicalFeatures['نکات کناری'] as List).isNotEmpty) {
         timeline.add({
           'id': timeline.length + 1,
           'type': 'نکات کناری',
@@ -144,20 +168,24 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
           'content': (pedagogicalFeatures['نکات کناری'] as List).join('\n'),
         });
       }
-      if (pedagogicalFeatures['خود را بیازمایید'] != null && (pedagogicalFeatures['خود را بیازمایید'] as List).isNotEmpty) {
+      if (pedagogicalFeatures['خود را بیازمایید'] != null &&
+          (pedagogicalFeatures['خود را بیازمایید'] as List).isNotEmpty) {
         timeline.add({
           'id': timeline.length + 1,
           'type': 'خود را بیازمایید',
           'title': 'خود را بیازمایید',
-          'content': (pedagogicalFeatures['خود را بیازمایید'] as List).join('\n'),
+          'content':
+          (pedagogicalFeatures['خود را بیازمایید'] as List).join('\n'),
         });
       }
-      if (pedagogicalFeatures['مثال‌های حل شده'] != null && (pedagogicalFeatures['مثال‌های حل شده'] as List).isNotEmpty) {
+      if (pedagogicalFeatures['مثال‌های حل شده'] != null &&
+          (pedagogicalFeatures['مثال‌های حل شده'] as List).isNotEmpty) {
         timeline.add({
           'id': timeline.length + 1,
           'type': 'مثال‌های حل شده',
           'title': 'مثال‌های حل شده',
-          'content': (pedagogicalFeatures['مثال‌های حل شده'] as List).join('\n'),
+          'content':
+          (pedagogicalFeatures['مثال‌های حل شده'] as List).join('\n'),
         });
       }
 
@@ -278,61 +306,56 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
   }
 
   Widget _buildPodmanSelection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton(
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Colors.amber,
-                size: 28,
-              ),
-              onPressed: () => _handleBack(context),
-            ),
-            const Spacer(),
-            const Directionality(
-              textDirection: TextDirection.rtl,
-              child: Text(
-                'انتخاب پودمان',
-                style: TextStyle(
+    return FadeTransition(
+      opacity: _animationController,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
                   color: Colors.amber,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Vazir',
+                  size: 28,
+                ),
+                onPressed: () => _handleBack(context),
+              ),
+              const Spacer(),
+              const Directionality(
+                textDirection: TextDirection.rtl,
+                child: Text(
+                  'انتخاب پودمان',
+                  style: TextStyle(
+                    color: Colors.amber,
+                    fontSize: 26,
+                    fontWeight: FontWeight.w800,
+                    fontFamily: 'Vazir',
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 20),
-        ..._podmans.map((podman) => GestureDetector(
-          onTap: () => _loadTimelineData(podman['id']),
-          child: Card(
-            elevation: 4,
-            margin: const EdgeInsets.symmetric(vertical: 8),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
+            ],
+          ),
+          const SizedBox(height: 24),
+          ..._podmans
+              .map((podman) => GestureDetector(
+            onTap: () => _loadTimelineData(podman['id']),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.grey[900]!.withOpacity(0.95),
-                    Colors.grey[800]!.withOpacity(0.85),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+                color: Colors.grey[900]!.withOpacity(0.4),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: Colors.amber.withOpacity(0.3),
+                  width: 1,
                 ),
-                borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 10,
+                    color: Colors.black.withOpacity(0.15),
+                    blurRadius: 15,
                     offset: const Offset(0, 5),
                   ),
                 ],
@@ -341,22 +364,25 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: 40,
-                    height: 40,
+                    width: 50,
+                    height: 50,
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
                         CircularProgressIndicator(
                           value: _podmanProgress[podman['id']] ?? 0.0,
-                          backgroundColor: Colors.grey[400],
+                          backgroundColor: Colors.grey[600],
                           color: Colors.amber,
-                          strokeWidth: 4,
+                          strokeWidth: 5,
                         ),
                         Text(
                           '${((_podmanProgress[podman['id']] ?? 0.0) * 100).toInt()}%',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.amber,
-                            fontSize: 12,
+                            fontSize: _podmanProgress[podman['id']] == 1
+                                ? 11
+                                : 14,
+                            fontWeight: FontWeight.w600,
                             fontFamily: 'Vazir',
                           ),
                         ),
@@ -370,16 +396,18 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                         podman['title'],
                         style: const TextStyle(
                           color: Colors.amber,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
                           fontFamily: 'Vazir',
                         ),
                       ),
+                      const SizedBox(height: 4),
                       Text(
                         podman['subtitle'],
                         style: TextStyle(
                           color: Colors.grey[400],
-                          fontSize: 14,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
                           fontFamily: 'Vazir',
                         ),
                       ),
@@ -388,9 +416,294 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                 ],
               ),
             ),
-          ),
-        )).toList(),
-      ],
+          ))
+              .toList(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAIInputBar() {
+    return SafeArea(
+      child: Container(
+        margin: EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.grey[900]!.withOpacity(0.85),
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 15,
+              offset: const Offset(0, -3),
+            ),
+            BoxShadow(
+              color: Colors.amber.withOpacity(0.1),
+              blurRadius: 10,
+              spreadRadius: 2,
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            // First Row: TextField
+            Directionality(
+              textDirection: TextDirection.rtl,
+              child: TextField(
+                controller: _textController,
+                textDirection: TextDirection.rtl,
+                decoration: InputDecoration(
+                  hintText: 'سوال خود را بپرسید یا مبحث را خالی بگذارید',
+                  hintStyle: TextStyle(
+                    color: Colors.grey[500],
+                    fontFamily: 'Vazir',
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  filled: true,
+                  fillColor: Colors.grey[850]!.withOpacity(0.9),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(
+                      color: Colors.amber.withOpacity(0.4),
+                      width: 1,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(
+                      color: Colors.amber.shade400,
+                      width: 1.5,
+                    ),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  suffixIcon: _ttsService.isProcessing
+                      ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.amber,
+                      ),
+                    ),
+                  )
+                      : null,
+                ),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Vazir',
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                ),
+                maxLines: 2,
+              ),
+            ),
+            const SizedBox(height: 12),
+            // Second Row: Mode Selection and Submit Button
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ScaleTransition(
+                          scale: Tween<double>(begin: 1.0, end: 0.95).animate(
+                            CurvedAnimation(
+                              parent: _animationController,
+                              curve: Curves.easeInOut,
+                            ),
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              _ttsService.setMode('teaching');
+                              _animationController
+                                  .forward()
+                                  .then((_) => _animationController.reverse());
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: _ttsService.selectedMode == 'teaching'
+                                    ? Colors.amber.withOpacity(0.3)
+                                    : Colors.grey[800]!.withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: _ttsService.selectedMode == 'teaching'
+                                      ? Colors.amber.shade400
+                                      : Colors.grey[700]!,
+                                  width: 1.5,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.mic,
+                                    color:
+                                    _ttsService.selectedMode == 'teaching'
+                                        ? Colors.amber.shade200
+                                        : Colors.grey[300],
+                                    size: 18,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'صوتی',
+                                    style: TextStyle(
+                                      color:
+                                      _ttsService.selectedMode == 'teaching'
+                                          ? Colors.amber.shade200
+                                          : Colors.grey[300],
+                                      fontSize: 13,
+                                      fontFamily: 'Vazir',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: ScaleTransition(
+                          scale: Tween<double>(begin: 1.0, end: 0.95).animate(
+                            CurvedAnimation(
+                              parent: _animationController,
+                              curve: Curves.easeInOut,
+                            ),
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              _ttsService.setMode('image');
+                              _animationController
+                                  .forward()
+                                  .then((_) => _animationController.reverse());
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: _ttsService.selectedMode == 'image'
+                                    ? Colors.amber.withOpacity(0.3)
+                                    : Colors.grey[800]!.withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: _ttsService.selectedMode == 'image'
+                                      ? Colors.amber.shade400
+                                      : Colors.grey[700]!,
+                                  width: 1.5,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.image,
+                                    color: _ttsService.selectedMode == 'image'
+                                        ? Colors.amber.shade200
+                                        : Colors.grey[300],
+                                    size: 18,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'تصویر',
+                                    style: TextStyle(
+                                      color: _ttsService.selectedMode == 'image'
+                                          ? Colors.amber.shade200
+                                          : Colors.grey[300],
+                                      fontSize: 13,
+                                      fontFamily: 'Vazir',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                ScaleTransition(
+                  scale: Tween<double>(begin: 1.0, end: 0.95).animate(
+                    CurvedAnimation(
+                      parent: _animationController,
+                      curve: Curves.easeInOut,
+                    ),
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      _handleSubmit();
+                      _animationController
+                          .forward()
+                          .then((_) => _animationController.reverse());
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 8),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.amber.shade400,
+                            Colors.amber.shade700,
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.amber.withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.send,
+                            color: Colors.white,
+                            size: 18,
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            'ارسال',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'Vazir',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -410,8 +723,8 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Colors.amber.shade100,
                     Colors.amber.shade50,
+                    Colors.amber.shade100,
                   ],
                 ),
               ),
@@ -420,446 +733,476 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
               ),
             ),
             SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: _showPodmanSelection
-                      ? _buildPodmanSelection()
-                      : Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            icon: const Icon(
-                              Icons.chevron_left,
-                              color: Colors.amber,
-                              size: 32,
-                            ),
-                            onPressed: () => _handleBack(context),
-                          ),
-                          Column(
-                            textDirection: TextDirection.rtl,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Directionality(
-                                textDirection: TextDirection.rtl,
-                                child: Text(
-                                  _metadata['title'] ?? 'پودمان اول',
-                                  style: const TextStyle(
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 120),
+                      child: FadeTransition(
+                        opacity: _animationController,
+                        child: _showPodmanSelection
+                            ? _buildPodmanSelection()
+                            : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.arrow_back_ios_rounded,
                                     color: Colors.amber,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Vazir',
+                                    size: 32,
                                   ),
-                                  textAlign: TextAlign.right,
+                                  onPressed: () => _handleBack(context),
                                 ),
-                              ),
-                              if (_metadata['author'] != null)
-                                Text(
-                                  'نویسنده: ${_metadata['author']}',
-                                  style: TextStyle(
-                                    color: Colors.grey[600],
-                                    fontSize: 14,
-                                    fontFamily: 'Vazir',
-                                  ),
-                                  textDirection: TextDirection.rtl,
-                                  textAlign: TextAlign.right,
-                                ),
-                              Text(
-                                'صفحات: ${_metadata['pages'] ?? ''}',
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 14,
-                                  fontFamily: 'Vazir',
-                                ),
-                                textDirection: TextDirection.rtl,
-                                textAlign: TextAlign.right,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      if (_isLoading)
-                        const Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.amber,
-                          ),
-                        )
-                      else if (_timelineData.isNotEmpty) ...[
-                        Container(
-                          height: 80,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            controller: _timelineController,
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            padding: EdgeInsets.zero,
-                            itemCount: _timelineData.length,
-                            itemBuilder: (context, index) {
-                              final item = _timelineData[index];
-                              final isActive = index <= _currentStep;
-                              final typeColor = _getTypeColor(item['type']);
-
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                  left: index == 0 ? 10 : 0,
-                                  right: index == _timelineData.length - 1 ? 10 : 0,
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    if (index > 0) ...[
-                                      Container(
-                                        width: 30,
-                                        height: 2,
-                                        color: isActive ? typeColor : Colors.grey,
-                                        margin: const EdgeInsets.only(bottom: 20, right: 5, left: 5),
+                                Expanded(
+                                  child: Column(
+                                    textDirection: TextDirection.rtl,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        _metadata['title'] ??
+                                            'پودمان اول',
+                                        style: const TextStyle(
+                                          color: Colors.amber,
+                                          fontSize: 26,
+                                          fontWeight: FontWeight.w800,
+                                          fontFamily: 'Vazir',
+                                        ),
+                                      ),
+                                      if (_metadata['author'] != null)
+                                        Text(
+                                          'نویسنده: ${_metadata['author']}',
+                                          style: TextStyle(
+                                            color: Colors.grey[700],
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w400,
+                                            fontFamily: 'Vazir',
+                                          ),
+                                          textDirection:
+                                          TextDirection.rtl,
+                                        ),
+                                      Text(
+                                        'صفحات: ${_metadata['pages'] ?? ''}',
+                                        style: TextStyle(
+                                          color: Colors.grey[700],
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: 'Vazir',
+                                        ),
+                                        textDirection: TextDirection.rtl,
                                       ),
                                     ],
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          _currentStep = index;
-                                        });
-                                        _scrollToCurrentStep();
-                                        _saveProgress(_metadata['podman_id'] ?? 1);
-                                        _saveCurrentStep(_metadata['podman_id'] ?? 1);
-                                      },
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Container(
-                                            width: 40,
-                                            height: 40,
-                                            decoration: BoxDecoration(
-                                              color: isActive ? typeColor : Colors.grey,
-                                              shape: BoxShape.circle,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: isActive ? typeColor.withOpacity(0.9) : Colors.grey,
-                                                  blurRadius: 12,
-                                                  offset: const Offset(0, 0),
-                                                ),
-                                              ],
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                '${index + 1}',
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Text(
-                                            item['page'] != null ? 'ص ${item['page']}' : '',
-                                            style: TextStyle(
-                                              color: isActive ? typeColor : Colors.grey,
-                                              fontSize: 12,
-                                              fontFamily: 'Vazir',
-                                            ),
-                                            textDirection: TextDirection.rtl,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            IconButton(
-                              icon: Icon(
-                                Icons.arrow_back_ios,
-                                color: _currentStep == 0 ? Colors.grey : Colors.amber,
-                              ),
-                              onPressed: () => _previousStep(_metadata['podman_id'] ?? 1),
-                            ),
-                            Text(
-                              'مرحله ${_currentStep + 1} از ${_timelineData.length}',
-                              style: const TextStyle(
-                                color: Colors.amber,
-                                fontSize: 16,
-                                fontFamily: 'Vazir',
-                              ),
-                              textAlign: TextAlign.right,
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                Icons.arrow_forward_ios,
-                                color: _currentStep == _timelineData.length - 1 ? Colors.grey : Colors.amber,
-                              ),
-                              onPressed: () => _nextStep(_metadata['podman_id'] ?? 1),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        _buildTimelineItem(_timelineData[_currentStep]),
-                        // Chatbot Section
-                        const SizedBox(height: 16),
-                        Card(
-                          elevation: 8,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.grey[900]!.withOpacity(0.95),
-                                  Colors.grey[800]!.withOpacity(0.85),
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.amber.withOpacity(0.3),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 0),
+                                  ),
                                 ),
                               ],
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                const Directionality(
-                                  textDirection: TextDirection.rtl,
-                                  child: Text(
-                                    'آموزش صوتی',
-                                    style: TextStyle(
+                            const SizedBox(height: 24),
+                            if (_isLoading)
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: Container(
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[900]!
+                                        .withOpacity(0.9),
+                                    borderRadius:
+                                    BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color:
+                                        Colors.black.withOpacity(0.2),
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 5),
+                                      ),
+                                    ],
+                                  ),
+                                  child: const CircularProgressIndicator(
+                                    color: Colors.amber,
+                                    strokeWidth: 5,
+                                  ),
+                                ),
+                              )
+                            else if (_timelineData.isNotEmpty) ...[
+                              Container(
+                                height: 90,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  controller: _timelineController,
+                                  physics:
+                                  const AlwaysScrollableScrollPhysics(),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8),
+                                  itemCount: _timelineData.length,
+                                  itemBuilder: (context, index) {
+                                    final item = _timelineData[index];
+                                    final isActive =
+                                        index <= _currentStep;
+                                    final typeColor =
+                                    _getTypeColor(item['type']);
+
+                                    return Padding(
+                                      padding: EdgeInsets.only(
+                                        left: index == 0 ? 8 : 0,
+                                        right: index ==
+                                            _timelineData.length - 1
+                                            ? 8
+                                            : 0,
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          if (index > 0) ...[
+                                            Container(
+                                              width: 30,
+                                              height: 3,
+                                              color: isActive
+                                                  ? typeColor
+                                                  : Colors.grey[600],
+                                              margin:
+                                              const EdgeInsets.only(
+                                                  bottom: 28,
+                                                  right: 6,
+                                                  left: 6),
+                                            ),
+                                          ],
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                _currentStep = index;
+                                              });
+                                              _scrollToCurrentStep();
+                                              _saveProgress(_metadata[
+                                              'podman_id'] ??
+                                                  1);
+                                              _saveCurrentStep(_metadata[
+                                              'podman_id'] ??
+                                                  1);
+                                            },
+                                            child: ScaleTransition(
+                                              scale: Tween<double>(
+                                                  begin: 1.0,
+                                                  end: 1.2)
+                                                  .animate(
+                                                CurvedAnimation(
+                                                  parent:
+                                                  _animationController,
+                                                  curve: Curves.easeInOut,
+                                                ),
+                                              ),
+                                              child: Column(
+                                                mainAxisSize:
+                                                MainAxisSize.min,
+                                                children: [
+                                                  Container(
+                                                    width: 35,
+                                                    height: 35,
+                                                    decoration:
+                                                    BoxDecoration(
+                                                      color: isActive
+                                                          ? typeColor
+                                                          : Colors
+                                                          .grey[600],
+                                                      shape:
+                                                      BoxShape.circle,
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: isActive
+                                                              ? typeColor
+                                                              .withOpacity(
+                                                              0.8)
+                                                              : Colors
+                                                              .grey
+                                                              .withOpacity(
+                                                              0.5),
+                                                          blurRadius: 10,
+                                                          offset:
+                                                          const Offset(
+                                                              0, 2),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        '${index + 1}',
+                                                        style:
+                                                        const TextStyle(
+                                                          color: Colors
+                                                              .white,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                          FontWeight
+                                                              .w700,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                      height: 6),
+                                                  Text(
+                                                    item['page'] != null
+                                                        ? 'ص ${item['page']}'
+                                                        : '',
+                                                    style: TextStyle(
+                                                      color: isActive
+                                                          ? typeColor
+                                                          : Colors
+                                                          .grey[500],
+                                                      fontSize: 12,
+                                                      fontFamily: 'Vazir',
+                                                      fontWeight:
+                                                      FontWeight.w600,
+                                                    ),
+                                                    textDirection:
+                                                    TextDirection.rtl,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 24),
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.arrow_back_ios_rounded,
+                                      color: _currentStep == 0
+                                          ? Colors.grey[500]
+                                          : Colors.amber,
+                                      size: 24,
+                                    ),
+                                    onPressed: () => _previousStep(
+                                        _metadata['podman_id'] ?? 1),
+                                  ),
+                                  Text(
+                                    'مرحله ${_currentStep + 1} از ${_timelineData.length}',
+                                    style: const TextStyle(
                                       color: Colors.amber,
                                       fontSize: 18,
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.w600,
                                       fontFamily: 'Vazir',
                                     ),
+                                    textAlign: TextAlign.right,
                                   ),
-                                ),
-                                const SizedBox(height: 12),
-                                Directionality(
-                                  textDirection: TextDirection.rtl,
-                                  child: TextField(
-                                    controller: _textController,
-                                    textDirection: TextDirection.rtl,
-                                    decoration: InputDecoration(
-                                      hintText: 'متن خود را وارد کنید یا برای مبحث جاری خالی بگذارید',
-                                      hintStyle: TextStyle(
-                                        color: Colors.grey[500],
-                                        fontFamily: 'Vazir',
-                                      ),
-                                      filled: true,
-                                      fillColor: Colors.grey[850],
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                      contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                        vertical: 12,
-                                      ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: _currentStep ==
+                                          _timelineData.length - 1
+                                          ? Colors.grey[500]
+                                          : Colors.amber,
+                                      size: 24,
                                     ),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Vazir',
-                                    ),
-                                    maxLines: 2,
+                                    onPressed: () => _nextStep(
+                                        _metadata['podman_id'] ?? 1),
                                   ),
-                                ),
-                                const SizedBox(height: 12),
-                                Center(
-                                  child: _ttsService.isProcessing
-                                      ? Column(
-                                    children: [
-                                      Container(
-                                        width: 100,
-                                        height: 100,
+                                ],
+                              ),
+                              _buildTimelineItem(
+                                  _timelineData[_currentStep]),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              // Lottie and Image Display
+                              if (_ttsService.isProcessing)
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Center(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.circular(10),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black
+                                                .withOpacity(0.2),
+                                            blurRadius: 10,
+                                            offset: const Offset(0, 5),
+                                          ),
+                                        ],
+                                      ),
+                                      child: SizedBox(
+                                        height: 150,
                                         child: Lottie.asset(
                                           'assets/lottie/loading.json',
                                           fit: BoxFit.contain,
                                         ),
                                       ),
-                                      if (_ttsService.currentText.isNotEmpty) ...[
-                                        const SizedBox(height: 8),
-                                        Container(
-                                          padding: const EdgeInsets.all(12),
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey[850],
-                                            borderRadius: BorderRadius.circular(15),
-                                          ),
-                                          child: Directionality(
-                                            textDirection: TextDirection.rtl,
-                                            child: Text(
-                                              _ttsService.currentText,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14,
-                                                fontFamily: 'Vazir',
-                                              ),
-                                              textAlign: TextAlign.right,
-                                            ),
+                                    ),
+                                  ),
+                                )
+                              else if (_ttsService.selectedMode ==
+                                  'teaching' &&
+                                  _ttsService.isPlaying)
+                                Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors.greenAccent.shade400,
+                                        Colors.blueAccent.shade400,
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    borderRadius:
+                                    BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color:
+                                        Colors.red.withOpacity(0.3),
+                                        blurRadius: 12,
+                                        offset: const Offset(0, 5),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                    children: [
+                                      ScaleTransition(
+                                        scale: Tween<double>(
+                                            begin: 1.0, end: 1.50)
+                                            .animate(
+                                          CurvedAnimation(
+                                            parent: _animationController,
+                                            curve: Curves.easeInOut,
                                           ),
                                         ),
-                                      ],
-                                    ],
-                                  )
-                                      : _ttsService.isPlaying
-                                      ? Column(
-                                    children: [
-                                      Container(
-                                        width: 100,
-                                        height: 100,
-                                        child: Lottie.asset(
-                                          'assets/lottie/speaking.json',
-                                          fit: BoxFit.contain,
+                                        child: Container(
+                                          width: 100,
+                                          height: 100,
+                                          child: Lottie.asset(
+                                            'assets/lottie/speaking.json',
+                                            fit: BoxFit.contain,
+                                            repeat: true,
+                                          ),
                                         ),
                                       ),
-                                      const SizedBox(height: 8),
-                                      GestureDetector(
-                                        onTap: _stopTeaching,
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                          decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                Colors.red,
-                                                Colors.red.shade700,
-                                              ],
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
+                                      Center(
+                                        child: ScaleTransition(
+                                          scale: Tween<double>(
+                                              begin: 1.0, end: 0.95)
+                                              .animate(
+                                            CurvedAnimation(
+                                              parent:
+                                              _animationController,
+                                              curve: Curves.easeInOut,
                                             ),
-                                            borderRadius: BorderRadius.circular(15),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.red.withOpacity(0.5),
-                                                blurRadius: 8,
-                                                offset: const Offset(0, 4),
-                                              ),
-                                            ],
                                           ),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              const Icon(
+                                          child: GestureDetector(
+                                            onTap: _stopTeaching,
+                                            child: Container(
+                                              padding:
+                                              const EdgeInsets.all(
+                                                  12),
+                                              decoration: BoxDecoration(
+                                                color:
+                                                Colors.red.shade700,
+                                                shape: BoxShape.circle,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.red
+                                                        .withOpacity(0.5),
+                                                    blurRadius: 10,
+                                                    offset: const Offset(
+                                                        0, 3),
+                                                  ),
+                                                ],
+                                              ),
+                                              child: const Icon(
                                                 Icons.stop,
                                                 color: Colors.white,
                                                 size: 24,
                                               ),
-                                              const SizedBox(width: 8),
-                                              const Text(
-                                                'توقف',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: 'Vazir',
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      if (_ttsService.currentText.isNotEmpty) ...[
-                                        const SizedBox(height: 8),
-                                        Container(
-                                          padding: const EdgeInsets.all(12),
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey[850],
-                                            borderRadius: BorderRadius.circular(15),
-                                          ),
-                                          child: Directionality(
-                                            textDirection: TextDirection.rtl,
-                                            child: Text(
-                                              _ttsService.currentText,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14,
-                                                fontFamily: 'Vazir',
-                                              ),
-                                              textAlign: TextAlign.right,
                                             ),
                                           ),
                                         ),
-                                      ],
+                                      ),
                                     ],
-                                  )
-                                      : GestureDetector(
-                                    onTap: _startTeaching,
-                                    child: AnimatedContainer(
-                                      duration: const Duration(milliseconds: 200),
-                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                  ),
+                                )
+                              else if (_ttsService.selectedMode ==
+                                    'image' &&
+                                    _ttsService.generatedImageUrl != null)
+                                  Center(
+                                    child: Container(
+                                      padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            Colors.amber,
-                                            Colors.amber.shade700,
-                                          ],
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                        ),
-                                        borderRadius: BorderRadius.circular(15),
+                                        color: Colors.blueAccent,
+                                        borderRadius:
+                                        BorderRadius.circular(10),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.amber.withOpacity(0.5),
-                                            blurRadius: 8,
-                                            offset: const Offset(0, 4),
+                                            color: Colors.black
+                                                .withOpacity(0.2),
+                                            blurRadius: 10,
+                                            offset: const Offset(0, 5),
                                           ),
                                         ],
                                       ),
-                                      transform: Matrix4.identity(),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.end,
                                         children: [
-                                          const Icon(
-                                            Icons.play_arrow,
-                                            color: Colors.white,
-                                            size: 24,
-                                          ),
-                                          const SizedBox(width: 8),
-                                          const Text(
-                                            'شروع آموزش',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: 'Vazir',
+                                          ClipRRect(
+                                            borderRadius:
+                                            BorderRadius.circular(8),
+                                            child: Image.network(
+                                              _ttsService
+                                                  .generatedImageUrl!,
+                                              height: 220,
+                                              width: 220,
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (context, error,
+                                                  stackTrace) {
+                                                return Container(
+                                                  height: 220,
+                                                  width: 220,
+                                                  color: Colors.grey[850],
+                                                  child: const Center(
+                                                    child: Text(
+                                                      'خطا در بارگذاری تصویر',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 16,
+                                                        fontFamily: 'Vazir',
+                                                        fontWeight:
+                                                        FontWeight.w500,
+                                                      ),
+                                                      textDirection:
+                                                      TextDirection.rtl,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(height: 12),
-                                Directionality(
-                                  textDirection: TextDirection.rtl,
-                                  child: Text(
-                                    'وضعیت: ${_ttsService.status}',
-                                    style: TextStyle(
-                                      color: Colors.grey[400],
-                                      fontSize: 14,
-                                      fontFamily: 'Vazir',
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                              Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: _buildAIInputBar()
+                              )
+                            ],
+                          ],
                         ),
-                      ],
-                    ],
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ],
@@ -872,228 +1215,248 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen> {
     final typeColor = _getTypeColor(item['type'] ?? '');
 
     return Card(
-      elevation: 8,
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      elevation: 0,
+      margin: const EdgeInsets.symmetric(vertical: 10),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
       ),
       child: Container(
         width: double.infinity,
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Colors.grey[900]!.withOpacity(0.95),
-              Colors.grey[800]!.withOpacity(0.85),
+              Colors.grey[900]!.withOpacity(0.9),
+              Colors.grey[850]!.withOpacity(0.85),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: typeColor.withOpacity(0.3),
+            width: 1,
+          ),
           boxShadow: [
             BoxShadow(
-              color: typeColor.withOpacity(0.7),
-              blurRadius: 10,
-              offset: const Offset(0, 0),
+              color: typeColor.withOpacity(0.2),
+              blurRadius: 15,
+              offset: const Offset(0, 5),
             ),
           ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              if (item['type'] != null) ...[
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: typeColor.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: Text(
-                      item['type'] ?? '',
-                      style: TextStyle(
-                        color: typeColor,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Vazir',
-                      ),
-                    ),
-                  ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            if (item['type'] != null) ...[
+              Container(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                decoration: BoxDecoration(
+                  color: typeColor.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                const SizedBox(height: 12),
-              ],
-              if (item['title'] != null) ...[
-                Directionality(
+                child: Directionality(
                   textDirection: TextDirection.rtl,
                   child: Text(
-                    item['title'] ?? '',
+                    item['type'] ?? '',
                     style: TextStyle(
                       color: typeColor,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
                       fontFamily: 'Vazir',
                     ),
-                    textAlign: TextAlign.right,
                   ),
                 ),
-                const SizedBox(height: 12),
-              ],
-              if (item['content'] != null) ...[
-                Text(
-                  item['content'] ?? '',
+              ),
+              const SizedBox(height: 16),
+            ],
+            if (item['type'] != null) ...[
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: Text(
+                  item['title'] ?? '',
                   style: TextStyle(
-                    color: Colors.grey[300],
-                    fontSize: 14,
+                    color: typeColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
                     fontFamily: 'Vazir',
                   ),
-                  textDirection: TextDirection.rtl,
                   textAlign: TextAlign.right,
                 ),
-              ],
-              if (item['components'] != null && (item['components'] as Map<String, dynamic>).isNotEmpty) ...[
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: typeColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Text(
-                    textDirection: TextDirection.rtl,
-                    'اجزاء',
-                    style: TextStyle(
-                      color: Colors.amber,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Vazir',
-                    ),
+              ),
+              const SizedBox(height: 16),
+            ],
+            if (item['content'] != null) ...[
+              Text(
+                item['content'] ?? '',
+                style: TextStyle(
+                  color: Colors.grey[300],
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'Vazir',
+                ),
+                textDirection: TextDirection.rtl,
+                textAlign: TextAlign.right,
+              ),
+            ],
+            if (item['components'] != null &&
+                (item['components'] as Map<String, dynamic>).isNotEmpty) ...[
+              const SizedBox(height: 20),
+              Container(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                decoration: BoxDecoration(
+                  color: typeColor.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: const Text(
+                  textDirection: TextDirection.rtl,
+                  'اجزاء',
+                  style: TextStyle(
+                    color: Colors.amber,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Vazir',
                   ),
                 ),
-                const SizedBox(height: 8),
-                ...(item['components'] as Map<String, dynamic>).entries.map((entry) => Container(
-                  margin: const EdgeInsets.only(top: 8),
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: typeColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Text(
-                    textDirection: TextDirection.rtl,
-                    '${entry.key}: ${entry.value}',
-                    style: TextStyle(
-                      color: Colors.grey[300],
-                      fontSize: 14,
-                      fontFamily: 'Vazir',
-                    ),
-                  ),
-                )).toList(),
-              ],
-              if (item['activity'] != null && (item['activity']['مسئله'] != null || item['activity']['پاسخ'] != null)) ...[
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: typeColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    'فعالیت',
-                    textDirection: TextDirection.rtl,
-                    style: TextStyle(
-                      color: Colors.amber,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Vazir',
-                    ),
+              ),
+              const SizedBox(height: 12),
+              ...(item['components'] as Map<String, dynamic>)
+                  .entries
+                  .map((entry) => Container(
+                margin: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: typeColor.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  textDirection: TextDirection.rtl,
+                  '${entry.key}: ${entry.value}',
+                  style: TextStyle(
+                    color: Colors.grey[300],
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'Vazir',
                   ),
                 ),
-                const SizedBox(height: 8),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: typeColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(10),
+              ))
+                  .toList(),
+            ],
+            if (item['activity'] != null &&
+                (item['activity']['مسئله'] != null ||
+                    item['activity']['پاسخ'] != null)) ...[
+              const SizedBox(height: 20),
+              Container(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                decoration: BoxDecoration(
+                  color: typeColor.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Text(
+                  'فعالیت',
+                  textDirection: TextDirection.rtl,
+                  style: TextStyle(
+                    color: Colors.amber,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Vazir',
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      if (item['activity']['مسئله'] != null) ...[
-                        Text(
-                          item['activity']['مسئله'],
+                ),
+              ),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: typeColor.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    if (item['activity']['مسئله'] != null) ...[
+                      Text(
+                        item['activity']['مسئله'],
+                        style: TextStyle(
+                          color: Colors.grey[300],
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Vazir',
+                        ),
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.right,
+                      ),
+                    ],
+                    if (item['activity']['پاسخ'] != null) ...[
+                      const SizedBox(height: 12),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: typeColor.withOpacity(0.25),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          textDirection: TextDirection.rtl,
+                          'پاسخ: ${item['activity']['پاسخ']}',
                           style: TextStyle(
-                            color: Colors.grey[300],
+                            color: Colors.grey[400],
                             fontSize: 14,
+                            fontWeight: FontWeight.w400,
                             fontFamily: 'Vazir',
                           ),
-                          textDirection: TextDirection.rtl,
-                          textAlign: TextAlign.right,
                         ),
-                      ],
-                      if (item['activity']['پاسخ'] != null) ...[
-                        const SizedBox(height: 8),
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: typeColor.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            textDirection: TextDirection.rtl,
-                            'پاسخ: ${item['activity']['پاسخ']}',
-                            style: TextStyle(
-                              color: Colors.grey[400],
-                              fontSize: 12,
-                              fontFamily: 'Vazir',
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ],
-                  ),
+                  ],
                 ),
-              ],
-              if (item['questions'] != null && (item['questions'] as List).isNotEmpty) ...[
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: typeColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Text(
-                    textDirection: TextDirection.rtl,
-                    'سوالات',
-                    style: TextStyle(
-                      color: Colors.amber,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Vazir',
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                ...(item['questions'] as List).map<Widget>((question) => Container(
-                  margin: const EdgeInsets.only(top: 8),
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: typeColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Text(
-                    textDirection: TextDirection.rtl,
-                    question['text'] ?? '',
-                    style: TextStyle(
-                      color: Colors.grey[300],
-                      fontSize: 14,
-                      fontFamily: 'Vazir',
-                    ),
-                  ),
-                )).toList(),
-              ],
+              ),
             ],
-          ),
+            if (item['questions'] != null &&
+                (item['questions'] as List).isNotEmpty) ...[
+              const SizedBox(height: 20),
+              Container(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                decoration: BoxDecoration(
+                  color: typeColor.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: const Text(
+                  textDirection: TextDirection.rtl,
+                  'سوالات',
+                  style: TextStyle(
+                    color: Colors.amber,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Vazir',
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              ...(item['questions'] as List)
+                  .map<Widget>((question) => Container(
+                margin: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: typeColor.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  textDirection: TextDirection.rtl,
+                  question['text'] ?? '',
+                  style: TextStyle(
+                    color: Colors.grey[300],
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'Vazir',
+                  ),
+                ),
+              ))
+                  .toList(),
+            ],
+          ],
         ),
       ),
     );
@@ -1104,18 +1467,52 @@ class DotsPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.amber.withOpacity(0.2)
+      ..color = Colors.amber.withOpacity(0.25)
       ..style = PaintingStyle.fill;
 
     final random = Random(42);
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 60; i++) {
       final x = random.nextDouble() * size.width;
       final y = random.nextDouble() * size.height;
-      final radius = random.nextDouble() * 5 + 2;
+      final radius = random.nextDouble() * 6 + 3;
       canvas.drawCircle(Offset(x, y), radius, paint);
     }
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class WaveformPainter extends CustomPainter {
+  final AnimationController controller;
+
+  WaveformPainter(this.controller) : super(repaint: controller);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.amber.withOpacity(0.8)
+      ..style = PaintingStyle.fill;
+
+    final double barWidth = 4;
+    final double spacing = 2;
+    final int barCount = (size.width / (barWidth + spacing)).floor();
+    final double maxHeight = size.height;
+
+    for (int i = 0; i < barCount; i++) {
+      final double t = (controller.value + i / barCount) % 1.0;
+      final double height = maxHeight * (0.3 + 0.7 * sin(t * 2 * pi).abs());
+      final double x = i * (barWidth + spacing);
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(x, (size.height - height) / 2, barWidth, height),
+          const Radius.circular(2),
+        ),
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }

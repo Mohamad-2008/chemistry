@@ -5,7 +5,7 @@ import 'package:periodic_table_app/features/periodic_table/presentation/widgets/
 import 'package:periodic_table_app/features/periodic_table/presentation/widgets/settings_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// مپ ترجمه دسته بندی ها
+// مپ ترجمه دسته‌بندی‌ها
 const Map<String, String> categoryTranslations = {
   'diatomic nonmetal': 'نافلز دواتمی',
   'noble gas': 'گاز نجیب',
@@ -17,7 +17,6 @@ const Map<String, String> categoryTranslations = {
   'transition metal': 'فلز واسطه',
   'lanthanide': 'لانتانید',
   'actinide': 'اکتینید',
-  // افزودن سایر دسته بندی ها در صورت نیاز
 };
 
 class PeriodicTableProvider with ChangeNotifier {
@@ -36,7 +35,14 @@ class PeriodicTableProvider with ChangeNotifier {
   int? _currentMinNumber;
   int? _currentMaxNumber;
   String _currentRoute = '/';
+  String? _userName;
+  String? _fieldOfStudy;
+  String? _educationLevel;
+  String? _chemistryKnowledgeLevel;
+  List<String> _scientificInterests = [];
+  String? _educationalGoal;
 
+  // Getters
   List<ElementModel> get elements => _elementsToDisplay;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
@@ -50,34 +56,34 @@ class PeriodicTableProvider with ChangeNotifier {
   int? get currentMinNumber => _currentMinNumber;
   int? get currentMaxNumber => _currentMaxNumber;
   String get currentRoute => _currentRoute;
+  String? get userName => _userName;
+  String? get fieldOfStudy => _fieldOfStudy;
+  String? get educationLevel => _educationLevel;
+  String? get chemistryKnowledgeLevel => _chemistryKnowledgeLevel;
+  List<String> get scientificInterests => _scientificInterests;
+  String? get educationalGoal => _educationalGoal;
 
-  // تغییر Getter برای برگرداندن لیست مپ ها با کلید و متن نمایشی
   List<Map<String, String>> get categories {
     if (_allElements.isEmpty) return [{'key': 'All', 'display': 'همه انواع (All)'}];
 
-    final categoriesSet = <String>{}; // فقط کلیدهای انگلیسی
+    final categoriesSet = <String>{};
     for (var element in _allElements) {
-      if (element.number != 0 && 
-          !element.category.toLowerCase().contains('unknown') && 
-          !element.category.toLowerCase().contains('predicted') && 
-          !element.category.toLowerCase().contains('probably') && 
+      if (element.number != 0 &&
+          !element.category.toLowerCase().contains('unknown') &&
+          !element.category.toLowerCase().contains('predicted') &&
+          !element.category.toLowerCase().contains('probably') &&
           element.category != 'n/a') {
         categoriesSet.add(element.category);
       }
     }
 
-    // تبدیل به لیست مپ ها
     final categoryList = categoriesSet.map((key) {
-       final translation = categoryTranslations[key] ?? key; // اگر ترجمه نبود، خود کلید انگلیسی
-       return {'key': key, 'display': '$translation ($key)'};
-     }).toList();
+      final translation = categoryTranslations[key] ?? key;
+      return {'key': key, 'display': '$translation ($key)'};
+    }).toList();
 
-    // مرتب سازی بر اساس کلید انگلیسی (اختیاری)
     categoryList.sort((a, b) => a['key']!.compareTo(b['key']!));
-
-    // اضافه کردن گزینه "همه"
     categoryList.insert(0, {'key': 'All', 'display': 'همه انواع (All)'});
-
     return categoryList;
   }
 
@@ -165,15 +171,15 @@ class PeriodicTableProvider with ChangeNotifier {
       ElementModel? lanthanidePlaceholder;
       ElementModel? actinidePlaceholder;
       for (final p in placeholders) {
-           if (p.symbol == '57-71') {
-               lanthanidePlaceholder = p;
-           } else if (p.symbol == '89-103') {
-               actinidePlaceholder = p;
-           }
-           if (lanthanidePlaceholder != null && actinidePlaceholder != null) {
-               break; // هر دو پیدا شدند، نیازی به ادامه حلقه نیست
-           }
-       }
+        if (p.symbol == '57-71') {
+          lanthanidePlaceholder = p;
+        } else if (p.symbol == '89-103') {
+          actinidePlaceholder = p;
+        }
+        if (lanthanidePlaceholder != null && actinidePlaceholder != null) {
+          break;
+        }
+      }
 
       final lanthanumIndex = result.indexWhere((el) => el.symbol == 'La');
       if (lanthanumIndex != -1 && lanthanidePlaceholder != null) {
@@ -227,7 +233,6 @@ class PeriodicTableProvider with ChangeNotifier {
 
   void sortElements(String sortBy) {
     _currentSort = sortBy;
-    
     switch (sortBy) {
       case 'name':
         _elementsToDisplay.sort((a, b) => a.name.compareTo(b.name));
@@ -239,7 +244,6 @@ class PeriodicTableProvider with ChangeNotifier {
         _elementsToDisplay.sort((a, b) => a.category.compareTo(b.category));
         break;
     }
-    
     notifyListeners();
   }
 
@@ -270,6 +274,34 @@ class PeriodicTableProvider with ChangeNotifier {
 
   void setCurrentRoute(String route) {
     _currentRoute = route;
+    notifyListeners();
+  }
+
+  Future<void> loadUserProfile() async {
+    final prefs = await SharedPreferences.getInstance();
+    _userName = prefs.getString('user_name');
+    _fieldOfStudy = prefs.getString('field_of_study');
+    _educationLevel = prefs.getString('education_level');
+    _chemistryKnowledgeLevel = prefs.getString('chemistry_knowledge_level');
+    _scientificInterests = prefs.getStringList('scientific_interests') ?? [];
+    _educationalGoal = prefs.getString('educational_goal');
+    notifyListeners();
+  }
+
+  void updateUserProfile({
+    String? userName,
+    String? fieldOfStudy,
+    String? educationLevel,
+    String? chemistryKnowledgeLevel,
+    List<String>? scientificInterests,
+    String? educationalGoal,
+  }) {
+    _userName = userName ?? _userName;
+    _fieldOfStudy = fieldOfStudy ?? _fieldOfStudy;
+    _educationLevel = educationLevel ?? _educationLevel;
+    _chemistryKnowledgeLevel = chemistryKnowledgeLevel ?? _chemistryKnowledgeLevel;
+    _scientificInterests = scientificInterests ?? _scientificInterests;
+    _educationalGoal = educationalGoal ?? _educationalGoal;
     notifyListeners();
   }
 }
