@@ -134,25 +134,19 @@ class _ProfileScreenState extends State<ProfileScreen>
           onPressed: () => Navigator.pop(context),
         ),
         Expanded(
-          child: Text(
-            'پروفایل کاربری${provider.userName != null ? ': ${provider.userName}' : ''}',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Vazir',
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              'خوش امدید ${provider.userName != null ? ' ${provider.userName} :' : ''}',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Vazir',
+              ),
+              textDirection: TextDirection.rtl,
+              textAlign: TextAlign.right,
             ),
-            textDirection: TextDirection.rtl,
-            textAlign: TextAlign.right,
-          ),
-        ),
-        CircleAvatar(
-          radius: 30,
-          backgroundColor: Colors.blueAccent.withOpacity(0.3),
-          child: const Icon(
-            Icons.person,
-            size: 40,
-            color: Colors.white,
           ),
         ),
       ],

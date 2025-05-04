@@ -14,52 +14,13 @@ class ChatBotService {
 
   Future<ChatMessageModel> sendMessage(String message, {Map<String, dynamic>? userProfile}) async {
     try {
-      final prompt = element != null
-          ? '''
-شما یک دستیار هوشمند شیمی هستید. کاربر در حال بررسی عنصر ${element!.name} (${element!.symbol}) است.
-لطفاً به سوالات زیر در مورد این عنصر پاسخ دهید، با توجه به اطلاعات کاربر و سطح دانش، هدف آموزشی و علاقه‌مندی‌های او.
-اگر سوال خارج از حوزه شیمی یا این عنصر باشد، توضیح دهید که فقط به سوالات شیمی و در مورد این عنصر پاسخ می‌دهید.
-
-اطلاعات کاربر:
-- نام: ${userProfile?['userName'] ?? 'کاربر ناشناس'}
-- رشته تحصیلی: ${userProfile?['fieldOfStudy'] ?? 'نامشخص'}
-- مقطع تحصیلی: ${userProfile?['educationLevel'] ?? 'نامشخص'}
-- سطح دانش شیمی: ${userProfile?['chemistryKnowledgeLevel'] ?? 'مبتدی'}
-- هدف آموزشی: ${userProfile?['educationalGoal'] ?? 'یادگیری عمومی'}
-- علاقه‌مندی‌های علمی: ${userProfile?['scientificInterests'] ?? 'هیچ‌کدام'}
-
-اطلاعات عنصر:
-- نام: ${element!.name}
-- نماد: ${element!.symbol}
-- عدد اتمی: ${element!.number}
-- جرم اتمی: ${element!.atomicMass}
-- دسته‌بندی: ${element!.category}
-- گروه: ${element!.xpos}
-- دوره: ${element!.ypos}
-- فاز: ${element!.phase}
-- خلاصه: ${element!.summary}
-
-سوال: $message
-'''
-          : '''
-شما یک دستیار هوشمند شیمی هستید. لطفاً به سوالات زیر فقط در زمینه شیمی پاسخ دهید، با توجه به اطلاعات کاربر و سطح دانش، هدف آموزشی و علاقه‌مندی‌های او.
-اگر سوال خارج از حوزه شیمی باشد، توضیح دهید که فقط به سوالات شیمی پاسخ می‌دهید.
-
-اطلاعات کاربر:
-- نام: ${userProfile?['userName'] ?? 'کاربر ناشناس'}
-- رشته تحصیلی: ${userProfile?['fieldOfStudy'] ?? 'نامشخص'}
-- مقطع تحصیلی: ${userProfile?['educationLevel'] ?? 'نامشخص'}
-- سطح دانش شیمی: ${userProfile?['chemistryKnowledgeLevel'] ?? 'مبتدی'}
-- هدف آموزشی: ${userProfile?['educationalGoal'] ?? 'یادگیری عمومی'}
-- علاقه‌مندی‌های علمی: ${userProfile?['scientificInterests'] ?? 'هیچ‌کدام'}
-
-سوال: $message
-''';
-
+      // ساخت پرامپت با استفاده از تابع جداگانه
+      final prompt = _buildPersonalizedPrompt(message, userProfile);
       // محدود کردن طول پرامپت به 1000 کاراکتر
       final trimmedPrompt = prompt.length > 1000 ? prompt.substring(0, 1000) : prompt;
 
       print('Sending request to Pollinations AI... Prompt: $trimmedPrompt');
+      print('UserProfile: $userProfile');
       final response = await _dio.post(
         _baseUrl,
         options: Options(
@@ -87,7 +48,10 @@ class ChatBotService {
           text = response.data;
         } else if (response.data is Map && response.data['text'] != null) {
           text = response.data['text'];
-        } else if (response.data is Map && response.data['messages'] != null && response.data['messages'] is List && response.data['messages'].isNotEmpty) {
+        } else if (response.data is Map &&
+            response.data['messages'] != null &&
+            response.data['messages'] is List &&
+            response.data['messages'].isNotEmpty) {
           text = response.data['messages'].last['content'] ?? 'متاسفم، پاسخی دریافت نشد.';
         } else {
           text = 'متاسفم، پاسخی دریافت نشد.';
@@ -109,5 +73,53 @@ class ChatBotService {
         authorId: 'bot',
       );
     }
+  }
+
+  String _buildPersonalizedPrompt(String message, Map<String, dynamic>? userProfile) {
+    // ساخت اطلاعات کاربر با مقادیر پیش‌فرض
+    String userInfo = userProfile != null
+        ? '''
+اطلاعات کاربر:
+- نام: ${userProfile['userName'] ?? 'کاربر ناشناس'}
+- رشته تحصیلی: ${userProfile['fieldOfStudy'] ?? 'نامشخص'}
+- مقطع تحصیلی: ${userProfile['educationLevel'] ?? 'نامشخص'}
+- سطح دانش شیمی: ${userProfile['chemistryKnowledgeLevel'] ?? 'مبتدی'}
+- هدف آموزشی: ${userProfile['educationalGoal'] ?? 'یادگیری عمومی'}
+- علاقه‌مندی‌های علمی: ${userProfile['scientificInterests'] ?? 'هیچ‌کدام'}
+'''
+        : 'اطلاعات کاربر در دسترس نیست.';
+
+    // ساخت پرامپت بر اساس وجود یا عدم وجود عنصر
+    String instruction = element != null
+        ? '''
+شما یک دستیار هوشمند شیمی هستید. کاربر در حال بررسی عنصر ${element!.name} (${element!.symbol}) است.
+لطفاً به سوالات زیر در مورد این عنصر پاسخ دهید، با توجه به اطلاعات کاربر و سطح دانش، هدف آموزشی و علاقه‌مندی‌های او.
+اگر سوال خارج از حوزه شیمی یا این عنصر باشد، توضیح دهید که فقط به سوالات شیمی و در مورد این عنصر پاسخ می‌دهید.
+
+اطلاعات عنصر:
+- نام: ${element!.name}
+- نماد: ${element!.symbol}
+- عدد اتمی: ${element!.number}
+- جرم اتمی: ${element!.atomicMass}
+- دسته‌بندی: ${element!.category}
+- گروه: ${element!.xpos}
+- دوره: ${element!.ypos}
+- فاز: ${element!.phase}
+- خلاصه: ${element!.summary}
+
+$userInfo
+
+سوال: $message
+'''
+        : '''
+شما یک دستیار هوشمند شیمی هستید. لطفاً به سوالات زیر فقط در زمینه شیمی پاسخ دهید، با توجه به اطلاعات کاربر و سطح دانش، هدف آموزشی و علاقه‌مندی‌های او.
+اگر سوال خارج از حوزه شیمی باشد، توضیح دهید که فقط به سوالات شیمی پاسخ می‌دهید.
+
+$userInfo
+
+سوال: $message
+''';
+
+    return instruction;
   }
 }
