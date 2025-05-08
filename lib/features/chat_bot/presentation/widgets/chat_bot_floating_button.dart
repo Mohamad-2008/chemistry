@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:periodic_table_app/features/chat_bot/presentation/screens/chat_bot_screen.dart';
+import 'package:periodic_table_app/core/routes/app_routes.dart';
 
 class ChatBotFloatingButton extends StatefulWidget {
   const ChatBotFloatingButton({super.key});
@@ -51,12 +52,7 @@ class _ChatBotFloatingButtonState extends State<ChatBotFloatingButton> {
             ),
             onPressed: () {
               if (_isExpanded) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ChatBotScreen(),
-                  ),
-                );
+                AppRoutes.navigateToChatBot(context);
               } else {
                 setState(() {
                   _isExpanded = true;

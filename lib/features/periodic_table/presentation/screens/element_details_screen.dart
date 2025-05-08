@@ -4,6 +4,8 @@ import 'package:periodic_table_app/core/utils/color_utils.dart';
 import 'package:periodic_table_app/core/utils/translation_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:periodic_table_app/features/chat_bot/data/services/chat_bot_service.dart';
+import 'package:periodic_table_app/core/routes/app_routes.dart';
+import 'package:periodic_table_app/core/models/element_model.dart';
 
 class ElementDetailsScreen extends StatefulWidget {
   final ElementDetailsModel element;
@@ -751,11 +753,17 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
             child: IconButton(
               icon: const Icon(Icons.compare_arrows, color: Colors.white),
               onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  '/element_search',
-                  arguments: widget.element,
+                final elementModel = ElementModel(
+                  number: widget.element.number,
+                  symbol: widget.element.symbol,
+                  name: widget.element.name,
+                  category: widget.element.category,
+                  xpos: widget.element.xpos,
+                  ypos: widget.element.ypos,
+                  atomicMass: double.tryParse(widget.element.atomicMass) ?? 0.0,
+                  phase: widget.element.phase,
                 );
+                AppRoutes.navigateToElementSearch(context, firstElement: elementModel);
               },
             ),
           ),

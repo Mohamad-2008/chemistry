@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
 import 'package:lottie/lottie.dart';
+import 'package:periodic_table_app/core/routes/app_routes.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -200,7 +201,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               ),
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/profile_setup');
+                  AppRoutes.navigateToProfileSetup(context);
                 },
                 icon: const Icon(Icons.edit, color: Colors.white),
                 label: const Text(
@@ -286,7 +287,7 @@ class _ProfileScreenState extends State<ProfileScreen>
             ..._podmans.map((podman) {
               return GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, podman['route'], arguments: podman['id']);
+                  AppRoutes.navigateToChemistryBook(context, podmanId: podman['id']);
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -461,7 +462,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               icon: Icons.book,
               label: 'دسترسی به پودمان‌ها',
               onTap: () {
-                Navigator.pushNamed(context, '/chemistry_book');
+                AppRoutes.navigateToChemistryBook(context);
               },
             ),
             _buildToolButton(

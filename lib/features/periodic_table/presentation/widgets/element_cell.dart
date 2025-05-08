@@ -3,6 +3,7 @@ import 'package:periodic_table_app/core/constants/app_colors.dart';
 import 'package:periodic_table_app/core/models/element_model.dart';
 import 'package:provider/provider.dart';
 import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
+import 'package:periodic_table_app/core/routes/app_routes.dart';
 
 class ElementCell extends StatefulWidget {
   final ElementModel? element;
@@ -80,11 +81,9 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (_isMounted) {
             provider.selectElement(widget.element);
-            Navigator.pushNamed(
-              context,
-              '/element_details',
-              arguments: widget.element,
-            );
+            if (widget.element != null) {
+              AppRoutes.navigateToElementDetails(context, widget.element!);
+            }
           }
         });
       }

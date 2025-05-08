@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/widgets/custom_snack_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
-import 'package:periodic_table_app/features/chat_bot/presentation/screens/chat_bot_screen.dart';
+import 'package:periodic_table_app/core/routes/app_routes.dart';
 
 class PeriodicTableBottomNav extends StatefulWidget {
   final bool isVisible;
@@ -21,8 +21,6 @@ class PeriodicTableBottomNav extends StatefulWidget {
 }
 
 class _PeriodicTableBottomNavState extends State<PeriodicTableBottomNav> with SingleTickerProviderStateMixin {
-  int _selectedIndex = 0;
-  final List<String> _routes = ['/', '/list', '/charts', '/chat_bot', '/main_menu'];
   late AnimationController _animationController;
   late Animation<double> _animation;
 
@@ -81,23 +79,31 @@ class _PeriodicTableBottomNavState extends State<PeriodicTableBottomNav> with Si
               width: 1,
             ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildNavItem(0, Icons.grid_on),
-              _buildNavItem(1, Icons.format_list_bulleted),
-              _buildNavItem(2, Icons.bar_chart),
-              _buildNavItem(3, Icons.chat_bubble_outline),
-              _buildNavItem(4, Icons.home),
-            ],
+          child: Directionality(
+            textDirection: TextDirection.rtl, // راست‌چین کردن
+            child: Consumer<PeriodicTableProvider>(
+              builder: (context, provider, _) {
+                final selectedIndex = provider.currentNavIndex;
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildNavItem(0, Icons.grid_on, selectedIndex, 'جدول تناوبی'),
+                    _buildNavItem(1, Icons.format_list_bulleted, selectedIndex, 'لیست'),
+                    _buildNavItem(2, Icons.bar_chart, selectedIndex, 'نمودارها'),
+                    _buildNavItem(3, Icons.chat_bubble_outline, selectedIndex, 'چت‌بات'),
+                    _buildNavItem(4, Icons.home, selectedIndex, 'منوی اصلی'),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildNavItem(int index, IconData icon) {
-    final isSelected = _selectedIndex == index;
+  Widget _buildNavItem(int index, IconData icon, int selectedIndex, String label) {
+    final isSelected = selectedIndex == index;
     return GestureDetector(
       onTap: () {
         if (index == 1) {
@@ -108,30 +114,16 @@ class _PeriodicTableBottomNavState extends State<PeriodicTableBottomNav> with Si
           CustomSnackBar.show(context, 'جدول‌ها و نمودارها به زودی اضافه می‌شود!');
           return;
         }
-        setState(() {
-          _selectedIndex = index;
-          _animationController.reset();
-          _animationController.forward();
-        });
         final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
         if (index == 3) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const ChatBotScreen(),
-            ),
-          ).then((_) {
-            setState(() {
-              _selectedIndex = 0;
-              _animationController.reset();
-              _animationController.forward();
-            });
-            final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
-            provider.setCurrentRoute('/');
+          AppRoutes.navigateToChatBot(context).then((_) {
+            provider.setCurrentNavIndex(0); // بازگشت به جدول تناوبی
           });
         } else {
-          provider.setCurrentRoute(_routes[index]);
+          provider.setCurrentNavIndex(index);
         }
+        _animationController.reset();
+        _animationController.forward();
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
@@ -145,8 +137,17 @@ class _PeriodicTableBottomNavState extends State<PeriodicTableBottomNav> with Si
           children: [
             Icon(
               icon,
-              color: isSelected ? Colors.white : Colors.white.withOpacity(0.6),
+              color: isSelected ? Colors.amber : Colors.white.withOpacity(0.6),
               size: 24,
+            ),
+            Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? Colors.amber : Colors.white.withOpacity(0.6),
+                fontSize: 12,
+                fontFamily: 'Vazir',
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
             ),
             if (isSelected)
               Container(

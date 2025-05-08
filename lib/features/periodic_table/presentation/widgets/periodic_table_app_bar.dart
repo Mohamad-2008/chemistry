@@ -5,6 +5,7 @@ import 'package:periodic_table_app/features/periodic_table/presentation/widgets/
 import 'package:provider/provider.dart';
 import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:periodic_table_app/core/routes/app_routes.dart';
 
 class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isVisible;
@@ -109,10 +110,11 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
                         onTap: () async {
                           final prefs = await SharedPreferences.getInstance();
                           final hasProfile = prefs.getString('user_name')?.isNotEmpty ?? false;
-                          Navigator.pushNamed(
-                            context,
-                            hasProfile ? '/profile' : '/profile_setup',
-                          );
+                          if (hasProfile) {
+                            AppRoutes.navigateToProfile(context);
+                          } else {
+                            AppRoutes.navigateToProfileSetup(context);
+                          }
                         },
                         child: Row(
                           children: [

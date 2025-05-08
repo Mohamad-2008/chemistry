@@ -5,13 +5,16 @@ import 'package:periodic_table_app/core/models/element_model.dart';
 import 'package:periodic_table_app/features/periodic_table/data/repositories/periodic_table_repository.dart';
 import 'package:periodic_table_app/core/utils/color_utils.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/widgets/search_type.dart';
+import 'package:periodic_table_app/core/routes/app_routes.dart';
 
 class ElementSearchScreen extends StatefulWidget {
-  final ElementDetailsModel firstElement;
+  final ElementDetailsModel? firstElement;
+  final bool isForComparison;
 
   const ElementSearchScreen({
     Key? key,
-    required this.firstElement,
+    this.firstElement,
+    this.isForComparison = false,
   }) : super(key: key);
 
   @override
@@ -211,7 +214,7 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
                         ? Icon(Icons.check, color: Colors.blue[300])
                         : null,
                     onTap: () {
-    setState(() {
+                      setState(() {
                         _selectedSearchType = type;
                         _searchController.clear();
                         _filterElements('');
@@ -231,7 +234,7 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
   }
 
   Future<void> _filterElements(String query) async {
-      if (query.isEmpty) {
+    if (query.isEmpty) {
       setState(() {
         _filteredElements = List.from(_elements);
         if (_selectedSearchType == SearchType.category || _selectedSearchType == SearchType.phase) {
@@ -321,11 +324,11 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: Colors.grey[900],
-      appBar: AppBar(
+        appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           title: Text(
-            'انتخاب عنصر برای مقایسه',
+            widget.isForComparison ? 'انتخاب عنصر برای مقایسه' : 'جستجوی عنصر',
             style: TextStyle(
               fontFamily: 'Vazir',
               color: Colors.white,
@@ -340,16 +343,16 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
               ],
             ),
           ),
-        centerTitle: true,
+          centerTitle: true,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
             onPressed: () => Navigator.pop(context),
           ),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+        ),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
                   Row(
@@ -367,8 +370,8 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
                               ),
                             ],
                           ),
-            child: TextField(
-              controller: _searchController,
+                          child: TextField(
+                            controller: _searchController,
                             focusNode: _searchFocusNode,
                             onChanged: (value) {
                               _filterElements(value);
@@ -400,7 +403,7 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
                               fontFamily: 'Vazir',
                               fontSize: 16,
                             ),
-              decoration: InputDecoration(
+                            decoration: InputDecoration(
                               hintText: 'جستجوی عنصر بر اساس ${_selectedSearchType.title}...',
                               hintStyle: TextStyle(
                                 fontFamily: 'Vazir',
@@ -410,16 +413,16 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
                                 Icons.search,
                                 color: Colors.white.withOpacity(0.6),
                               ),
-                border: OutlineInputBorder(
+                              border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(16),
                                 borderSide: BorderSide.none,
-                ),
-                filled: true,
+                              ),
+                              filled: true,
                               fillColor: Colors.transparent,
                             ),
-              ),
-            ),
-          ),
+                          ),
+                        ),
+                      ),
                       const SizedBox(width: 8),
                       Container(
                         decoration: BoxDecoration(
@@ -483,9 +486,9 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
                               },
                             );
                           },
-                              ),
-                            ),
-                          ),
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -510,20 +513,51 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
                             child: Material(
                               color: Colors.transparent,
                               child: InkWell(
-                          onTap: () async {
-                            final secondElement = await PeriodicTableRepository()
-                                .getElementDetails(element.symbol);
-                            if (secondElement != null && mounted) {
-                              Navigator.pushReplacementNamed(
-                                context,
-                                '/element_comparison',
-                                arguments: {
-                                  'element1': widget.firstElement,
-                                  'element2': secondElement,
+                                onTap: () async {
+                                  if (widget.isForComparison) {
+                                    final secondElement = await PeriodicTableRepository()
+                                        .getElementDetails(element.symbol);
+                                    if (secondElement != null && mounted) {
+                                      final firstElementModel = ElementModel(
+                                        number: widget.firstElement!.number,
+                                        symbol: widget.firstElement!.symbol,
+                                        name: widget.firstElement!.name,
+                                        category: widget.firstElement!.category,
+                                        xpos: widget.firstElement!.xpos,
+                                        ypos: widget.firstElement!.ypos,
+                                        atomicMass: double.tryParse(widget.firstElement!.atomicMass) ?? 0.0,
+                                        phase: widget.firstElement!.phase,
+                                      );
+                                      final secondElementModel = ElementModel(
+                                        number: secondElement.number,
+                                        symbol: secondElement.symbol,
+                                        name: secondElement.name,
+                                        category: secondElement.category,
+                                        xpos: secondElement.xpos,
+                                        ypos: secondElement.ypos,
+                                        atomicMass: double.tryParse(secondElement.atomicMass) ?? 0.0,
+                                        phase: secondElement.phase,
+                                      );
+                                      AppRoutes.navigateToElementComparison(context, firstElementModel, secondElementModel);
+                                    }
+                                  } else {
+                                    final elementDetails = await PeriodicTableRepository()
+                                        .getElementDetails(element.symbol);
+                                    if (elementDetails != null && mounted) {
+                                      final elementModel = ElementModel(
+                                        number: element.number,
+                                        symbol: element.symbol,
+                                        name: element.name,
+                                        category: element.category,
+                                        xpos: element.xpos,
+                                        ypos: element.ypos,
+                                        atomicMass: element.atomicMass,
+                                        phase: element.phase,
+                                      );
+                                      AppRoutes.navigateToElementDetails(context, elementModel);
+                                    }
+                                  }
                                 },
-                              );
-                            }
-                          },
                                 borderRadius: BorderRadius.circular(16),
                                 child: Container(
                                   padding: const EdgeInsets.all(16),
@@ -602,13 +636,13 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
                                   ),
                                 ),
                               ),
-                        ),
-                      );
-                    },
+                            ),
+                          );
+                        },
                       ),
-                  ),
-          ),
-        ],
+                    ),
+            ),
+          ],
         ),
       ),
     );
