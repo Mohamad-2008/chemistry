@@ -6,6 +6,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:periodic_table_app/features/chat_bot/data/services/chat_bot_service.dart';
 import 'package:periodic_table_app/core/routes/app_routes.dart';
 import 'package:periodic_table_app/core/models/element_model.dart';
+import 'package:provider/provider.dart';
+import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
 
 class ElementDetailsScreen extends StatefulWidget {
   final ElementDetailsModel element;
@@ -194,9 +196,11 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
 
   @override
   Widget build(BuildContext context) {
-    _updateHeights();
-    return Directionality(
-      textDirection: TextDirection.rtl,
+    return WillPopScope(
+      onWillPop: () async {
+        Provider.of<PeriodicTableProvider>(context, listen: false).clearSelectedElement();
+        return true;
+      },
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         floatingActionButton: ScaleTransition(
@@ -763,7 +767,11 @@ class _ElementDetailsScreenState extends State<ElementDetailsScreen>
                   atomicMass: double.tryParse(widget.element.atomicMass) ?? 0.0,
                   phase: widget.element.phase,
                 );
-                AppRoutes.navigateToElementSearch(context, firstElement: elementModel);
+                AppRoutes.navigateToElementSearch(
+                  context,
+                  firstElement: elementModel,
+                  isForComparison: true,
+                );
               },
             ),
           ),

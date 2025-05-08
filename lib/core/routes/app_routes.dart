@@ -20,7 +20,7 @@ class ElementDetailsArgs {
 }
 
 class ElementSearchArgs {
-  final ElementDetailsModel? firstElement;
+  final ElementModel? firstElement;
   final bool isForComparison;
   ElementSearchArgs({this.firstElement, this.isForComparison = false});
 }
@@ -74,22 +74,19 @@ class AppRoutes {
     return Navigator.pushNamed<T>(context, elementDetails, arguments: ElementDetailsArgs(element));
   }
 
-  static Future<T?> navigateToElementSearch<T>(BuildContext context, {ElementModel? firstElement}) async {
-    if (firstElement != null) {
-      final details = await PeriodicTableRepository().getElementDetails(firstElement.symbol);
-      if (details != null) {
-        return Navigator.pushNamed<T>(
-          context, 
-          elementSearch, 
-          arguments: ElementSearchArgs(firstElement: details, isForComparison: true)
-        );
-      }
-      return null;
-    }
-    return Navigator.pushNamed<T>(
-      context, 
-      elementSearch, 
-      arguments: ElementSearchArgs(isForComparison: false)
+  static void navigateToElementSearch(
+    BuildContext context, {
+    ElementModel? firstElement,
+    bool isForComparison = false,
+  }) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ElementSearchScreen(
+          firstElement: firstElement,
+          isForComparison: isForComparison,
+        ),
+      ),
     );
   }
 

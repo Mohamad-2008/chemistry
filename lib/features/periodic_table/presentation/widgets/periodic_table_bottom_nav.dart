@@ -23,7 +23,7 @@ class PeriodicTableBottomNav extends StatefulWidget {
 
 class _PeriodicTableBottomNavState extends State<PeriodicTableBottomNav> with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
-  final List<String> _routes = ['/', '/list', '/charts', '/chat_bot', '/main_menu'];
+  final List<String> _routes = ['/periodic_table', '/list', '/charts', '/chat_bot', '/main_menu'];
   late AnimationController _animationController;
   late Animation<double> _animation;
 
@@ -38,12 +38,33 @@ class _PeriodicTableBottomNavState extends State<PeriodicTableBottomNav> with Si
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
     _animationController.forward();
+    
+    // اضافه کردن listener برای تغییر مسیر
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+      provider.addListener(_handleRouteChange);
+    });
   }
 
   @override
   void dispose() {
+    final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+    provider.removeListener(_handleRouteChange);
     _animationController.dispose();
     super.dispose();
+  }
+
+  void _handleRouteChange() {
+    final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+    final currentRoute = provider.currentRoute;
+    final index = _routes.indexOf(currentRoute);
+    if (index != -1 && index != _selectedIndex) {
+      setState(() {
+        _selectedIndex = index;
+        _animationController.reset();
+        _animationController.forward();
+      });
+    }
   }
 
   @override
@@ -86,7 +107,7 @@ class _PeriodicTableBottomNavState extends State<PeriodicTableBottomNav> with Si
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildNavItem(0, Icons.grid_on),
-              _buildNavItem(1, Icons.format_list_bulleted),
+              _buildNavItem(1, Icons.search),
               _buildNavItem(2, Icons.bar_chart),
               _buildNavItem(3, Icons.chat_bubble_outline),
               _buildNavItem(4, Icons.home),
@@ -102,11 +123,28 @@ class _PeriodicTableBottomNavState extends State<PeriodicTableBottomNav> with Si
     return GestureDetector(
       onTap: () {
         if (index == 1) {
-          CustomSnackBar.show(context, 'لیست اتم‌ها به زودی اضافه می‌شود!');
+          final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+          if (provider.selectedElement != null) {
+            AppRoutes.navigateToElementSearch(context, firstElement: provider.selectedElement!);
+            Future.microtask(() {
+              if (mounted) setState(() {});
+            });
+          } else {
+            AppRoutes.navigateToElementSearch(context);
+            Future.microtask(() {
+              if (mounted) setState(() {});
+            });
+          }
           return;
         }
         if (index == 2) {
-          CustomSnackBar.show(context, 'جدول‌ها و نمودارها به زودی اضافه می‌شود!');
+          setState(() {
+            _selectedIndex = index;
+            _animationController.reset();
+            _animationController.forward();
+          });
+          final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+          provider.setCurrentRoute(_routes[index]);
           return;
         }
         setState(() {
@@ -116,14 +154,15 @@ class _PeriodicTableBottomNavState extends State<PeriodicTableBottomNav> with Si
         });
         final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
         if (index == 3) {
-          AppRoutes.navigateToChatBot(context).then((_) {
+          AppRoutes.navigateToChatBot(context);
+          Future.microtask(() {
             setState(() {
               _selectedIndex = 0;
               _animationController.reset();
               _animationController.forward();
             });
             final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
-            provider.setCurrentRoute('/');
+            provider.setCurrentRoute('/periodic_table');
           });
         } else {
           provider.setCurrentRoute(_routes[index]);

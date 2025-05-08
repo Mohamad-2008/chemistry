@@ -87,41 +87,43 @@ class _SettingsMenuState extends State<SettingsMenu> {
           width: 1,
         ),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: [
-              const Icon(
-                Icons.settings,
-                color: Colors.white,
-                size: 24,
-              ),
-              const SizedBox(width: 8),
-              const Text(
-                'تنظیمات نمایش',
-                style: TextStyle(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                const Icon(
+                  Icons.settings,
                   color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Vazir',
+                  size: 24,
                 ),
-              ),
-              const Spacer(),
-              IconButton(
-                icon: const Icon(
-                  Icons.close,
-                  color: Colors.white70,
-                  size: 20,
+                const SizedBox(width: 8),
+                const Text(
+                  'تنظیمات',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Vazir',
+                  ),
                 ),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ],
-          ),
-          const Divider(color: Colors.white24),
-          const SizedBox(height: 8),
-          ...ThirdItemType.values.map((type) => _buildMenuItem(type)),
-        ],
+                const Spacer(),
+                IconButton(
+                  icon: const Icon(
+                    Icons.close,
+                    color: Colors.white70,
+                    size: 20,
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+            const Divider(color: Colors.white24),
+            const SizedBox(height: 8),
+            ...ThirdItemType.values.map((type) => _buildMenuItem(type)),
+          ],
+        ),
       ),
     );
   }

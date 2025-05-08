@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:periodic_table_app/features/periodic_table/presentation/screens/profile_setup_screen.dart';
-import 'package:periodic_table_app/features/periodic_table/presentation/widgets/custom_snack_bar.dart';
+// import 'package:periodic_table_app/features/periodic_table/presentation/screens/profile_setup_screen.dart';
+// import 'package:periodic_table_app/features/periodic_table/presentation/widgets/custom_snack_bar.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/widgets/settings_menu.dart';
 import 'package:provider/provider.dart';
 import 'package:periodic_table_app/features/periodic_table/providers/periodic_table_provider.dart';
@@ -81,14 +81,14 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
           child: Directionality(
             textDirection: TextDirection.rtl,
             child: AppBar(
-              backgroundColor: Colors.blueGrey[900]!.withOpacity(0.7),
+              backgroundColor: Colors.blueGrey[900]!.withOpacity(0.9),
               elevation: 0,
               flexibleSpace: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Colors.blueGrey[900]!.withOpacity(0.7),
-                      Colors.black.withOpacity(0.5),
+                      Colors.blueGrey[900]!.withOpacity(0.9),
+                      Colors.black.withOpacity(0.7),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -142,7 +142,9 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
                   );
                 },
               )
-                  : const Text(
+                  :
+
+              const Text(
                 'جدول تناوبی',
                 style: TextStyle(
                   color: Colors.white,
@@ -151,8 +153,8 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
                   fontFamily: 'Vazir',
                 ),
               ),
-              centerTitle: false,
-              actions: provider.currentRoute == '/'
+              centerTitle:provider.currentRoute == '/main_menu' ? false : true,
+              actions: provider.currentRoute == '/periodic_table'
                   ? [
                 if (provider.categories.length > 1)
                   IconButton(
@@ -232,12 +234,17 @@ class PeriodicTableAppBar extends StatelessWidget implements PreferredSizeWidget
                   icon: const Icon(Icons.settings, color: Colors.white),
                   onPressed: () => _showSettingsMenu(context),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.search, color: Colors.white),
-                  onPressed: onSearchPressed,
-                ),
               ]
                   : [],
+              leading: provider.currentRoute == '/periodic_table'
+              ? IconButton(
+                icon: const Icon(Icons.search, color: Colors.white),
+                onPressed: onSearchPressed,
+              )
+                : null
+              ,
+              leadingWidth: 70,
+              actionsPadding: const EdgeInsetsDirectional.only(end: 10),
             ),
           ),
         ),

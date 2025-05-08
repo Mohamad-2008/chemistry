@@ -7,9 +7,8 @@ import 'package:periodic_table_app/core/routes/app_routes.dart';
 
 class ElementCell extends StatefulWidget {
   final ElementModel? element;
-  final bool isActive; // پراپرتی جدید برای وضعیت فعال بودن
 
-  const ElementCell({super.key, this.element, required this.isActive});
+  const ElementCell({super.key, this.element});
 
   @override
   _ElementCellState createState() => _ElementCellState();
@@ -59,6 +58,8 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
   Widget build(BuildContext context) {
     final provider = Provider.of<PeriodicTableProvider>(context);
     final isSelected = widget.element != null && widget.element == provider.selectedElement;
+    final isActive = provider.selectedCategoryFilter == 'All' || 
+                    (widget.element != null && widget.element!.category == provider.selectedCategoryFilter);
 
     if (isSelected && !_animationController.isAnimating && _isMounted && _isSearching) {
       _animationController.forward();
@@ -67,52 +68,49 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
       _animationController.reset();
     }
 
-    // برای لانتانیدها و آکتینیدها هیچ عملی انجام نده
     if (widget.element != null && widget.element!.number == 0) {
-      return _buildCellContent();
+      return _buildCellContent(isActive);
     }
 
     return GestureDetector(
       onTap: widget.element != null
           ? () {
-        setState(() {
-          _isSearching = false;
-        });
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (_isMounted) {
-            provider.selectElement(widget.element);
-            if (widget.element != null) {
-              AppRoutes.navigateToElementDetails(context, widget.element!);
+              setState(() {
+                _isSearching = false;
+              });
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (_isMounted && widget.element != null) {
+                  provider.selectElement(widget.element!);
+                  AppRoutes.navigateToElementDetails(context, widget.element!);
+                }
+              });
             }
-          }
-        });
-      }
           : null,
       child: _isSearching && isSelected
           ? AnimatedBuilder(
-        animation: _animationController,
-        builder: (context, child) {
-          return Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.yellow.withOpacity(0.5 * _glowAnimation.value),
-                  blurRadius: 15 * _glowAnimation.value,
-                  spreadRadius: 5 * _glowAnimation.value,
-                ),
-              ],
-            ),
-            child: _buildCellContent(),
-          );
-        },
-      )
-          : _buildCellContent(),
+              animation: _animationController,
+              builder: (context, child) {
+                return Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.yellow.withOpacity(0.5 * _glowAnimation.value),
+                        blurRadius: 15 * _glowAnimation.value,
+                        spreadRadius: 5 * _glowAnimation.value,
+                      ),
+                    ],
+                  ),
+                  child: _buildCellContent(isActive),
+                );
+              },
+            )
+          : _buildCellContent(isActive),
     );
   }
 
-  Widget _buildCellContent() {
+  Widget _buildCellContent(bool isActive) {
     if (widget.element == null) {
       return Container(
         width: 64,
@@ -125,7 +123,6 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
       );
     }
 
-    // برای لانتانیدها و آکتینیدها
     if (widget.element!.number == 0) {
       return Container(
         width: 64,
@@ -163,7 +160,6 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
 
     final provider = Provider.of<PeriodicTableProvider>(context);
     final thirdItemValue = provider.getThirdItemValue(widget.element!);
-    final isSelected = widget.element == provider.selectedElement;
     final categoryColor = _getCategoryColor(widget.element!.category);
 
     return Container(
@@ -171,10 +167,10 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
       height: 64,
       margin: const EdgeInsets.all(2),
       decoration: BoxDecoration(
-        color: widget.isActive ? const Color(0xFF212121) : Colors.grey[700], // خاکستری برای عناصر غیرفعال
+        color: isActive ? const Color(0xFF212121) : const Color(0xFF212121).withOpacity(0.6),
         borderRadius: BorderRadius.circular(4),
         border: Border.all(
-          color: widget.isActive ? categoryColor : Colors.grey[500]!, // حاشیه خاکستری برای غیرفعال
+          color: isActive ? categoryColor : Colors.grey.withOpacity(0.4)!,
           width: 1.5,
         ),
         boxShadow: [
@@ -193,7 +189,7 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
             child: Text(
               widget.element!.number.toString(),
               style: TextStyle(
-                color: widget.isActive ? Colors.white70 : Colors.grey[400],
+                color: isActive ? Colors.white : Colors.grey.shade500.withOpacity(0.6),
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Vazir',
@@ -204,7 +200,7 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
             child: Text(
               widget.element!.symbol,
               style: TextStyle(
-                color: widget.isActive ? Colors.white : Colors.grey[400],
+                color: isActive ? Colors.white : Colors.grey.shade500.withOpacity(0.6),
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Vazir',
@@ -218,7 +214,7 @@ class _ElementCellState extends State<ElementCell> with SingleTickerProviderStat
             child: Text(
               thirdItemValue,
               style: TextStyle(
-                color: widget.isActive ? Colors.white70 : Colors.grey[400],
+                color: isActive ? Colors.white70 : Colors.grey.shade500.withOpacity(0.6),
                 fontSize: 10,
                 fontFamily: 'Vazir',
               ),

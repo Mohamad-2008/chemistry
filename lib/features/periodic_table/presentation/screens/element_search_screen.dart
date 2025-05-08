@@ -8,7 +8,7 @@ import 'package:periodic_table_app/features/periodic_table/presentation/widgets/
 import 'package:periodic_table_app/core/routes/app_routes.dart';
 
 class ElementSearchScreen extends StatefulWidget {
-  final ElementDetailsModel? firstElement;
+  final ElementModel? firstElement;
   final bool isForComparison;
 
   const ElementSearchScreen({
@@ -328,7 +328,7 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
           backgroundColor: Colors.transparent,
           elevation: 0,
           title: Text(
-            widget.isForComparison ? 'انتخاب عنصر برای مقایسه' : 'جستجوی عنصر',
+            widget.isForComparison ? 'انتخاب عنصر دوم برای مقایسه' : 'جستجوی عنصر',
             style: TextStyle(
               fontFamily: 'Vazir',
               color: Colors.white,
@@ -351,6 +351,30 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
         ),
         body: Column(
           children: [
+            if (widget.isForComparison && widget.firstElement != null)
+              Container(
+                padding: const EdgeInsets.all(16),
+                color: Colors.blueGrey[900],
+                child: Row(
+                  children: [
+                    Text(
+                      'عنصر اول: ${widget.firstElement!.name}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontFamily: 'Vazir',
+                      ),
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      icon: const Icon(Icons.close, color: Colors.white),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -518,16 +542,6 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
                                     final secondElement = await PeriodicTableRepository()
                                         .getElementDetails(element.symbol);
                                     if (secondElement != null && mounted) {
-                                      final firstElementModel = ElementModel(
-                                        number: widget.firstElement!.number,
-                                        symbol: widget.firstElement!.symbol,
-                                        name: widget.firstElement!.name,
-                                        category: widget.firstElement!.category,
-                                        xpos: widget.firstElement!.xpos,
-                                        ypos: widget.firstElement!.ypos,
-                                        atomicMass: double.tryParse(widget.firstElement!.atomicMass) ?? 0.0,
-                                        phase: widget.firstElement!.phase,
-                                      );
                                       final secondElementModel = ElementModel(
                                         number: secondElement.number,
                                         symbol: secondElement.symbol,
@@ -538,7 +552,7 @@ class _ElementSearchScreenState extends State<ElementSearchScreen> with SingleTi
                                         atomicMass: double.tryParse(secondElement.atomicMass) ?? 0.0,
                                         phase: secondElement.phase,
                                       );
-                                      AppRoutes.navigateToElementComparison(context, firstElementModel, secondElementModel);
+                                      AppRoutes.navigateToElementComparison(context, widget.firstElement!, secondElementModel);
                                     }
                                   } else {
                                     final elementDetails = await PeriodicTableRepository()

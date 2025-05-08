@@ -127,46 +127,20 @@ class PeriodicTableProvider with ChangeNotifier {
     }
   }
 
-  void selectElement(ElementModel? element) {
-    if (_selectedElement != element) {
-      _selectedElement = element;
-      notifyListeners();
-    }
+  void selectElement(ElementModel element) {
+    _selectedElement = element;
+    notifyListeners();
+  }
+
+  void clearSelectedElement() {
+    _selectedElement = null;
+    notifyListeners();
   }
 
   void _applyFilters() {
-    List<ElementModel> result = _allElements;
+    _elementsToDisplay = List.from(_allElements); // همیشه همه عناصر را نگه می‌داریم
 
-    if (_selectedCategoryFilter != 'All') {
-      result = result.where((element) => element.category == _selectedCategoryFilter).toList();
-    }
-
-    if (_currentSearchQuery.isNotEmpty) {
-      final queryLower = _currentSearchQuery.toLowerCase();
-      result = result.where((element) {
-        if (element.number == 0) return false;
-        switch (_searchType) {
-          case SearchType.name:
-            return element.name.toLowerCase().contains(queryLower);
-          case SearchType.symbol:
-            return element.symbol.toLowerCase().contains(queryLower);
-          case SearchType.atomicNumber:
-            return element.number.toString().contains(_currentSearchQuery);
-          case SearchType.atomicMass:
-            return element.atomicMass.toString().contains(_currentSearchQuery);
-          case SearchType.category:
-            return element.category.toLowerCase().contains(queryLower);
-          case SearchType.phase:
-            return element.phase.toLowerCase().contains(queryLower);
-          case SearchType.meltingPoint:
-            return element.meltingPoint?.toString().contains(_currentSearchQuery) ?? false;
-          case SearchType.boilingPoint:
-            return element.boilingPoint?.toString().contains(_currentSearchQuery) ?? false;
-        }
-      }).toList();
-    }
-
-    if (_selectedCategoryFilter == 'All' && _currentSearchQuery.isEmpty) {
+    if (_selectedCategoryFilter == 'All') {
       final placeholders = _allElements.where((el) => el.number == 0).toList();
       ElementModel? lanthanidePlaceholder;
       ElementModel? actinidePlaceholder;
@@ -181,20 +155,18 @@ class PeriodicTableProvider with ChangeNotifier {
         }
       }
 
-      final lanthanumIndex = result.indexWhere((el) => el.symbol == 'La');
+      final lanthanumIndex = _elementsToDisplay.indexWhere((el) => el.symbol == 'La');
       if (lanthanumIndex != -1 && lanthanidePlaceholder != null) {
-        result.insert(lanthanumIndex + 1, lanthanidePlaceholder);
+        _elementsToDisplay.insert(lanthanumIndex + 1, lanthanidePlaceholder);
       }
-      final actiniumIndex = result.indexWhere((el) => el.symbol == 'Ac');
+      final actiniumIndex = _elementsToDisplay.indexWhere((el) => el.symbol == 'Ac');
       if (actiniumIndex != -1 && actinidePlaceholder != null) {
-        result.insert(actiniumIndex + 1, actinidePlaceholder);
+        _elementsToDisplay.insert(actiniumIndex + 1, actinidePlaceholder);
       }
     }
 
-    _elementsToDisplay = result;
     notifyListeners();
   }
-
   void selectCategoryFilter(String category) {
     _selectedCategoryFilter = category;
     _applyFilters();
