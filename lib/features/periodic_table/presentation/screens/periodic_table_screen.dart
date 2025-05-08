@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:periodic_table_app/core/models/element_model.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/widgets/periodic_table_app_bar.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/widgets/periodic_table_bottom_nav.dart';
-import 'package:periodic_table_app/features/periodic_table/presentation/widgets/periodic_table_grid.dart';
+import 'package:periodic_table_app/features/periodic_table/presentation/widgets/periodic_table_grid.dart.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/widgets/search_dialog.dart';
 import 'package:periodic_table_app/features/periodic_table/presentation/widgets/custom_snack_bar.dart';
 import 'package:provider/provider.dart';
@@ -39,6 +39,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
     } else {
       _arrowController.reverse();
     }
+    // لود اطلاعات کاربر هنگام شروع
     Provider.of<PeriodicTableProvider>(context, listen: false).loadUserProfile();
   }
 
@@ -99,8 +100,28 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
       }
     });
 
+    final scaleController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+
+    final scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: zoomScale,
+    ).animate(CurvedAnimation(
+      parent: scaleController,
+      curve: Curves.easeInOutCubic,
+    ));
+
     moveController.forward().then((_) {
       moveController.dispose();
+      Future.delayed(const Duration(seconds: 5), () {
+        if (_isMounted) {
+          scaleController.forward().then((_) {
+            scaleController.dispose();
+          });
+        }
+      });
     });
   }
 
@@ -113,12 +134,22 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
     return IconButton(
       icon: const Icon(Icons.sort, color: Colors.white),
       onPressed: () {
+        final RenderBox button = context.findRenderObject() as RenderBox;
+        final RenderBox overlay = Navigator.of(context).overlay!.context.findRenderObject() as RenderBox;
+        final RelativeRect position = RelativeRect.fromRect(
+          Rect.fromPoints(
+            button.localToGlobal(Offset.zero, ancestor: overlay),
+            button.localToGlobal(button.size.bottomRight(Offset.zero), ancestor: overlay),
+          ),
+          Offset.zero & overlay.size,
+        );
+
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
             backgroundColor: Colors.transparent,
             contentPadding: EdgeInsets.zero,
-            content: const _SortMenu(),
+            content: _SortMenu(),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
@@ -160,7 +191,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
                   color: Colors.white,
                   fontFamily: 'Vazir',
                 ),
-                textAlign: TextAlign.center,
               ),
               Text(
                 element.number.toString(),
@@ -169,7 +199,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
                   color: Colors.white70,
                   fontFamily: 'Vazir',
                 ),
-                textAlign: TextAlign.center,
               ),
             ],
           ),
@@ -244,7 +273,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
                     onWillPop: () async {
                       final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
                       provider.setCurrentRoute('/main_menu');
-                      provider.setCurrentNavIndex(4); // به‌روزرسانی ایندکس به منوی اصلی
                       return false;
                     },
                     child: const ChatBotScreen(),
@@ -288,25 +316,11 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
                       children: [
                         Text(
                           provider.errorMessage!,
-                          style: const TextStyle(
-                            color: Colors.red,
-                            fontFamily: 'Vazir',
-                          ),
-                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: Colors.red),
                         ),
                         ElevatedButton(
                           onPressed: provider.loadPeriodicTableData,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.amber,
-                            foregroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: const Text(
-                            'دوباره امتحان کنید',
-                            style: TextStyle(fontFamily: 'Vazir'),
-                          ),
+                          child: const Text('دوباره امتحان کنید'),
                         ),
                       ],
                     ),
@@ -342,15 +356,24 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
                         }
                       }
                       if (selectedElement != null) {
-                        provider.selectElement(selectedElement);
-                        _scrollToElement(selectedElement);
+                        final element = selectedElement;
+                        provider.selectElement(element);
+                        _scrollToElement(element);
                       }
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: PeriodicTableGrid(
                         elements: provider.elements,
-                        isElementActive: _isElementActive,
+                        isElementActive: (element) {
+                          return provider.currentSort == null ||
+                              (provider.currentSort == 'category' && element.category == provider.currentCategory) ||
+                              (provider.currentSort == 'name' &&
+                                  element.name.startsWith(provider.currentLetter ?? '')) ||
+                              (provider.currentSort == 'number' &&
+                                  element.number >= (provider.currentMinNumber ?? 0) &&
+                                  element.number <= (provider.currentMaxNumber ?? 118));
+                        },
                       ),
                     ),
                   ),
@@ -385,16 +408,15 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
       onWillPop: () async {
         final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
         provider.setCurrentRoute('/main_menu');
-        provider.setCurrentNavIndex(4); // به‌روزرسانی ایندکس به منوی اصلی
         return false;
       },
       child: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
+        decoration: BoxDecoration(
+          image:  DecorationImage(
             image: AssetImage('assets/images/background_pattern.png'),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
-              Colors.blueGrey,
+              Colors.blueGrey[900]!.withOpacity(0.9),
               BlendMode.darken,
             ),
           ),
@@ -404,7 +426,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end, // راست‌چین
                 children: [
                   const SizedBox(height: 20),
                   _buildMenuGrid(),
@@ -479,10 +500,8 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
     ];
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.end, // راست‌چین
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.end, // راست‌چین
           children: [
             Expanded(
               child: _buildWideCard(menuItems[1]),
@@ -491,7 +510,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
         ),
         const SizedBox(height: 16),
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Expanded(
               child: _buildWideCard(menuItems[2]),
@@ -500,7 +518,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
         ),
         const SizedBox(height: 16),
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Expanded(
               child: _buildMenuCard(
@@ -538,7 +555,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
         ),
         const SizedBox(height: 16),
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Expanded(
               child: _buildMenuCard(
@@ -567,7 +583,6 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
         ),
         const SizedBox(height: 16),
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Expanded(
               child: _buildMenuCard(
@@ -611,14 +626,14 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
           try {
             final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
             switch (item['route'] as String) {
-              case '/periodic_table':
-                provider.setCurrentNavIndex(0); // تنظیم ایندکس به جدول تناوبی
-                if (mounted) setState(() {});
-                break;
               case '/chat_bot':
                 AppRoutes.navigateToChatBot(context).then((_) {
                   if (mounted) setState(() {});
                 });
+                break;
+              case '/periodic_table':
+                provider.setCurrentRoute('/periodic_table');
+                if (mounted) setState(() {});
                 break;
               case '/element_search':
                 if (provider.selectedElement != null) {
@@ -656,7 +671,10 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
             }
           } catch (e) {
             debugPrint('Navigation error: $e');
-            CustomSnackBar.show(context, 'خطا در انتقال به صفحه مورد نظر');
+            CustomSnackBar.show(
+              context,
+              'خطا در انتقال به صفحه مورد نظر',
+            );
           }
         },
         borderRadius: BorderRadius.circular(20),
@@ -687,22 +705,8 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end, // راست‌چین
-              textDirection: TextDirection.rtl, // راست‌چین
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Text(
-                    item['title'] as String,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Vazir',
-                    ),
-                    textAlign: TextAlign.right,
-                  ),
-                ),
-                const SizedBox(width: 16),
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
@@ -713,6 +717,19 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
                     item['icon'] as IconData,
                     color: Colors.white,
                     size: 32,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    item['title'] as String,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Vazir',
+                    ),
+                    textAlign: TextAlign.right,
                   ),
                 ),
               ],
@@ -735,7 +752,17 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
         borderRadius: BorderRadius.circular(20),
       ),
       child: InkWell(
-        onTap: onTap,
+        onTap: () {
+          try {
+            onTap();
+          } catch (e) {
+            debugPrint('Navigation error: $e');
+            CustomSnackBar.show(
+              context,
+              'خطا در انتقال به صفحه مورد نظر',
+            );
+          }
+        },
         borderRadius: BorderRadius.circular(20),
         child: Container(
           height: 120,
@@ -820,12 +847,15 @@ class _SortMenu extends StatelessWidget {
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.end, // راست‌چین
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.end, // راست‌چین
-            textDirection: TextDirection.rtl, // راست‌چین
             children: [
+              const Icon(
+                Icons.sort,
+                color: Colors.white,
+                size: 24,
+              ),
+              const SizedBox(width: 8),
               const Text(
                 'مرتب‌سازی عناصر',
                 style: TextStyle(
@@ -834,13 +864,6 @@ class _SortMenu extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Vazir',
                 ),
-                textAlign: TextAlign.right,
-              ),
-              const SizedBox(width: 8),
-              const Icon(
-                Icons.sort,
-                color: Colors.white,
-                size: 24,
               ),
               const Spacer(),
               IconButton(
@@ -870,10 +893,6 @@ class _SortMenu extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
         leading: Icon(
           icon,
           color: Colors.white70,
@@ -886,17 +905,16 @@ class _SortMenu extends StatelessWidget {
             fontFamily: 'Vazir',
             fontSize: 16,
           ),
-          textAlign: TextAlign.right, // راست‌چین
         ),
         onTap: () {
           final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
           provider.sortElements(sortBy);
           Navigator.pop(context);
         },
-        textColor: Colors.white,
-        iconColor: Colors.white70,
-        horizontalTitleGap: 16,
-        minLeadingWidth: 24,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
       ),
     );
   }

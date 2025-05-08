@@ -35,7 +35,6 @@ class PeriodicTableProvider with ChangeNotifier {
   int? _currentMinNumber;
   int? _currentMaxNumber;
   String _currentRoute = '/';
-  int _currentNavIndex = 0; // جدید: ایندکس باتن نویگیشن بار
   String? _userName;
   String? _fieldOfStudy;
   String? _educationLevel;
@@ -57,7 +56,6 @@ class PeriodicTableProvider with ChangeNotifier {
   int? get currentMinNumber => _currentMinNumber;
   int? get currentMaxNumber => _currentMaxNumber;
   String get currentRoute => _currentRoute;
-  int get currentNavIndex => _currentNavIndex; // جدید
   String? get userName => _userName;
   String? get fieldOfStudy => _fieldOfStudy;
   String? get educationLevel => _educationLevel;
@@ -276,49 +274,6 @@ class PeriodicTableProvider with ChangeNotifier {
 
   void setCurrentRoute(String route) {
     _currentRoute = route;
-    // به‌روزرسانی ایندکس نویگیشن بار
-    switch (route) {
-      case '/':
-      case '/periodic_table':
-        _currentNavIndex = 0;
-        break;
-      case '/list':
-        _currentNavIndex = 1;
-        break;
-      case '/charts':
-        _currentNavIndex = 2;
-        break;
-      case '/chat_bot':
-        _currentNavIndex = 3;
-        break;
-      case '/main_menu':
-        _currentNavIndex = 4;
-        break;
-      default:
-        _currentNavIndex = 0;
-    }
-    notifyListeners();
-  }
-
-  void setCurrentNavIndex(int index) { // جدید
-    _currentNavIndex = index;
-    switch (index) {
-      case 0:
-        _currentRoute = '/periodic_table';
-        break;
-      case 1:
-        _currentRoute = '/list';
-        break;
-      case 2:
-        _currentRoute = '/charts';
-        break;
-      case 3:
-        _currentRoute = '/chat_bot';
-        break;
-      case 4:
-        _currentRoute = '/main_menu';
-        break;
-    }
     notifyListeners();
   }
 
@@ -350,6 +305,7 @@ class PeriodicTableProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // Added method to provide user profile for AI personalization
   Map<String, dynamic> getUserProfileForAI() {
     return {
       'userName': _userName ?? 'کاربر ناشناس',
