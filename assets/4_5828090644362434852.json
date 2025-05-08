@@ -1,0 +1,1404 @@
+{
+  "questions": [
+    {
+      "question_id": "Q001",
+      "exam_number": 1,
+      "topic": "شیمی آلی و هیدروکربن‌ها",
+      "question_text": "هیدروکربن چیست؟",
+      "options": {
+        "الف": "ترکیبی از کربن و هیدروژن",
+        "ب": "ترکیبی از کربن و اکسیژن",
+        "ج": "ترکیبی از هیدروژن و اکسیژن",
+        "د": "ترکیبی از کربن و نیتروژن"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q002",
+      "exam_number": 1,
+      "topic": "آلکان‌ها",
+      "question_text": "فرمول کلی آلکان‌ها چیست؟",
+      "options": {
+        "الف": "CnH2n",
+        "ب": "CnH2n+2",
+        "ج": "CnH2n-2",
+        "د": "CnH2n+1"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q003",
+      "exam_number": 1,
+      "topic": "آلکن‌ها",
+      "question_text": "کدام ترکیب یک آلکن است؟",
+      "options": {
+        "الف": "C2H6",
+        "ب": "C2H4",
+        "ج": "C2H2",
+        "د": "C3H8"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q004",
+      "exam_number": 1,
+      "topic": "آلکین‌ها",
+      "question_text": "ویژگی اصلی آلکین‌ها چیست؟",
+      "options": {
+        "الف": "پیوند یگانه",
+        "ب": "پیوند دوگانه",
+        "ج": "پیوند سه‌گانه",
+        "د": "بدون پیوند"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q005",
+      "exam_number": 1,
+      "topic": "هیدروکربن‌های آروماتیک",
+      "question_text": "بنزن یک نمونه از چیست؟",
+      "options": {
+        "الف": "آلکان",
+        "ب": "آلکن",
+        "ج": "هیدروکربن آروماتیک",
+        "د": "آلکین"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q006",
+      "exam_number": 1,
+      "topic": "گروه‌های عاملی",
+      "question_text": "گروه عاملی الکل چیست؟",
+      "options": {
+        "الف": "-OH",
+        "ب": "-CHO",
+        "ج": "-COOH",
+        "د": "-NH2"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q007",
+      "exam_number": 1,
+      "topic": "ایزومری",
+      "question_text": "ایزومری ساختاری به چه معناست؟",
+      "options": {
+        "الف": "ترتیب متفاوت اتم‌ها",
+        "ب": "شکل متفاوت مولکول",
+        "ج": "پیوند متفاوت",
+        "د": "جرم متفاوت"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q008",
+      "exam_number": 1,
+      "topic": "نام‌گذاری ترکیبات آلی",
+      "question_text": "نام IUPAC برای CH3CH2OH چیست؟",
+      "options": {
+        "الف": "متانول",
+        "ب": "اتانول",
+        "ج": "پروپانول",
+        "د": "بوتانول"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q009",
+      "exam_number": 1,
+      "topic": "واکنش‌های آلی",
+      "question_text": "واکنش جایگزینی در کدام نوع ترکیب شایع است؟",
+      "options": {
+        "الف": "آلکن‌ها",
+        "ب": "آلکان‌ها",
+        "ج": "آلکین‌ها",
+        "د": "آروماتیک‌ها"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q010",
+      "exam_number": 1,
+      "topic": "سینتیک شیمیایی",
+      "question_text": "سرعت واکنش شیمیایی به چه چیزی اشاره دارد؟",
+      "options": {
+        "الف": "تغییر غلظت در واحد زمان",
+        "ب": "تغییر دما در واحد زمان",
+        "ج": "تغییر فشار در واحد زمان",
+        "د": "تغییر حجم در واحد زمان"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q011",
+      "exam_number": 1,
+      "topic": "سرعت واکنش",
+      "question_text": "واحد سرعت واکنش چیست؟",
+      "options": {
+        "الف": "مول بر لیتر",
+        "ب": "مول بر ثانیه",
+        "ج": "مول بر لیتر بر ثانیه",
+        "د": "لیتر بر ثانیه"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q012",
+      "exam_number": 1,
+      "topic": "عوامل مؤثر بر سرعت واکنش",
+      "question_text": "کدام عامل سرعت واکنش را افزایش می‌دهد؟",
+      "options": {
+        "الف": "کاهش دما",
+        "ب": "افزایش غلظت",
+        "ج": "کاهش فشار",
+        "د": "افزایش حجم"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q013",
+      "exam_number": 1,
+      "topic": "نظریه برخورد",
+      "question_text": "نظریه برخورد بیان می‌کند که واکنش زمانی رخ می‌دهد که:",
+      "options": {
+        "الف": "مولکول‌ها برخورد کنند",
+        "ب": "مولکول‌ها انرژی کافی داشته باشند",
+        "ج": "هر دو",
+        "د": "هیچ‌کدام"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q014",
+      "exam_number": 1,
+      "topic": "انرژی فعال‌سازی",
+      "question_text": "انرژی فعال‌سازی چیست؟",
+      "options": {
+        "الف": "انرژی آزاد شده در واکنش",
+        "ب": "انرژی مورد نیاز برای شروع واکنش",
+        "ج": "انرژی ذخیره‌شده",
+        "د": "انرژی گرمایی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q015",
+      "exam_number": 1,
+      "topic": "شیمی هسته‌ای",
+      "question_text": "کدام ذره در واپاشی آلفا آزاد می‌شود؟",
+      "options": {
+        "الف": "الکترون",
+        "ب": "پروتون",
+        "ج": "هسته هلیوم",
+        "د": "نوترون"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q016",
+      "exam_number": 1,
+      "topic": "واپاشی放射اتیو",
+      "question_text": "واپاشی بتا چه ذره‌ای تولید می‌کند؟",
+      "options": {
+        "الف": "الکترون",
+        "ب": "هسته هلیوم",
+        "ج": "فوتون",
+        "د": "نوترون"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q017",
+      "exam_number": 1,
+      "topic": "نیمه‌عمر",
+      "question_text": "نیمه‌عمر یک ایزوتوپ چیست؟",
+      "options": {
+        "الف": "زمان تجزیه کامل",
+        "ب": "زمان نصف شدن مقدار",
+        "ج": "زمان تولید ایزوتوپ",
+        "د": "زمان واکنش"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q018",
+      "exam_number": 1,
+      "topic": "شیمی آلی و هیدروکربن‌ها",
+      "question_text": "کدام‌یک هیدروکربن اشباع است؟",
+      "options": {
+        "الف": "اتیلن",
+        "ب": "متان",
+        "ج": "استیلن",
+        "د": "بنزن"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q019",
+      "exam_number": 1,
+      "topic": "آلکان‌ها",
+      "question_text": "کدام ترکیب یک آلکان است؟",
+      "options": {
+        "الف": "C3H6",
+        "ب": "C4H10",
+        "ج": "C2H2",
+        "د": "C6H6"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q020",
+      "exam_number": 1,
+      "topic": "آلکن‌ها",
+      "question_text": "فرمول کلی آلکن‌ها چیست؟",
+      "options": {
+        "الف": "CnH2n+2",
+        "ب": "CnH2n",
+        "ج": "CnH2n-2",
+        "د": "CnH2n+1"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q021",
+      "exam_number": 2,
+      "topic": "شیمی آلی و هیدروکربن‌ها",
+      "question_text": "کدام‌یک یک هیدروکربن غیراشباع است؟",
+      "options": {
+        "الف": "متان",
+        "ب": "پروپان",
+        "ج": "پروپن",
+        "د": "بوتان"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q022",
+      "exam_number": 2,
+      "topic": "آلکان‌ها",
+      "question_text": "نام IUPAC برای CH3CH2CH3 چیست؟",
+      "options": {
+        "الف": "متان",
+        "ب": "اتان",
+        "ج": "پروپان",
+        "د": "بوتان"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q023",
+      "exam_number": 2,
+      "topic": "آلکن‌ها",
+      "question_text": "کدام ترکیب دارای پیوند دوگانه است؟",
+      "options": {
+        "الف": "C4H10",
+        "ب": "C4H8",
+        "ج": "C4H6",
+        "د": "C3H8"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q024",
+      "exam_number": 2,
+      "topic": "آلکین‌ها",
+      "question_text": "فرمول کلی آلکین‌ها چیست؟",
+      "options": {
+        "الف": "CnH2n+2",
+        "ب": "CnH2n",
+        "ج": "CnH2n-2",
+        "د": "CnH2n+1"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q025",
+      "exam_number": 2,
+      "topic": "هیدروکربن‌های آروماتیک",
+      "question_text": "فرمول بنزن چیست؟",
+      "options": {
+        "الف": "C6H12",
+        "ب": "C6H6",
+        "ج": "C6H8",
+        "د": "C6H10"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q026",
+      "exam_number": 2,
+      "topic": "گروه‌های عاملی",
+      "question_text": "گروه عاملی آلدئید چیست؟",
+      "options": {
+        "الف": "-OH",
+        "ب": "-CHO",
+        "ج": "-COOH",
+        "د": "-NH2"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q027",
+      "exam_number": 2,
+      "topic": "ایزومری",
+      "question_text": "کدام‌یک ایزومر هندسی است؟",
+      "options": {
+        "الف": "اتان",
+        "ب": "پروپن",
+        "ج": "سیس-۲-بوتن",
+        "د": "متان"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q028",
+      "exam_number": 2,
+      "topic": "نام‌گذاری ترکیبات آلی",
+      "question_text": "نام IUPAC برای CH3COOH چیست؟",
+      "options": {
+        "الف": "متانول",
+        "ب": "اتانول",
+        "ج": "اسید استیک",
+        "د": "اسید پروپیونیک"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q029",
+      "exam_number": 2,
+      "topic": "واکنش‌های آلی",
+      "question_text": "واکنش افزایش در کدام ترکیب شایع است؟",
+      "options": {
+        "الف": "آلکان‌ها",
+        "ب": "آلکن‌ها",
+        "ج": "آروماتیک‌ها",
+        "د": "الکل‌ها"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q030",
+      "exam_number": 2,
+      "topic": "سینتیک شیمیایی",
+      "question_text": "کدام‌یک سرعت واکنش را کاهش می‌دهد؟",
+      "options": {
+        "الف": "افزایش دما",
+        "ب": "کاهش غلظت",
+        "ج": "افزایش کاتالیزور",
+        "د": "افزایش فشار"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q031",
+      "exam_number": 2,
+      "topic": "سرعت واکنش",
+      "question_text": "قانون سرعت واکنش معمولاً به صورت چه چیزی بیان می‌شود؟",
+      "options": {
+        "الف": "k[A][B]",
+        "ب": "k[A]+[B]",
+        "ج": "k[A]/[B]",
+        "د": "k[A]^2+[B]"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q032",
+      "exam_number": 2,
+      "topic": "عوامل مؤثر بر سرعت واکنش",
+      "question_text": "کاتالیزور چگونه سرعت واکنش را افزایش می‌دهد؟",
+      "options": {
+        "الف": "افزایش انرژی فعال‌سازی",
+        "ب": "کاهش انرژی فعال‌سازی",
+        "ج": "افزایش دما",
+        "د": "کاهش غلظت"
+      },
+      "correct GY": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q033",
+      "exam_number": 2,
+      "topic": "نظریه برخورد",
+      "question_text": "طبق نظریه برخورد، جهت‌گیری مولکول‌ها:",
+      "options": {
+        "الف": "بی‌اهمیت است",
+        "ب": "مهم است",
+        "ج": "فقط در گازها مهم است",
+        "د": "فقط در مایعات مهم است"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q034",
+      "exam_number": 2,
+      "topic": "انرژی فعال‌سازی",
+      "question_text": "کاهش انرژی فعال‌سازی باعث:",
+      "options": {
+        "الف": "کاهش سرعت واکنش",
+        "ب": "افزایش سرعت واکنش",
+        "ج": "توقف واکنش",
+        "د": "تغییر محصولات"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q035",
+      "exam_number": 2,
+      "topic": "شیمی هسته‌ای",
+      "question_text": "کدام واپاشی ذره‌ای با جرم صفر تولید می‌کند؟",
+      "options": {
+        "الف": "آلفا",
+        "ب": "بتا",
+        "ج": "گاما",
+        "د": "نوترون"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q036",
+      "exam_number": 2,
+      "topic": "واپاشی放射اتیو",
+      "question_text": "واپاشی گاما چه چیزی آزاد می‌کند؟",
+      "options": {
+        "الف": "الکترون",
+        "ب": "فوتون",
+        "ج": "هسته هلیوم",
+        "د": "پروتون"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q037",
+      "exam_number": 2,
+      "topic": "نیمه‌عمر",
+      "question_text": "اگر نیمه‌عمر یک ایزوتوپ ۵ روز باشد، پس از ۱۰ روز چه کسری باقی می‌ماند؟",
+      "options": {
+        "الف": "۱/۲",
+        "ب": "۱/۴",
+        "ج": "۱/۸",
+        "د": "۱/۱۶"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q038",
+      "exam_number": 2,
+      "topic": "شیمی آلی و هیدروکربن‌ها",
+      "question_text": "کدام‌یک هیدروکربن آلیفاتیک است؟",
+      "options": {
+        "الف": "بنزن",
+        "ب": "اتیلن",
+        "ج": "تولوئن",
+        "د": "فنل"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q039",
+      "exam_number": 2,
+      "topic": "آلکان‌ها",
+      "question_text": "کدام‌یک یک آلکان شاخه‌دار است؟",
+      "options": {
+        "الف": "پروپان",
+        "ب": "ایزوبوتان",
+        "ج": "اتان",
+        "د": "متان"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q040",
+      "exam_number": 2,
+      "topic": "آلکن‌ها",
+      "question_text": "نام IUPAC برای C2H4 چیست؟",
+      "options": {
+        "الف": "اتان",
+        "ب": "اتیلن",
+        "ج": "استیلن",
+        "د": "پروپیلن"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q041",
+      "exam_number": 3,
+      "topic": "شیمی آلی و هیدروکربن‌ها",
+      "question_text": "هیدروکربن‌های غیراشباع شامل چه پیوندهایی هستند؟",
+      "options": {
+        "الف": "فقط پیوند یگانه",
+        "ب": "پیوند دوگانه یا سه‌گانه",
+        "ج": "فقط پیوند سه‌گانه",
+        "د": "بدون پیوند"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q042",
+      "exam_number": 3,
+      "topic": "آلکان‌ها",
+      "question_text": "کدام ترکیب آلکان است؟",
+      "options": {
+        "الف": "C5H12",
+        "ب": "C5H10",
+        "ج": "C5H8",
+        "د": "C6H6"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q043",
+      "exam_number": 3,
+      "topic": "آلکن‌ها",
+      "question_text": "کدام ترکیب یک آلکن است؟",
+      "options": {
+        "الف": "C3H8",
+        "ب": "C3H6",
+        "ج": "C3H4",
+        "د": "C4H10"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q044",
+      "exam_number": 3,
+      "topic": "آلکین‌ها",
+      "question_text": "نام IUPAC برای C2H2 چیست؟",
+      "options": {
+        "الف": "اتیلن",
+        "ب": "استیلن",
+        "ج": "پروپیلن",
+        "د": "بوتین"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q045",
+      "exam_number": 3,
+      "topic": "هیدروکربن‌های آروماتیک",
+      "question_text": "کدام ترکیب یک هیدروکربن آروماتیک است؟",
+      "options": {
+        "الف": "اتان",
+        "ب": "پروپن",
+        "ج": "تولوئن",
+        "د": "بوتان"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q046",
+      "exam_number": 3,
+      "topic": "گروه‌های عاملی",
+      "question_text": "گروه عاملی کتون چیست؟",
+      "options": {
+        "الف": "-OH",
+        "ب": "-CHO",
+        "ج": "-CO-",
+        "د": "-COOH"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q047",
+      "exam_number": 3,
+      "topic": "ایزومری",
+      "question_text": "ایزومری هندسی در کدام ترکیب دیده می‌شود؟",
+      "options": {
+        "الف": "متان",
+        "ب": "اتیلن",
+        "ج": "۲-بوتن",
+        "د": "پروپان"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q048",
+      "exam_number": 3,
+      "topic": "نام‌گذاری ترکیبات آلی",
+      "question_text": "نام IUPAC برای CH3CHO چیست؟",
+      "options": {
+        "الف": "متانال",
+        "ب": "اتانال",
+        "ج": "پروپانال",
+        "د": "بوتانال"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q049",
+      "exam_number": 3,
+      "topic": "واکنش‌های آلی",
+      "question_text": "واکنش حذف در کدام ترکیب منجر به تشکیل آلکن می‌شود؟",
+      "options": {
+        "الف": "آلکان‌ها",
+        "ب": "الکل‌ها",
+        "ج": "آلدئیدها",
+        "د": "کتون‌ها"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q050",
+      "exam_number": 3,
+      "topic": "سینتیک شیمیایی",
+      "question_text": "کدام‌یک قانون سرعت واکنش را بیان می‌کند؟",
+      "options": {
+        "الف": "r = k[A][B]",
+        "ب": "r = k[A]+[B]",
+        "ج": "r = k[A]/[B]",
+        "د": "r = k[A]^2+[B]"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q051",
+      "exam_number": 3,
+      "topic": "سرعت واکنش",
+      "question_text": "اگر غلظت واکنش‌گر دو برابر شود و مرتبه واکنش ۱ باشد، سرعت:",
+      "options": {
+        "الف": "نصف می‌شود",
+        "ب": "دو برابر می‌شود",
+        "ج": "چهار برابر می‌شود",
+        "د": "ثابت می‌ماند"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q052",
+      "exam_number": 3,
+      "topic": "عوامل مؤثر بر سرعت واکنش",
+      "question_text": "افزایش دما سرعت واکنش را چگونه تغییر می‌دهد؟",
+      "options": {
+        "الف": "کاهش می‌دهد",
+        "ب": "افزایش می‌دهد",
+        "ج": "ثابت نگه می‌دارد",
+        "د": "صفر می‌کند"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q053",
+      "exam_number": 3,
+      "topic": "نظریه برخورد",
+      "question_text": "کدام عامل در نظریه برخورد بی‌تأثیر است؟",
+      "options": {
+        "الف": "جهت‌گیری مولکول‌ها",
+        "ب": "انرژی مولکول‌ها",
+        "ج": "جرم مولکول‌ها",
+        "د": "دمای سیستم"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q054",
+      "exam_number": 3,
+      "topic": "انرژی فعال‌سازی",
+      "question_text": "کاتالیزور چه تأثیری بر انرژی فعال‌سازی دارد؟",
+      "options": {
+        "الف": "افزایش می‌دهد",
+        "ب": "کاهش می‌دهد",
+        "ج": "ثابت نگه می‌دارد",
+        "د": "حذف می‌کند"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q055",
+      "exam_number": 3,
+      "topic": "شیمی هسته‌ای",
+      "question_text": "کدام واپاشی جرم هسته را کاهش می‌دهد؟",
+      "options": {
+        "الف": "گاما",
+        "ب": "بتا",
+        "ج": "آلفا",
+        "د": "نوترون"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q056",
+      "exam_number": 3,
+      "topic": "واپاشی放射اتیو",
+      "question_text": "واپاشی بتا منفی چه ذره‌ای تولید می‌کند؟",
+      "options": {
+        "الف": "پوزیترون",
+        "ب": "الکترون",
+        "ج": "فوتون",
+        "د": "نوترون"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q057",
+      "exam_number": 3,
+      "topic": "نیمه‌عمر",
+      "question_text": "نیمه‌عمر ۱۴C تقریباً چند سال است؟",
+      "options": {
+        "الف": "۵۷۳۰",
+        "ب": "۱۲۳۰",
+        "ج": "۲۵۰",
+        "د": "۱۰"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q058",
+      "exam_number": 3,
+      "topic": "شیمی آلی و هیدروکربن‌ها",
+      "question_text": "کدام‌یک هیدروکربن است؟",
+      "options": {
+        "الف": "CH3OH",
+        "ب": "C6H14",
+        "ج": "CH3COOH",
+        "د": "C2H5NH2"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q059",
+      "exam_number": 3,
+      "topic": "آلکان‌ها",
+      "question_text": "فرمول عمومی آلکان‌های شاخه‌دار چیست؟",
+      "options": {
+        "الف": "CnH2n",
+        "ب": "CnH2n+2",
+        "ج": "CnH2n-2",
+        "د": "CnH2n+1"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q060",
+      "exam_number": 3,
+      "topic": "آلکن‌ها",
+      "question_text": "کدام ترکیب یک آلکن است؟",
+      "options": {
+        "الف": "C4H10",
+        "ب": "C4H8",
+        "ج": "C4H6",
+        "د": "C3H8"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q061",
+      "exam_number": 4,
+      "topic": "شیمی آلی و هیدروکربن‌ها",
+      "question_text": "کدام‌یک یک هیدروکربن اشباع است؟",
+      "options": {
+        "الف": "اتیلن",
+        "ب": "پروپیلن",
+        "ج": "بوتان",
+        "د": "استیلن"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q062",
+      "exam_number": 4,
+      "topic": "آلکان‌ها",
+      "question_text": "نام IUPAC برای CH3CH(CH3)CH3 چیست؟",
+      "options": {
+        "الف": "پروپان",
+        "ب": "ایزوبوتان",
+        "ج": "نئوپنتان",
+        "د": "بوتان"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q063",
+      "exam_number": 4,
+      "topic": "آلکن‌ها",
+      "question_text": "کدام ترکیب دارای پیوند دوگانه است؟",
+      "options": {
+        "الف": "C5H12",
+        "ب": "C5H10",
+        "ج": "C5H8",
+        "د": "C4H10"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q064",
+      "exam_number": 4,
+      "topic": "آلکین‌ها",
+      "question_text": "کدام ترکیب یک آلکین است؟",
+      "options": {
+        "الف": "C3H8",
+        "ب": "C3H6",
+        "ج": "C3H4",
+        "د": "C4H10"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q065",
+      "exam_number": 4,
+      "topic": "هیدروکربن‌های آروماتیک",
+      "question_text": "کدام ترکیب آروماتیک است؟",
+      "options": {
+        "الف": "اتان",
+        "ب": "بنزن",
+        "ج": "پروپن",
+        "د": "بوتان"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q066",
+      "exam_number": 4,
+      "topic": "گروه‌های عاملی",
+      "question_text": "گروه عاملی اسید کربوکسیلیک چیست؟",
+      "options": {
+        "الف": "-OH",
+        "ب": "-CHO",
+        "ج": "-COOH",
+        "د": "-NH2"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q067",
+      "exam_number": 4,
+      "topic": "ایزومری",
+      "question_text": "ایزومری ساختاری در کدام ترکیب دیده می‌شود؟",
+      "options": {
+        "الف": "اتان",
+        "ب": "بوتان",
+        "ج": "اتیلن",
+        "د": "بنزن"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q068",
+      "exam_number": 4,
+      "topic": "نام‌گذاری ترکیبات آلی",
+      "question_text": "نام IUPAC برای CH3CH2CHO چیست؟",
+      "options": {
+        "الف": "متانال",
+        "ب": "اتانال",
+        "ج": "پروپانال",
+        "د": "بوتانال"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q069",
+      "exam_number": 4,
+      "topic": "واکنش‌های آلی",
+      "question_text": "واکنش جایگزینی در بنزن منجر به تشکیل:",
+      "options": {
+        "الف": "آلکن",
+        "ب": "آلکان",
+        "ج": "ترکیب آروماتیک",
+        "د": "الکل"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q070",
+      "exam_number": 4,
+      "topic": "سینتیک شیمیایی",
+      "question_text": "مرتبه صفر در یک واکنش به چه معناست؟",
+      "options": {
+        "الف": "سرعت به غلظت بستگی ندارد",
+        "ب": "سرعت با غلظت متناسب است",
+        "ج": "سرعت با مربع غلظت متناسب است",
+        "د": "سرعت با دما متناسب است"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q071",
+      "exam_number": 4,
+      "topic": "سرعت واکنش",
+      "question_text": "اگر مرتبه واکنش نسبت به A برابر ۲ باشد و [A] دو برابر شود، سرعت:",
+      "options": {
+        "الف": "دو برابر می‌شود",
+        "ب": "چهار برابر می‌شود",
+        "ج": "نصف می‌شود",
+        "د": "ثابت می‌ماند"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q072",
+      "exam_number": 4,
+      "topic": "عوامل مؤثر بر سرعت واکنش",
+      "question_text": "کدام‌یک سرعت واکنش را افزایش نمی‌دهد؟",
+      "options": {
+        "الف": "افزایش دما",
+        "ب": "افزایش غلظت",
+        "ج": "کاهش کاتالیزور",
+        "د": "افزایش سطح تماس"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q073",
+      "exam_number": 4,
+      "topic": "نظریه برخورد",
+      "question_text": "نظریه برخورد فرض می‌کند که واکنش‌ها نیازمند:",
+      "options": {
+        "الف": "برخورد با انرژی کافی",
+        "ب": "برخورد بدون انرژی",
+        "ج": "تغییر دما",
+        "د": "تغییر فشار"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q074",
+      "exam_number": 4,
+      "topic": "انرژی فعال‌سازی",
+      "question_text": "انرژی فعال‌سازی معمولاً در چه واحدی بیان می‌شود؟",
+      "options": {
+        "الف": "ژول",
+        "ب": "کیلوژول بر مول",
+        "ج": "کیلوگرم",
+        "د": "لیتر"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q075",
+      "exam_number": 4,
+      "topic": "شیمی هسته‌ای",
+      "question_text": "کدام واپاشی تعداد پروتون‌ها را تغییر می‌دهد؟",
+      "options": {
+        "الف": "آلفا",
+        "ب": "گاما",
+        "ج": "بتا",
+        "د": "هر دو الف و ج"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q076",
+      "exam_number": 4,
+      "topic": "واپاشی放射اتیو",
+      "question_text": "واپاشی آلفا جرم هسته را چند واحد کاهش می‌دهد؟",
+      "options": {
+        "الف": "۲",
+        "ب": "۴",
+        "ج": "۰",
+        "د": "۱"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q077",
+      "exam_number": 4,
+      "topic": "نیمه‌عمر",
+      "question_text": "اگر ۸۰٪ یک ایزوتوپ پس از ۱۲ روز واپاشی کند، نیمه‌عمر آن چند روز است؟",
+      "options": {
+        "الف": "۴",
+        "ب": "۶",
+        "ج": "۸",
+        "د": "۱۲"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q078",
+      "exam_number": 4,
+      "topic": "شیمی آلی و هیدروکربن‌ها",
+      "question_text": "کدام‌یک هیدروکربن غیراشباع است؟",
+      "options": {
+        "الف": "متان",
+        "ب": "اتیلن",
+        "ج": "پروپان",
+        "د": "بوتان"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q079",
+      "exam_number": 4,
+      "topic": "آلکان‌ها",
+      "question_text": "کدام ترکیب یک آلکان است؟",
+      "options": {
+        "الف": "C6H14",
+        "ب": "C6H12",
+        "ج": "C6H10",
+        "د": "C6H6"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q080",
+      "exam_number": 4,
+      "topic": "آلکن‌ها",
+      "question_text": "نام IUPAC برای C3H6 چیست؟",
+      "options": {
+        "الف": "پروپان",
+        "ب": "پروپن",
+        "ج": "پروپین",
+        "د": "بوتن"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q081",
+      "exam_number": 5,
+      "topic": "شیمی آلی و هیدروکربن‌ها",
+      "question_text": "هیدروکربن‌های آلیفاتیک شامل کدام‌یک نیستند؟",
+      "options": {
+        "الف": "آلکان‌ها",
+        "ب": "آلکن‌ها",
+        "ج": "آلکین‌ها",
+        "د": "بنزن"
+      },
+      "correct_answer": "د",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q082",
+      "exam_number": 5,
+      "topic": "آلکان‌ها",
+      "question_text": "فرمول کلی آلکان‌ها چیست؟",
+      "options": {
+        "الف": "CnH2n+2",
+        "ب": "CnH2n",
+        "ج": "CnH2n-2",
+        "د": "CnH2n+1"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q083",
+      "exam_number": 5,
+      "topic": "آلکن‌ها",
+      "question_text": "کدام ترکیب یک آلکن است؟",
+      "options": {
+        "الف": "C4H10",
+        "ب": "C4H8",
+        "ج": "C4H6",
+        "د": "C5H12"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q084",
+      "exam_number": 5,
+      "topic": "آلکین‌ها",
+      "question_text": "نام IUPAC برای C3H4 چیست؟",
+      "options": {
+        "الف": "پروپن",
+        "ب": "پروپین",
+        "ج": "بوتن",
+        "د": "بوتین"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q085",
+      "exam_number": 5,
+      "topic": "هیدروکربن‌های آروماتیک",
+      "question_text": "کدام ترکیب آروماتیک است؟",
+      "options": {
+        "الف": "اتیلن",
+        "ب": "پروپیلن",
+        "ج": "تولوئن",
+        "د": "بوتان"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q086",
+      "exam_number": 5,
+      "topic": "گروه‌های عاملی",
+      "question_text": "گروه عاملی آمین چیست؟",
+      "options": {
+        "الف": "-OH",
+        "ب": "-CHO",
+        "ج": "-COOH",
+        "د": "-NH2"
+      },
+      "correct_answer": "د",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q087",
+      "exam_number": 5,
+      "topic": "ایزومری",
+      "question_text": "کدام ترکیب می‌تواند ایزومری هندسی داشته باشد؟",
+      "options": {
+        "الف": "متان",
+        "ب": "اتان",
+        "ج": "۲-پنتن",
+        "د": "پروپان"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q088",
+      "exam_number": 5,
+      "topic": "نام‌گذاری ترکیبات آلی",
+      "question_text": "نام IUPAC برای CH3CH2COOH چیست؟",
+      "options": {
+        "الف": "اسید استیک",
+        "ب": "اسید پروپیونیک",
+        "ج": "اسید بوتانوئیک",
+        "د": "اسید متانوئیک"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q089",
+      "exam_number": 5,
+      "topic": "واکنش‌های آلی",
+      "question_text": "واکنش افزایش در آلکین‌ها منجر به تشکیل:",
+      "options": {
+        "الف": "آلکان",
+        "ب": "آلکن",
+        "ج": "آروماتیک",
+        "د": "الکل"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q090",
+      "exam_number": 5,
+      "topic": "سینتیک شیمیایی",
+      "question_text": "کدام‌یک قانون سرعت واکنش مرتبه دوم را نشان می‌دهد؟",
+      "options": {
+        "الف": "r = k[A]",
+        "ب": "r = k[A]^2",
+        "ج": "r = k[A][B]",
+        "د": "هر دو ب و ج"
+      },
+      "correct_answer": "د",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q091",
+      "exam_number": 5,
+      "topic": "سرعت واکنش",
+      "question_text": "اگر مرتبه کل واکنش ۳ باشد و هر واکنش‌گر دو برابر شود، سرعت:",
+      "options": {
+        "الف": "دو برابر می‌شود",
+        "ب": "چهار برابر می‌شود",
+        "ج": "هشت برابر می‌شود",
+        "د": "شانزده برابر می‌شود"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q092",
+      "exam_number": 5,
+      "topic": "عوامل مؤثر بر سرعت واکنش",
+      "question_text": "افزایش سطح تماس در واکنش‌های ناهمگن چه تأثیری دارد؟",
+      "options": {
+        "الف": "کاهش سرعت",
+        "ب": "افزایش سرعت",
+        "ج": "بدون تغییر",
+        "د": "توقف واکنش"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q093",
+      "exam_number": 5,
+      "topic": "نظریه برخورد",
+      "question_text": "کدام‌یک در نظریه برخورد ضروری است؟",
+      "options": {
+        "الف": "برخورد مولکول‌ها",
+        "ب": "انرژی کافی",
+        "ج": "جهت‌گیری مناسب",
+        "د": "هر سه"
+      },
+      "correct_answer": "د",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q094",
+      "exam_number": 5,
+      "topic": "انرژی فعال‌سازی",
+      "question_text": "کاتالیزور مسیر واکنش را با چه چیزی تغییر می‌دهد؟",
+      "options": {
+        "الف": "افزایش انرژی فعال‌سازی",
+        "ب": "کاهش انرژی فعال‌سازی",
+        "ج": "تغییر محصولات",
+        "د": "تغییر دما"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q095",
+      "exam_number": 5,
+      "topic": "شیمی هسته‌ای",
+      "question_text": "کدام واپاشی انرژی آزاد می‌کند بدون تغییر جرم؟",
+      "options": {
+        "الف": "آلفا",
+        "ب": "بتا",
+        "ج": "گاما",
+        "د": "نوترون"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q096",
+      "exam_number": 5,
+      "topic": "واپاشی放射اتیو",
+      "question_text": "واپاشی بتا مثبت چه ذره‌ای تولید می‌کند؟",
+      "options": {
+        "الف": "الکترون",
+        "ب": "پوزیترون",
+        "ج": "فوتون",
+        "د": "نوترون"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q097",
+      "exam_number": 5,
+      "topic": "نیمه‌عمر",
+      "question_text": "اگر نیمه‌عمر یک ایزوتوپ ۸ ساعت باشد، پس از ۲۴ ساعت چه کسری باقی می‌ماند؟",
+      "options": {
+        "الف": "۱/۲",
+        "ب": "۱/۴",
+        "ج": "۱/۸",
+        "د": "۱/۱۶"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q098",
+      "exam_number": 5,
+      "topic": "شیمی آلی و هیدروکربن‌ها",
+      "question_text": "کدام‌یک هیدروکربن است؟",
+      "options": {
+        "الف": "CH3OH",
+        "ب": "C4H10",
+        "ج": "CH3COOH",
+        "د": "C2H5NH2"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q099",
+      "exam_number": 5,
+      "topic": "آلکان‌ها",
+      "question_text": "کدام ترکیب یک آلکان است؟",
+      "options": {
+        "الف": "C5H10",
+        "ب": "C5H12",
+        "ج": "C5H8",
+        "د": "C6H6"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q100",
+      "exam_number": 5,
+      "topic": "آلکن‌ها",
+      "question_text": "نام IUPAC برای C4H8 چیست؟",
+      "options": {
+        "الف": "بوتان",
+        "ب": "بوتن",
+        "ج": "بوتین",
+        "د": "پنتن"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    }
+  ]
+}

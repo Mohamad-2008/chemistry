@@ -1,0 +1,1502 @@
+[
+  {
+    "question_id": "Q001",
+    "exam_number": 1,
+    "topic": "محلول‌ها",
+    "question_text": "محلول چیست؟",
+    "options": [
+      "مخلوطی ناهمگن",
+      "مخلوطی همگن",
+      "ترکیبی شیمیایی",
+      "ماده خالص"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q002",
+    "exam_number": 1,
+    "topic": "غلظت محلول",
+    "question_text": "مولاریته یک محلول به چه صورت تعریف می‌شود؟",
+    "options": [
+      "مول حل‌شونده بر لیتر محلول",
+      "گرم حل‌شونده بر لیتر محلول",
+      "مول حل‌شونده بر کیلوگرم حلال",
+      "گرم حل‌شونده بر کیلوگرم حلال"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q003",
+    "exam_number": 1,
+    "topic": "حلالیت",
+    "question_text": "حلالیت یک ماده به چه چیزی بستگی دارد؟",
+    "options": [
+      "دما",
+      "فشار",
+      "هر دو",
+      "هیچ‌کدام"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q004",
+    "exam_number": 1,
+    "topic": "خواص کولیگاتیو",
+    "question_text": "کاهش فشار بخار یک محلول به چه چیزی بستگی دارد؟",
+    "options": [
+      "جرم حل‌شونده",
+      "تعداد ذرات حل‌شونده",
+      "حجم حلال",
+      "نوع حلال"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q005",
+    "exam_number": 1,
+    "topic": "اسیدها و بازها",
+    "question_text": "طبق تعریف آرنیوس، اسید چیست؟",
+    "options": [
+      "ماده‌ای که H⁺ تولید می‌کند",
+      "ماده‌ای که OH⁻ تولید می‌کند",
+      "ماده‌ای که الکترون می‌دهد",
+      "ماده‌ای که پروتون می‌گیرد"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q006",
+    "exam_number": 1,
+    "topic": "pH و pOH",
+    "question_text": "pH یک محلول با [H⁺] = 10⁻³ M چیست؟",
+    "options": [
+      "۱",
+      "۳",
+      "۷",
+      "۱۱"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q007",
+    "exam_number": 1,
+    "topic": "واکنش‌های اسید-باز",
+    "question_text": "محصول واکنش اسید و باز طبق تعریف آرنیوس چیست؟",
+    "options": [
+      "نمک و آب",
+      "گاز و آب",
+      "نمک و گاز",
+      "اسید و باز"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q008",
+    "exam_number": 1,
+    "topic": "تیتراسیون",
+    "question_text": "هدف از تیتراسیون چیست؟",
+    "options": [
+      "اندازه‌گیری جرم",
+      "اندازه‌گیری غلظت",
+      "اندازه‌گیری حجم",
+      "اندازه‌گیری دما"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q009",
+    "exam_number": 1,
+    "topic": "بافرها",
+    "question_text": "بافر چیست؟",
+    "options": [
+      "محلولی که pH را ثابت نگه می‌دارد",
+      "محلولی که pH را تغییر می‌دهد",
+      "محلولی که گاز تولید می‌کند",
+      "محلولی که رسوب می‌دهد"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q010",
+    "exam_number": 1,
+    "topic": "تعادل شیمیایی",
+    "question_text": "در یک واکنش در حالت تعادل:",
+    "options": [
+      "سرعت واکنش صفر است",
+      "غلظت‌ها ثابت هستند",
+      "محصولات مصرف می‌شوند",
+      "واکنش‌گرها تولید می‌شوند"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q011",
+    "exam_number": 1,
+    "topic": "ثابت تعادل",
+    "question_text": "ثابت تعادل (K) برای واکنش A ⇌ B وقتی K > 1 باشد، نشان‌دهنده چیست؟",
+    "options": [
+      "محصولات غالب هستند",
+      "واکنش‌گرها غالب هستند",
+      "تعادل وجود ندارد",
+      "واکنش کامل است"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q012",
+    "exam_number": 1,
+    "topic": "اصل لوشاتلیه",
+    "question_text": "اگر فشار در یک سیستم تعادلی گازی افزایش یابد، تعادل به سمت:",
+    "options": [
+      "محصولات",
+      "واکنش‌گرها",
+      "جهتی با مول کمتر",
+      "جهتی با مول بیشتر"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q013",
+    "exam_number": 1,
+    "topic": "الکتروشیمی",
+    "question_text": "پیل گالوانی چیست؟",
+    "options": [
+      "پیل تولیدکننده برق",
+      "پیل مصرف‌کننده برق",
+      "پیل ذخیره‌کننده انرژی",
+      "پیل بدون الکترود"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q014",
+    "exam_number": 1,
+    "topic": "پیل‌های گالوانی",
+    "question_text": "در پیل گالوانی، اکسایش در کدام بخش رخ می‌دهد؟",
+    "options": [
+      "کاتد",
+      "آند",
+      "پل نمکی",
+      "الکترولیت"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q015",
+    "exam_number": 1,
+    "topic": "پیل‌های الکترولیتی",
+    "question_text": "پیل الکترولیتی برای چه استفاده می‌شود؟",
+    "options": [
+      "تولید برق",
+      "تجزیه مواد",
+      "ذوب فلزات",
+      "افزایش دما"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q016",
+    "exam_number": 1,
+    "topic": "پتانسیل استاندارد الکترود",
+    "question_text": "پتانسیل استاندارد الکترود نشان‌دهنده چیست؟",
+    "options": [
+      "جرم الکترود",
+      "قابلیت اکسایش یا کاهش",
+      "حجم الکترود",
+      "دمای الکترود"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q017",
+    "exam_number": 1,
+    "topic": "قانون فارادی",
+    "question_text": "قانون فارادی به چه چیزی مربوط است؟",
+    "options": [
+      "جریان الکتریکی",
+      "مقدار ماده رسوب‌شده",
+      "فشار گاز",
+      "دمای محلول"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q018",
+    "exam_number": 1,
+    "topic": "محلول‌ها",
+    "question_text": "کدام‌یک محلول اشباع است؟",
+    "options": [
+      "محلولی که حل‌شونده بیشتری می‌پذیرد",
+      "محلولی که حل‌شونده اضافی دارد",
+      "محلولی که رسوب می‌دهد",
+      "محلولی که گاز تولید می‌کند"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q019",
+    "exam_number": 1,
+    "topic": "غلظت محلول",
+    "question_text": "مولالیته یک محلول چگونه محاسبه می‌شود؟",
+    "options": [
+      "مول حل‌شونده بر لیتر محلول",
+      "مول حل‌شونده بر کیلوگرم حلال",
+      "گرم حل‌شونده بر لیتر محلول",
+      "گرم حل‌شونده بر کیلوگرم حلال"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q020",
+    "exam_number": 1,
+    "topic": "حلالیت",
+    "question_text": "افزایش دما معمولاً حلالیت کدام مواد را افزایش می‌دهد؟",
+    "options": [
+      "گازها",
+      "جامدات",
+      "مایعات",
+      "همه موارد"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q021",
+    "exam_number": 2,
+    "topic": "محلول‌ها",
+    "question_text": "کدام‌یک نمونه‌ای از محلول است؟",
+    "options": [
+      "آب خالص",
+      "آب نمک",
+      "یخ",
+      "اکسیژن"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q022",
+    "exam_number": 2,
+    "topic": "غلظت محلول",
+    "question_text": "اگر ۰.۱ مول NaCl در ۱ لیتر آب حل شود، مولاریته چیست؟",
+    "options": [
+      "۰.۱ M",
+      "۰.۰۱ M",
+      "۱ M",
+      "۱۰ M"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q023",
+    "exam_number": 2,
+    "topic": "حلالیت",
+    "question_text": "کدام عامل حلالیت گازها در مایعات را افزایش می‌دهد؟",
+    "options": [
+      "افزایش دما",
+      "کاهش فشار",
+      "افزایش فشار",
+      "کاهش حجم"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q024",
+    "exam_number": 2,
+    "topic": "خواص کولیگاتیو",
+    "question_text": "افزایش نقطه جوش یک محلول به چه چیزی بستگی دارد؟",
+    "options": [
+      "نوع حلال",
+      "تعداد ذرات حل‌شونده",
+      "جرم حلال",
+      "دمای محیط"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q025",
+    "exam_number": 2,
+    "topic": "اسیدها و بازها",
+    "question_text": "طبق تعریف برونستد-لوری، باز چیست؟",
+    "options": [
+      "ماده‌ای که H⁺ تولید می‌کند",
+      "ماده‌ای که پروتون می‌پذیرد",
+      "ماده‌ای که OH⁻ تولید می‌کند",
+      "ماده‌ای که الکترون می‌دهد"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q026",
+    "exam_number": 2,
+    "topic": "pH و pOH",
+    "question_text": "اگر pH یک محلول ۵ باشد، pOH آن چیست؟",
+    "options": [
+      "۵",
+      "۷",
+      "۹",
+      "۱۴"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q027",
+    "exam_number": 2,
+    "topic": "واکنش‌های اسید-باز",
+    "question_text": "واکنش HCl + NaOH → NaCl + H₂O چه نوع واکنشی است؟",
+    "options": [
+      "ترکیب",
+      "خنثی‌سازی",
+      "تجزیه",
+      "اکسایش-کاهش"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q028",
+    "exam_number": 2,
+    "topic": "تیتراسیون",
+    "question_text": "نقطه هم‌ارزی در تیتراسیون چیست؟",
+    "options": [
+      "نقطه شروع",
+      "نقطه‌ای که واکنش کامل می‌شود",
+      "نقطه پایان",
+      "نقطه‌ای که pH = 7"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q029",
+    "exam_number": 2,
+    "topic": "بافرها",
+    "question_text": "کدام‌یک یک محلول بافر است؟",
+    "options": [
+      "HCl و NaCl",
+      "CH₃COOH و CH₃COONa",
+      "NaOH و NaCl",
+      "H₂SO₄ و H₂O"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q030",
+    "exam_number": 2,
+    "topic": "تعادل شیمیایی",
+    "question_text": "کدام‌یک نشان‌دهنده تعادل شیمیایی است؟",
+    "options": [
+      "غلظت‌های متغیر",
+      "سرعت‌های برابر واکنش",
+      "محصولات صفر",
+      "واکنش‌گرهای صفر"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q031",
+    "exam_number": 2,
+    "topic": "ثابت تعادل",
+    "question_text": "اگر K << 1 باشد، واکنش به سمت کدام جهت متمایل است؟",
+    "options": [
+      "محصولات",
+      "واکنش‌گرها",
+      "تعادل کامل",
+      "بدون واکنش"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q032",
+    "exam_number": 2,
+    "topic": "اصل لوشاتلیه",
+    "question_text": "افزایش غلظت واکنش‌گرها تعادل را به سمت:",
+    "options": [
+      "واکنش‌گرها",
+      "محصولات",
+      "بدون تغییر",
+      "نقطه شروع"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q033",
+    "exam_number": 2,
+    "topic": "الکتروشیمی",
+    "question_text": "در الکتروشیمی، کاهش در کدام بخش رخ می‌دهد؟",
+    "options": [
+      "آند",
+      "کاتد",
+      "پل نمکی",
+      "الکترولیت"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q034",
+    "exam_number": 2,
+    "topic": "پیل‌های گالوانی",
+    "question_text": "پل نمکی در پیل گالوانی چه نقشی دارد؟",
+    "options": [
+      "تولید برق",
+      "حفظ تعادل بار",
+      "افزایش دما",
+      "کاهش مقاومت"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q035",
+    "exam_number": 2,
+    "topic": "پیل‌های الکترولیتی",
+    "question_text": "در پیل الکترولیتی، انرژی الکتریکی به چه چیزی تبدیل می‌شود؟",
+    "options": [
+      "انرژی گرمایی",
+      "انرژی شیمیایی",
+      "انرژی مکانیکی",
+      "انرژی نوری"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q036",
+    "exam_number": 2,
+    "topic": "پتانسیل استاندارد الکترود",
+    "question_text": "پتانسیل استاندارد الکترود H⁺/H₂ چیست؟",
+    "options": [
+      "۰ V",
+      "۱ V",
+      "-۱ V",
+      "۰.۵ V"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q037",
+    "exam_number": 2,
+    "topic": "قانون فارادی",
+    "question_text": "اولین قانون فارادی بیان می‌کند که مقدار ماده رسوب‌شده متناسب است با:",
+    "options": [
+      "دما",
+      "جریان",
+      "زمان",
+      "هر دو ج و د"
+    ],
+    "correct_answer": 4,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q038",
+    "exam_number": 2,
+    "topic": "محلول‌ها",
+    "question_text": "محلول رقیق چیست؟",
+    "options": [
+      "محلولی با غلظت بالا",
+      "محلولی با غلظت پایین",
+      "محلولی با حلال زیاد",
+      "محلولی با رسوب"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q039",
+    "exam_number": 2,
+    "topic": "غلظت محلول",
+    "question_text": "اگر ۵۸.۵ گرم NaCl در ۱ کیلوگرم آب حل شود، مولالیته چیست؟",
+    "options": [
+      "۱ m",
+      "۰.۱ m",
+      "۱۰ m",
+      "۰.۰۱ m"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q040",
+    "exam_number": 2,
+    "topic": "حلالیت",
+    "question_text": "کاهش دما معمولاً حلالیت کدام مواد را کاهش می‌دهد؟",
+    "options": [
+      "جامدات",
+      "گازها",
+      "مایعات",
+      "همه موارد"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q041",
+    "exam_number": 3,
+    "topic": "محلول‌ها",
+    "question_text": "کدام‌یک حلال است؟",
+    "options": [
+      "ماده‌ای که حل می‌شود",
+      "ماده‌ای که حل می‌کند",
+      "ماده‌ای که رسوب می‌دهد",
+      "ماده‌ای که گاز تولید می‌کند"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q042",
+    "exam_number": 3,
+    "topic": "غلظت محلول",
+    "question_text": "مولاریته ۰.۲ M به چه معناست؟",
+    "options": [
+      "۰.۲ مول حل‌شونده در ۱ لیتر محلول",
+      "۰.۲ گرم حل‌شونده در ۱ لیتر محلول",
+      "۰.۲ مول حل‌شونده در ۱ کیلوگرم حلال",
+      "۰.۲ گرم حل‌شونده در ۱ کیلوگرم حلال"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q043",
+    "exam_number": 3,
+    "topic": "حلالیت",
+    "question_text": "حلالیت NaCl در آب با افزایش دما:",
+    "options": [
+      "کاهش می‌یابد",
+      "افزایش می‌یابد",
+      "ثابت می‌ماند",
+      "صفر می‌شود"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q044",
+    "exam_number": 3,
+    "topic": "خواص کولیگاتیو",
+    "question_text": "کاهش نقطه انجماد یک محلول به چه چیزی بستگی دارد؟",
+    "options": [
+      "نوع حلال",
+      "تعداد ذرات حل‌شونده",
+      "جرم حلال",
+      "دمای محیط"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q045",
+    "exam_number": 3,
+    "topic": "اسیدها و بازها",
+    "question_text": "کدام‌یک یک اسید قوی است؟",
+    "options": [
+      "CH₃COOH",
+      "NH₃",
+      "HCl",
+      "NaOH"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q046",
+    "exam_number": 3,
+    "topic": "pH و pOH",
+    "question_text": "اگر [OH⁻] = 10⁻۴ M باشد، pH چیست؟",
+    "options": [
+      "۴",
+      "۷",
+      "۱۰",
+      "۱۴"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q047",
+    "exam_number": 3,
+    "topic": "واکنش‌های اسید-باز",
+    "question_text": "واکنش H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O چه نوع واکنشی است؟",
+    "options": [
+      "ترکیب",
+      "خنثی‌سازی",
+      "تجزیه",
+      "اکسایش-کاهش"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q048",
+    "exam_number": 3,
+    "topic": "تیتراسیون",
+    "question_text": "کدام ماده در تیتراسیون به‌عنوان شناساگر استفاده می‌شود؟",
+    "options": [
+      "فنل‌فتالئین",
+      "HCl",
+      "NaOH",
+      "H₂O"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q049",
+    "exam_number": 3,
+    "topic": "بافرها",
+    "question_text": "بافرها در برابر چه چیزی مقاومت می‌کنند؟",
+    "options": [
+      "تغییر دما",
+      "تغییر فشار",
+      "تغییر pH",
+      "تغییر حجم"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q050",
+    "exam_number": 3,
+    "topic": "تعادل شیمیایی",
+    "question_text": "در واکنش 2A ⇌ B، اگر K = 1 باشد:",
+    "options": [
+      "محصولات غالب هستند",
+      "واکنش‌گرها غالب هستند",
+      "غلظت‌ها برابرند",
+      "واکنش کامل است"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q051",
+    "exam_number": 3,
+    "topic": "ثابت تعادل",
+    "question_text": "ثابت تعادل برای واکنش‌های گازی معمولاً بر حسب چه چیزی بیان می‌شود؟",
+    "options": [
+      "غلظت",
+      "فشار",
+      "جرم",
+      "حجم"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q052",
+    "exam_number": 3,
+    "topic": "اصل لوشاتلیه",
+    "question_text": "کاهش دما در یک واکنش گرمازا تعادل را به سمت:",
+    "options": [
+      "واکنش‌گرها",
+      "محصولات",
+      "بدون تغییر",
+      "نقطه شروع"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q053",
+    "exam_number": 3,
+    "topic": "الکتروشیمی",
+    "question_text": "کدام‌یک واکنش اکسایش است؟",
+    "options": [
+      "از دست دادن الکترون",
+      "به‌دست آوردن الکترون",
+      "افزایش پروتون",
+      "کاهش نوترون"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q054",
+    "exam_number": 3,
+    "topic": "پیل‌های گالوانی",
+    "question_text": "در پیل گالوانی، جریان الکتریکی از:",
+    "options": [
+      "آند به کاتد",
+      "کاتد به آند",
+      "پل نمکی به آند",
+      "الکترولیت به کاتد"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q055",
+    "exam_number": 3,
+    "topic": "پیل‌های الکترولیتی",
+    "question_text": "در پیل الکترولیتی، کاتد چه نقشی دارد؟",
+    "options": [
+      "محل اکسایش",
+      "محل کاهش",
+      "محل تولید گاز",
+      "محل رسوب فلز"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q056",
+    "exam_number": 3,
+    "topic": "پتانسیل استاندارد الکترود",
+    "question_text": "پتانسیل استاندارد Zn²⁺/Zn چیست؟",
+    "options": [
+      "۰ V",
+      "-۰.۷۶ V",
+      "+۰.۷۶ V",
+      "-۱.۰ V"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q057",
+    "exam_number": 3,
+    "topic": "قانون فارادی",
+    "question_text": "دومین قانون فارادی بیان می‌کند که مقدار ماده رسوب‌شده متناسب است با:",
+    "options": [
+      "جرم مولی",
+      "بار الکتریکی",
+      "وزن معادل",
+      "دما"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q058",
+    "exam_number": 3,
+    "topic": "محلول‌ها",
+    "question_text": "محلول فوق اشباع چیست؟",
+    "options": [
+      "محلولی که حل‌شونده بیشتری می‌پذیرد",
+      "محلولی که حل‌شونده اضافی دارد",
+      "محلولی که رسوب می‌دهد",
+      "محلولی که گاز تولید می‌کند"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q059",
+    "exam_number": 3,
+    "topic": "غلظت محلول",
+    "question_text": "اگر ۳۶ گرم گلوکز (C₆H₁₂O₆) در ۲ لیتر آب حل شود، مولاریته چیست؟",
+    "options": [
+      "۰.۱ M",
+      "۰.۲ M",
+      "۰.۳ M",
+      "۰.۴ M"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q060",
+    "exam_number": 3,
+    "topic": "حلالیت",
+    "question_text": "کدام ماده در آب حلالیت کمی دارد؟",
+    "options": [
+      "NaCl",
+      "KNO₃",
+      "AgCl",
+      "NaOH"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q061",
+    "exam_number": 4,
+    "topic": "محلول‌ها",
+    "question_text": "کدام‌یک حل‌شونده است؟",
+    "options": [
+      "ماده‌ای که حل می‌کند",
+      "ماده‌ای که حل می‌شود",
+      "ماده‌ای که رسوب می‌دهد",
+      "ماده‌ای که گاز تولید می‌کند"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q062",
+    "exam_number": 4,
+    "topic": "غلظت محلول",
+    "question_text": "اگر ۱ مول KCl در ۵۰۰ گرم آب حل شود، مولالیته چیست؟",
+    "options": [
+      "۱ m",
+      "۲ m",
+      "۳ m",
+      "۴ m"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q063",
+    "exam_number": 4,
+    "topic": "حلالیت",
+    "question_text": "افزایش فشار حلالیت کدام مواد را افزایش می‌دهد؟",
+    "options": [
+      "جامدات",
+      "مایعات",
+      "گازها",
+      "همه موارد"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q064",
+    "exam_number": 4,
+    "topic": "خواص کولیگاتیو",
+    "question_text": "خواص کولیگاتیو به چه چیزی بستگی ندارد؟",
+    "options": [
+      "نوع حل‌شونده",
+      "تعداد ذرات حل‌شونده",
+      "جرم حلال",
+      "دمای محلول"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q065",
+    "exam_number": 4,
+    "topic": "اسیدها و بازها",
+    "question_text": "کدام‌یک یک باز قوی است؟",
+    "options": [
+      "NH₃",
+      "NaOH",
+      "CH₃COOH",
+      "H₂CO₃"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q066",
+    "exam_number": 4,
+    "topic": "pH و pOH",
+    "question_text": "اگر pOH یک محلول ۲ باشد، pH آن چیست؟",
+    "options": [
+      "۲",
+      "۷",
+      "۱۲",
+      "۱۴"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q067",
+    "exam_number": 4,
+    "topic": "واکنش‌های اسید-باز",
+    "question_text": "محصول واکنش HNO₃ + KOH چیست؟",
+    "options": [
+      "KNO₃ و H₂O",
+      "HNO₃ و KCl",
+      "KOH و H₂",
+      "NO₂ و H₂O"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q068",
+    "exam_number": 4,
+    "topic": "تیتراسیون",
+    "question_text": "در تیتراسیون اسید قوی با باز قوی، pH در نقطه هم‌ارزی چیست؟",
+    "options": [
+      "۱",
+      "۷",
+      "۱۴",
+      "صفر"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q069",
+    "exam_number": 4,
+    "topic": "بافرها",
+    "question_text": "کدام‌یک در محلول بافر نقش دارد؟",
+    "options": [
+      "اسید قوی",
+      "باز قوی",
+      "اسید ضعیف و باز مزدوج",
+      "نمک خنثی"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q070",
+    "exam_number": 4,
+    "topic": "تعادل شیمیایی",
+    "question_text": "در واکنش A + B ⇌ C، افزایش غلظت C تعادل را به سمت:",
+    "options": [
+      "محصولات",
+      "واکنش‌گرها",
+      "بدون تغییر",
+      "نقطه پایان"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q071",
+    "exam_number": 4,
+    "topic": "ثابت تعادل",
+    "question_text": "ثابت تعادل برای واکنش 2A ⇌ B به صورت K = [B]/[A]² بیان می‌شود. اگر [A] = ۰.۱ M و [B] = ۰.۰۱ M، K چیست؟",
+    "options": [
+      "۰.۱",
+      "۱",
+      "۱۰",
+      "۱۰۰"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q072",
+    "exam_number": 4,
+    "topic": "اصل لوشاتلیه",
+    "question_text": "در یک واکنش گرماگیر، افزایش دما تعادل را به سمت:",
+    "options": [
+      "واکنش‌گرها",
+      "محصولات",
+      "بدون تغییر",
+      "نقطه شروع"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q073",
+    "exam_number": 4,
+    "topic": "الکتروشیمی",
+    "question_text": "کدام‌یک واکنش کاهش است؟",
+    "options": [
+      "از دست دادن الکترون",
+      "به‌دست آوردن الکترون",
+      "افزایش پروتون",
+      "کاهش نوترون"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q074",
+    "exam_number": 4,
+    "topic": "پیل‌های گالوانی",
+    "question_text": "در پیل گالوانی Zn/Cu، کدام فلز آند است؟",
+    "options": [
+      "Cu",
+      "Zn",
+      "هر دو",
+      "هیچ‌کدام"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q075",
+    "exam_number": 4,
+    "topic": "پیل‌های الکترولیتی",
+    "question_text": "در پیل الکترولیتی، آند چه نقشی دارد؟",
+    "options": [
+      "محل کاهش",
+      "محل اکسایش",
+      "محل تولید گاز",
+      "محل رسوب فلز"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q076",
+    "exam_number": 4,
+    "topic": "پتانسیل استاندارد الکترود",
+    "question_text": "پتانسیل استاندارد Cu²⁺/Cu چیست؟",
+    "options": [
+      "۰ V",
+      "+۰.۳۴ V",
+      "-۰.۳۴ V",
+      "+۱.۰ V"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q077",
+    "exam_number": 4,
+    "topic": "قانون فارادی",
+    "question_text": "اگر ۹۶۵۰۰ کولن بار از یک پیل الکترولیتی عبور کند، چند مول الکترون منتقل می‌شود؟",
+    "options": [
+      "۰.۵ مول",
+      "۱ مول",
+      "۲ مول",
+      "۴ مول"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q078",
+    "exam_number": 4,
+    "topic": "محلول‌ها",
+    "question_text": "محلول غیراشباع چیست؟",
+    "options": [
+      "محلولی که حل‌شونده بیشتری می‌پذیرد",
+      "محلولی که حل‌شونده اضافی دارد",
+      "محلولی که رسوب می‌دهد",
+      "محلولی که گاز تولید می‌کند"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q079",
+    "exam_number": 4,
+    "topic": "غلظت محلول",
+    "question_text": "اگر ۱۸ گرم گلوکز (C₆H₁₂O₆) در ۱ لیتر آب حل شود، مولاریته چیست؟",
+    "options": [
+      "۰.۱ M",
+      "۰.۲ M",
+      "۰.۳ M",
+      "۰.۴ M"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q080",
+    "exam_number": 4,
+    "topic": "حلالیت",
+    "question_text": "کدام ماده در آب حلالیت بالایی دارد؟",
+    "options": [
+      "AgCl",
+      "PbSO₄",
+      "NaNO₃",
+      "CaCO₃"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q081",
+    "exam_number": 5,
+    "topic": "محلول‌ها",
+    "question_text": "کدام‌یک نمونه‌ای از حلال است؟",
+    "options": [
+      "شکر",
+      "آب",
+      "نمک",
+      "گلوکز"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q082",
+    "exam_number": 5,
+    "topic": "غلظت محلول",
+    "question_text": "اگر ۰.۵ مول H₂SO₄ در ۲ لیتر محلول باشد، مولاریته چیست؟",
+    "options": [
+      "۰.۲۵ M",
+      "۰.۵ M",
+      "۱ M",
+      "۲ M"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q083",
+    "exam_number": 5,
+    "topic": "حلالیت",
+    "question_text": "کاهش فشار حلالیت کدام مواد را کاهش می‌دهد؟",
+    "options": [
+      "جامدات",
+      "مایعات",
+      "گازها",
+      "همه موارد"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q084",
+    "exam_number": 5,
+    "topic": "خواص کولیگاتیو",
+    "question_text": "کدام‌یک از خواص کولیگاتیو نیست؟",
+    "options": [
+      "کاهش فشار بخار",
+      "افزایش نقطه جوش",
+      "کاهش نقطه انجماد",
+      "تغییر رنگ"
+    ],
+    "correct_answer": 4,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q085",
+    "exam_number": 5,
+    "topic": "اسیدها و بازها",
+    "question_text": "کدام‌یک یک اسید ضعیف است؟",
+    "options": [
+      "HCl",
+      "H₂SO₄",
+      "CH₃COOH",
+      "HNO₃"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q086",
+    "exam_number": 5,
+    "topic": "pH و pOH",
+    "question_text": "اگر [H⁺] = 10⁻۸ M باشد، pH چیست؟",
+    "options": [
+      "۶",
+      "۷",
+      "۸",
+      "۹"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q087",
+    "exam_number": 5,
+    "topic": "واکنش‌های اسید-باز",
+    "question_text": "واکنش H₃PO₄ + 3NaOH → Na₃PO₄ + 3H₂O چه نوع واکنشی است؟",
+    "options": [
+      "ترکیب",
+      "خنثی‌سازی",
+      "تجزیه",
+      "اکسایش-کاهش"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q088",
+    "exam_number": 5,
+    "topic": "تیتراسیون",
+    "question_text": "در تیتراسیون، نقطه پایان با چه چیزی مشخص می‌شود؟",
+    "options": [
+      "تغییر دما",
+      "تغییر رنگ شناساگر",
+      "تغییر حجم",
+      "تغییر فشار"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q089",
+    "exam_number": 5,
+    "topic": "بافرها",
+    "question_text": "محلول بافر معمولاً شامل چیست؟",
+    "options": [
+      "اسید قوی و باز قوی",
+      "اسید ضعیف و باز قوی",
+      "اسید ضعیف و باز مزدوج",
+      "نمک و آب"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q090",
+    "exam_number": 5,
+    "topic": "تعادل شیمیایی",
+    "question_text": "کدام‌یک نشان‌دهنده عدم تعادل است؟",
+    "options": [
+      "سرعت‌های برابر",
+      "غلظت‌های ثابت",
+      "تغییر غلظت‌ها",
+      "تولید محصولات"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q091",
+    "exam_number": 5,
+    "topic": "ثابت تعادل",
+    "question_text": "ثابت تعادل برای واکنش A ⇌ 2B به صورت K = [B]²/[A] بیان می‌شود. اگر K = ۴ و [A] = ۰.۱ M، [B] چیست؟",
+    "options": [
+      "۰.۲ M",
+      "۰.۴ M",
+      "۰.۶ M",
+      "۰.۸ M"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q092",
+    "exam_number": 5,
+    "topic": "اصل لوشاتلیه",
+    "question_text": "در یک واکنش گازی، کاهش حجم تعادل را به سمت:",
+    "options": [
+      "جهتی با مول بیشتر",
+      "جهتی با مول کمتر",
+      "بدون تغییر",
+      "نقطه شروع"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q093",
+    "exam_number": 5,
+    "topic": "الکتروشیمی",
+    "question_text": "کدام‌یک در الکتروشیمی رخ می‌دهد؟",
+    "options": [
+      "تبدیل انرژی شیمیایی به الکتریکی",
+      "تبدیل انرژی گرمایی به شیمیایی",
+      "تبدیل انرژی مکانیکی به گرمایی",
+      "تبدیل انرژی نوری به شیمیایی"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q094",
+    "exam_number": 5,
+    "topic": "پیل‌های گالوانی",
+    "question_text": "در پیل گالوانی، کاتد چه نقشی دارد؟",
+    "options": [
+      "محل اکسایش",
+      "محل کاهش",
+      "محل تولید گاز",
+      "محل رسوب فلز"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q095",
+    "exam_number": 5,
+    "topic": "پیل‌های الکترولیتی",
+    "question_text": "در پیل الکترولیتی، انرژی شیمیایی به چه چیزی تبدیل می‌شود؟",
+    "options": [
+      "انرژی الکتریکی",
+      "انرژی گرمایی",
+      "انرژی مکانیکی",
+      "انرژی نوری"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q096",
+    "exam_number": 5,
+    "topic": "پتانسیل استاندارد الکترود",
+    "question_text": "پتانسیل استاندارد Ag⁺/Ag چیست؟",
+    "options": [
+      "+۰.۸۰ V",
+      "-۰.۸۰ V",
+      "۰ V",
+      "+۱.۰ V"
+    ],
+    "correct_answer": 1,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q097",
+    "exam_number": 5,
+    "topic": "قانون فارادی",
+    "question_text": "اگر ۱ فارادی بار الکتریکی عبور کند، چند مول ماده رسوب می‌کند (برای یون یک‌ظرفیتی)؟",
+    "options": [
+      "۰.۵ مول",
+      "۱ مول",
+      "۲ مول",
+      "۴ مول"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q098",
+    "exam_number": 5,
+    "topic": "محلول‌ها",
+    "question_text": "محلول اشباع در چه حالتی است؟",
+    "options": [
+      "حل‌شونده بیشتری می‌پذیرد",
+      "حل‌شونده اضافی دارد",
+      "بدون حل‌شونده",
+      "با رسوب"
+    ],
+    "correct_answer": 2,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q099",
+    "exam_number": 5,
+    "topic": "غلظت محلول",
+    "question_text": "اگر ۴۹ گرم H₂SO₄ در ۱ لیتر محلول باشد، مولاریته چیست؟",
+    "options": [
+      "۰.۱ M",
+      "۰.۲ M",
+      "۰.۵ M",
+      "۱ M"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  },
+  {
+    "question_id": "Q100",
+    "exam_number": 5,
+    "topic": "حلالیت",
+    "question_text": "کدام ماده در آب حلالیت پایینی دارد؟",
+    "options": [
+      "KNO₃",
+      "NaCl",
+      "BaSO₄",
+      "NaOH"
+    ],
+    "correct_answer": 3,
+    "question_type": "MCQ",
+    "module": "پودمان 3"
+  }
+]

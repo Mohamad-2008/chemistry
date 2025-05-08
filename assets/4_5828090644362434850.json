@@ -1,0 +1,1404 @@
+{
+  "questions": [
+    {
+      "question_id": "Q001",
+      "exam_number": 1,
+      "topic": "پلیمرها",
+      "question_text": "پلیمر چیست؟",
+      "options": {
+        "الف": "مولکول کوچک",
+        "ب": "مولکول بزرگ با واحدهای تکراری",
+        "ج": "ترکیب یونی",
+        "د": "ماده غیرآلی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q002",
+      "exam_number": 1,
+      "topic": "انواع پلیمرها",
+      "question_text": "کدام‌یک یک پلیمر طبیعی است؟",
+      "options": {
+        "الف": "نایلون",
+        "ب": "پلی‌اتیلن",
+        "ج": "سلولز",
+        "د": "PVC"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q003",
+      "exam_number": 1,
+      "topic": "مکانیسم پلیمریزاسیون",
+      "question_text": "پلیمریزاسیون افزایشی چیست؟",
+      "options": {
+        "الف": "تشکیل پلیمر با حذف مولکول کوچک",
+        "ب": "تشکیل پلیمر بدون حذف مولکول",
+        "ج": "تشکیل پلیمر با افزودن یون",
+        "د": "تشکیل پلیمر با تجزیه"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q004",
+      "exam_number": 1,
+      "topic": "خواص پلیمرها",
+      "question_text": "کدام ویژگی پلیمرها را متمایز می‌کند؟",
+      "options": {
+        "الف": "وزن مولکولی پایین",
+        "ب": "انعطاف‌پذیری بالا",
+        "ج": "ساختار یونی",
+        "د": "حلالیت کم"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q005",
+      "exam_number": 1,
+      "topic": "پلاستیک‌ها و بازیافت",
+      "question_text": "کدام پلیمر به‌راحتی بازیافت می‌شود؟",
+      "options": {
+        "الف": "پلی‌استایرن",
+        "ب": "پلی‌اتیلن ترفتالات (PET)",
+        "ج": "پلی‌وینیل کلراید",
+        "د": "ترموست‌ها"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q006",
+      "exam_number": 1,
+      "topic": "شیمی محیط‌زیست",
+      "question_text": "کدام‌یک از مسائل شیمی محیط‌زیست است؟",
+      "options": {
+        "الف": "تولید پلیمر",
+        "ب": "آلودگی هوا",
+        "ج": "طیف‌سنجی",
+        "د": "پلیمریزاسیون"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q007",
+      "exam_number": 1,
+      "topic": "آلودگی هوا",
+      "question_text": "کدام گاز باعث باران اسیدی می‌شود؟",
+      "options": {
+        "الف": "CO2",
+        "ب": "SO2",
+        "ج": "O2",
+        "د": "N2"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q008",
+      "exam_number": 1,
+      "topic": "آلودگی آب",
+      "question_text": "کدام ماده باعث آلودگی آب می‌شود؟",
+      "options": {
+        "الف": "نیترات‌ها",
+        "ب": "اکسیژن",
+        "ج": "نیتروژن",
+        "د": "هیدروژن"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q009",
+      "exam_number": 1,
+      "topic": "گازهای گلخانه‌ای",
+      "question_text": "کدام گاز گلخانه‌ای است؟",
+      "options": {
+        "الف": "N2",
+        "ب": "O2",
+        "ج": "CH4",
+        "د": "SO2"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q010",
+      "exam_number": 1,
+      "topic": "شیمی تجزیه",
+      "question_text": "هدف شیمی تجزیه چیست؟",
+      "options": {
+        "الف": "تولید مواد",
+        "ب": "شناسایی و اندازه‌گیری مواد",
+        "ج": "تجزیه مواد",
+        "د": "بازیافت مواد"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q011",
+      "exam_number": 1,
+      "topic": "روش‌های کروماتوگرافی",
+      "question_text": "کروماتوگرافی برای چه استفاده می‌شود؟",
+      "options": {
+        "الف": "جداسازی مواد",
+        "ب": "تولید مواد",
+        "ج": "اندازه‌گیری دما",
+        "د": "تغییر فشار"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q012",
+      "exam_number": 1,
+      "topic": "طیف‌سنجی",
+      "question_text": "طیف‌سنجی IR برای شناسایی چه چیزی استفاده می‌شود؟",
+      "options": {
+        "الف": "جرم مولکولی",
+        "ب": "گروه‌های عاملی",
+        "ج": "فشار بخار",
+        "د": "حلالیت"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q013",
+      "exam_number": 1,
+      "topic": "آنالیز کیفی",
+      "question_text": "آنالیز کیفی چه چیزی را تعیین می‌کند؟",
+      "options": {
+        "الف": "مقدار ماده",
+        "ب": "نوع ماده",
+        "ج": "جرم ماده",
+        "د": "حجم ماده"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q014",
+      "exam_number": 1,
+      "topic": "آنالیز کمی",
+      "question_text": "آنالیز کمی چه چیزی را اندازه‌گیری می‌کند؟",
+      "options": {
+        "الف": "نوع ماده",
+        "ب": "مقدار ماده",
+        "ج": "ساختار ماده",
+        "د": "خواص ماده"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q015",
+      "exam_number": 1,
+      "topic": "شیمی سبز",
+      "question_text": "شیمی سبز بر چه چیزی تأکید دارد؟",
+      "options": {
+        "الف": "تولید مواد خطرناک",
+        "ب": "کاهش اثرات زیست‌محیطی",
+        "ج": "افزایش آلودگی",
+        "د": "استفاده از منابع غیرتجدیدپذیر"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q016",
+      "exam_number": 1,
+      "topic": "اصول شیمی سبز",
+      "question_text": "یکی از اصول شیمی سبز چیست؟",
+      "options": {
+        "الف": "استفاده از حلال‌های سمی",
+        "ب": "کاهش ضایعات",
+        "ج": "افزایش انرژی",
+        "د": "تولید گازهای گلخانه‌ای"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q017",
+      "exam_number": 1,
+      "topic": "کاربردهای شیمی سبز",
+      "question_text": "کدام‌یک کاربرد شیمی سبز است؟",
+      "options": {
+        "الف": "تولید پلاستیک غیرقابل بازیافت",
+        "ب": "استفاده از کاتالیزورهای غیرسمی",
+        "ج": "افزایش آلودگی",
+        "د": "استفاده از مواد خطرناک"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q018",
+      "exam_number": 1,
+      "topic": "پلیمرها",
+      "question_text": "کدام‌یک یک پلیمر است؟",
+      "options": {
+        "الف": "گلوکز",
+        "ب": "سلولز",
+        "ج": "اتانول",
+        "د": "متان"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q019",
+      "exam_number": 1,
+      "topic": "انواع پلیمرها",
+      "question_text": "کدام پلیمر مصنوعی است؟",
+      "options": {
+        "الف": "نشاسته",
+        "ب": "پلی‌اتیلن",
+        "ج": "DNA",
+        "د": "سلولز"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q020",
+      "exam_number": 1,
+      "topic": "مکانیسم پلیمریزاسیون",
+      "question_text": "پلیمریزاسیون تراکمی شامل چیست؟",
+      "options": {
+        "الف": "اضافه شدن مونومرها",
+        "ب": "حذف مولکول کوچک",
+        "ج": "تجزیه مونومرها",
+        "د": "اکسایش مونومرها"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q021",
+      "exam_number": 2,
+      "topic": "پلیمرها",
+      "question_text": "پلیمرها از چه واحدهایی تشکیل شده‌اند؟",
+      "options": {
+        "الف": "یون‌ها",
+        "ب": "مونومرها",
+        "ج": "اتم‌ها",
+        "د": "مولکول‌های کوچک"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q022",
+      "exam_number": 2,
+      "topic": "انواع پلیمرها",
+      "question_text": "کدام‌یک پلیمر طبیعی است؟",
+      "options": {
+        "الف": "پلی‌پروپیلن",
+        "ب": "لاستیک",
+        "ج": "نایلون",
+        "د": "PTFE"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q023",
+      "exam_number": 2,
+      "topic": "مکانیسم پلیمریزاسیون",
+      "question_text": "کدام پلیمر از پلیمریزاسیون افزایشی تشکیل می‌شود؟",
+      "options": {
+        "الف": "پلی‌اتیلن",
+        "ب": "نایلون",
+        "ج": "پلی‌استر",
+        "د": "سلولز"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q024",
+      "exam_number": 2,
+      "topic": "خواص پلیمرها",
+      "question_text": "کدام ویژگی پلیمرها برای بسته‌بندی مهم است؟",
+      "options": {
+        "الف": "هدایت الکتریکی",
+        "ب": "انعطاف‌پذیری",
+        "ج": "وزن بالا",
+        "د": "حلالیت بالا"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q025",
+      "exam_number": 2,
+      "topic": "پلاستیک‌ها و بازیافت",
+      "question_text": "کدام پلاستیک به سختی بازیافت می‌شود؟",
+      "options": {
+        "الف": "PET",
+        "ب": "HDPE",
+        "ج": "PS",
+        "د": "PP"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q026",
+      "exam_number": 2,
+      "topic": "شیمی محیط‌زیست",
+      "question_text": "کدام‌یک به شیمی محیط‌زیست مربوط است؟",
+      "options": {
+        "الف": "طیف‌سنجی",
+        "ب": "آلودگی آب",
+        "ج": "پلیمریزاسیون",
+        "د": "آنالیز کمی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q027",
+      "exam_number": 2,
+      "topic": "آلودگی هوا",
+      "question_text": "کدام گاز در آلودگی هوای فتوشیمیایی نقش دارد؟",
+      "options": {
+        "الف": "CO2",
+        "ب": "NO2",
+        "ج": "O3",
+        "د": "SO2"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q028",
+      "exam_number": 2,
+      "topic": "آلودگی آب",
+      "question_text": "کدام عامل باعث کاهش اکسیژن در آب می‌شود؟",
+      "options": {
+        "الف": "نیترات‌ها",
+        "ب": "فسفات‌ها",
+        "ج": "مواد آلی",
+        "د": "هر سه"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q029",
+      "exam_number": 2,
+      "topic": "گازهای گلخانه‌ای",
+      "question_text": "کدام گاز بیشترین اثر گلخانه‌ای را دارد؟",
+      "options": {
+        "الف": "CO2",
+        "ب": "CH4",
+        "ج": "N2O",
+        "د": "همه به یک اندازه"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q030",
+      "exam_number": 2,
+      "topic": "شیمی تجزیه",
+      "question_text": "کدام روش در شیمی تجزیه استفاده می‌شود؟",
+      "options": {
+        "الف": "پلیمریزاسیون",
+        "ب": "کروماتوگرافی",
+        "ج": "بازیافت",
+        "د": "تولید پلیمر"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q031",
+      "exam_number": 2,
+      "topic": "روش‌های کروماتوگرافی",
+      "question_text": "کروماتوگرافی گازی برای جداسازی چه موادی مناسب است؟",
+      "options": {
+        "الف": "مواد جامد",
+        "ب": "مواد فرار",
+        "ج": "مواد غیرفرار",
+        "د": "مواد یونی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q032",
+      "exam_number": 2,
+      "topic": "طیف‌سنجی",
+      "question_text": "طیف‌سنجی UV-Vis برای شناسایی چه چیزی استفاده می‌شود؟",
+      "options": {
+        "الف": "پیوندهای کووالانسی",
+        "ب": "ترکیبات رنگی",
+        "ج": "جرم مولکولی",
+        "د": "ساختار کریستالی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q033",
+      "exam_number": 2,
+      "topic": "آنالیز کیفی",
+      "question_text": "کدام‌یک در آنالیز کیفی استفاده می‌شود؟",
+      "options": {
+        "الف": "تیتراسیون",
+        "ب": "آزمایش شعله",
+        "ج": "کروماتوگرافی کمی",
+        "د": "طیف‌سنجی جرم"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q034",
+      "exam_number": 2,
+      "topic": "آنالیز کمی",
+      "question_text": "تیتراسیون نمونه‌ای از چیست؟",
+      "options": {
+        "الف": "آنالیز کیفی",
+        "ب": "آنالیز کمی",
+        "ج": "آنالیز ساختاری",
+        "د": "آنالیز حرارتی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q035",
+      "exam_number": 2,
+      "topic": "شیمی سبز",
+      "question_text": "کدام‌یک اصل شیمی سبز نیست؟",
+      "options": {
+        "الف": "استفاده از مواد سمی",
+        "ب": "استفاده از انرژی تجدیدپذیر",
+        "ج": "کاهش ضایعات",
+        "د": "طراحی مواد ایمن"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q036",
+      "exam_number": 2,
+      "topic": "اصول شیمی سبز",
+      "question_text": "کدام‌یک اصل شیمی سبز است؟",
+      "options": {
+        "الف": "افزایش آلودگی",
+        "ب": "استفاده از کاتالیزورهای ایمن",
+        "ج": "تولید مواد خطرناک",
+        "د": "مصرف انرژی بالا"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q037",
+      "exam_number": 2,
+      "topic": "کاربردهای شیمی سبز",
+      "question_text": "کدام‌یک کاربرد شیمی سبز است؟",
+      "options": {
+        "الف": "تولید پلاستیک‌های زیست‌تخریب‌پذیر",
+        "ب": "استفاده از حلال‌های سمی",
+        "ج": "افزایش ضایعات",
+        "د": "تولید گازهای گلخانه‌ای"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q038",
+      "exam_number": 2,
+      "topic": "پلیمرها",
+      "question_text": "کدام‌یک پلیمر نیست؟",
+      "options": {
+        "الف": "پروتئین",
+        "ب": "سلولز",
+        "ج": "اتانول",
+        "د": "نشاسته"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q039",
+      "exam_number": 2,
+      "topic": "انواع پلیمرها",
+      "question_text": "کدام پلیمر مصنوعی است؟",
+      "options": {
+        "الف": "پلی‌استایرن",
+        "ب": "سلولز",
+        "ج": "لاستیک طبیعی",
+        "د": "DNA"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q040",
+      "exam_number": 2,
+      "topic": "مکانیسم پلیمریزاسیون",
+      "question_text": "پلی‌اتیلن از چه نوع پلیمریزاسیونی تشکیل می‌شود؟",
+      "options": {
+        "الف": "تراکمی",
+        "ب": "افزایشی",
+        "ج": "یونی",
+        "د": "رادیکالی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q041",
+      "exam_number": 3,
+      "topic": "پلیمرها",
+      "question_text": "کدام‌یک ویژگی پلیمرها است؟",
+      "options": {
+        "الف": "وزن مولکولی پایین",
+        "ب": "ساختار تکراری",
+        "ج": "هدایت الکتریکی بالا",
+        "د": "حلالیت زیاد"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q042",
+      "exam_number": 3,
+      "topic": "انواع پلیمرها",
+      "question_text": "کدام‌یک پلیمر طبیعی است؟",
+      "options": {
+        "الف": "پلی‌اتیلن",
+        "ب": "پروتئین",
+        "ج": "نایلون",
+        "د": "PVC"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q043",
+      "exam_number": 3,
+      "topic": "مکانیسم پلیمریزاسیون",
+      "question_text": "پلیمریزاسیون تراکمی چه چیزی تولید می‌کند؟",
+      "options": {
+        "الف": "مولکول کوچک مانند آب",
+        "ب": "گاز",
+        "ج": "یون",
+        "د": "هیچ‌چیز"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q044",
+      "exam_number": 3,
+      "topic": "خواص پلیمرها",
+      "question_text": "کدام ویژگی پلیمرها برای کاربرد پزشکی مهم است؟",
+      "options": {
+        "الف": "هدایت حرارتی",
+        "ب": "زیست‌سازگاری",
+        "ج": "وزن بالا",
+        "د": "شکنندگی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q045",
+      "exam_number": 3,
+      "topic": "پلاستیک‌ها و بازیافت",
+      "question_text": "کدام پلاستیک برای بطری‌های آب استفاده می‌شود؟",
+      "options": {
+        "الف": "PS",
+        "ب": "PVC",
+        "ج": "PET",
+        "د": "LDPE"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q046",
+      "exam_number": 3,
+      "topic": "شیمی محیط‌زیست",
+      "question_text": "کدام‌یک به آلودگی محیط‌زیست کمک می‌کند؟",
+      "options": {
+        "الف": "استفاده از انرژی تجدیدپذیر",
+        "ب": "دفع پلاستیک‌ها",
+        "ج": "بازیافت",
+        "د": "شیمی سبز"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q047",
+      "exam_number": 3,
+      "topic": "آلودگی هوا",
+      "question_text": "کدام گاز در مه‌دود فتوشیمیایی نقش دارد؟",
+      "options": {
+        "الف": "CO",
+        "ب": "SO2",
+        "ج": "O3",
+        "د": "N2"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q048",
+      "exam_number": 3,
+      "topic": "آلودگی آب",
+      "question_text": "کدام ماده باعث رشد بیش از حد جلبک‌ها در آب می‌شود؟",
+      "options": {
+        "الف": "نیترات‌ها",
+        "ب": "کلریدها",
+        "ج": "سدیم",
+        "د": "اکسیژن"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q049",
+      "exam_number": 3,
+      "topic": "گازهای گلخانه‌ای",
+      "question_text": "کدام گاز اثر گرمایی بالایی دارد اما غلظت کمی دارد؟",
+      "options": {
+        "الف": "CO2",
+        "ب": "CH4",
+        "ج": "N2O",
+        "د": "O3"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q050",
+      "exam_number": 3,
+      "topic": "شیمی تجزیه",
+      "question_text": "کدام روش برای شناسایی ترکیبات آلی مناسب است؟",
+      "options": {
+        "الف": "تیتراسیون",
+        "ب": "طیف‌سنجی IR",
+        "ج": "آزمایش شعله",
+        "د": "کروماتوگرافی کاغذی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q051",
+      "exam_number": 3,
+      "topic": "روش‌های کروماتوگرافی",
+      "question_text": "کروماتوگرافی لایه نازک برای چه استفاده می‌شود؟",
+      "options": {
+        "الف": "اندازه‌گیری جرم",
+        "ب Search": "جداسازی مواد",
+        "ج": "تولید مواد",
+        "د": "افزایش دما"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q052",
+      "exam_number": 3,
+      "topic": "طیف‌سنجی",
+      "question_text": "طیف‌سنجی جرم برای شناسایی چه چیزی استفاده می‌شود؟",
+      "options": {
+        "الف": "جرم مولکولی",
+        "ب": "گروه‌های عاملی",
+        "ج": "فشار بخار",
+        "د": "حلالیت"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q053",
+      "exam_number": 3,
+      "topic": "آنالیز کیفی",
+      "question_text": "آزمایش شعله برای شناسایی چه چیزی است؟",
+      "options": {
+        "الف": "یون‌های فلزی",
+        "ب": "ترکیبات آلی",
+        "ج": "گازها",
+        "د": "مایعات"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q054",
+      "exam_number": 3,
+      "topic": "آنالیز کمی",
+      "question_text": "کدام روش برای اندازه‌گیری غلظت استفاده می‌شود؟",
+      "options": {
+        "الف": "آزمایش شعله",
+        "ب": "طیف‌سنجی UV-Vis",
+        "ج": "کروماتوگرافی کاغذی",
+        "د": "آنالیز حرارتی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q055",
+      "exam_number": 3,
+      "topic": "شیمی سبز",
+      "question_text": "شیمی سبز چه هدفی دارد؟",
+      "options": {
+        "الف": "افزایش آلودگی",
+        "ب": "کاهش اثرات زیست‌محیطی",
+        "ج": "تولید مواد سمی",
+        "د": "مصرف انرژی بالا"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q056",
+      "exam_number": 3,
+      "topic": "اصول شیمی سبز",
+      "question_text": "کدام‌یک اصل شیمی سبز است؟",
+      "options": {
+        "الف": "طراحی فرآیندهای کم‌ضایعات",
+        "ب": "استفاده از مواد سمی",
+        "ج": "افزایش انرژی",
+        "د": "تولید گازهای سمی"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q057",
+      "exam_number": 3,
+      "topic": "کاربردهای شیمی سبز",
+      "question_text": "کدام‌یک کاربرد شیمی سبز است؟",
+      "options": {
+        "الف": "استفاده از حلال‌های خطرناک",
+        "ب": "تولید مواد زیست‌تخریب‌پذیر",
+        "ج": "افزایش ضایعات",
+        "د": "تولید گازهای گلخانه‌ای"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q058",
+      "exam_number": 3,
+      "topic": "پلیمرها",
+      "question_text": "کدام‌یک یک پلیمر طبیعی است؟",
+      "options": {
+        "الف": "پلی‌استایرن",
+        "ب": "DNA",
+        "ج": "نایلون",
+        "د": "PVC"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q059",
+      "exam_number": 3,
+      "topic": "انواع پلیمرها",
+      "question_text": "کدام پلیمر مصنوعی است؟",
+      "options": {
+        "الف": "سلولز",
+        "ب": "پلی‌پروپیلن",
+        "ج": "لاستیک طبیعی",
+        "د": "نشاسته"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q060",
+      "exam_number": 3,
+      "topic": "مکانیسم پلیمریزاسیون",
+      "question_text": "نایلون از چه نوع پلیمریزاسیونی تشکیل می‌شود؟",
+      "options": {
+        "الف": "افزایشی",
+        "ب": "تراکمی",
+        "ج": "رادیکالی",
+        "د": "یونی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q061",
+      "exam_number": 4,
+      "topic": "پلیمرها",
+      "question_text": "پلیمرها معمولاً چه ساختاری دارند؟",
+      "options": {
+        "الف": "یونی",
+        "ب": "تکراری",
+        "ج": "کوچک",
+        "د": "غیرآلی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q062",
+      "exam_number": 4,
+      "topic": "انواع پلیمرها",
+      "question_text": "کدام‌یک پلیمر مصنوعی است؟",
+      "options": {
+        "الف": "سلولز",
+        "ب": "پلی‌اتیلن",
+        "ج": "پروتئین",
+        "د": "نشاسته"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q063",
+      "exam_number": 4,
+      "topic": "مکانیسم پلیمریزاسیون",
+      "question_text": "پلیمریزاسیون افزایشی در کدام پلیمر رخ می‌دهد؟",
+      "options": {
+        "الف": "نایلون",
+        "ب": "پلی‌اتیلن",
+        "ج": "پلی‌استر",
+        "د": "سلولز"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q064",
+      "exam_number": 4,
+      "topic": "خواص پلیمرها",
+      "question_text": "کدام ویژگی پلیمرها برای ساخت لاستیک مهم است؟",
+      "options": {
+        "الف": "شکنندگی",
+        "ب": "الاستیسیته",
+        "ج": "وزن بالا",
+        "د": "هدایت حرارتی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q065",
+      "exam_number": 4,
+      "topic": "پلاستیک‌ها و بازیافت",
+      "question_text": "کدام پلاستیک برای لوله‌کشی استفاده می‌شود؟",
+      "options": {
+        "الف": "PET",
+        "ب": "HDPE",
+        "ج": "PVC",
+        "د": "PS"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q066",
+      "exam_number": 4,
+      "topic": "شیمی محیط‌زیست",
+      "question_text": "کدام‌یک به شیمی محیط‌زیست مربوط نیست؟",
+      "options": {
+        "الف": "آلودگی آب",
+        "ب": "بازیافت پلاستیک",
+        "ج": "طیف‌سنجی",
+        "د": "گازهای گلخانه‌ای"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q067",
+      "exam_number": 4,
+      "topic": "آلودگی هوا",
+      "question_text": "کدام گاز باعث کاهش لایه اوزون می‌شود؟",
+      "options": {
+        "الف": "CO2",
+        "ب": "CH4",
+        "ج": "CFC",
+        "د": "SO2"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q068",
+      "exam_number": 4,
+      "topic": "آلودگی آب",
+      "question_text": "کدام ماده باعث مسمومیت آب می‌شود؟",
+      "options": {
+        "الف": "نیترات‌ها",
+        "ب": "جیوه",
+        "ج": "فسفات‌ها",
+        "د": "هر سه"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q069",
+      "exam_number": 4,
+      "topic": "گازهای گلخانه‌ای",
+      "question_text": "کدام گاز گلخانه‌ای از فعالیت‌های کشاورزی تولید می‌شود؟",
+      "options": {
+        "الف": "CO2",
+        "ب": "CH4",
+        "ج": "N2O",
+        "د": "هر سه"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q070",
+      "exam_number": 4,
+      "topic": "شیمی تجزیه",
+      "question_text": "کدام روش برای آنالیز دقیق ترکیبات استفاده می‌شود؟",
+      "options": {
+        "الف": "پلیمریزاسیون",
+        "ب": "طیف‌سنجی",
+        "ج": "بازیافت",
+        "د": "تولید پلیمر"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q071",
+      "exam_number": 4,
+      "topic": "روش‌های کروماتوگرافی",
+      "question_text": "کروماتوگرافی ستونی برای چه موادی مناسب است؟",
+      "options": {
+        "الف": "مواد فرار",
+        "ب": "مواد غیرفرار",
+        "ج": "گازها",
+        "د": "یون‌ها"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q072",
+      "exam_number": 4,
+      "topic": "طیف‌سنجی",
+      "question_text": "طیف‌سنجی IR چه اطلاعاتی ارائه می‌دهد؟",
+      "options": {
+        "الف": "جرم مولکولی",
+        "ب": "پیوندهای شیمیایی",
+        "ج": "فشار بخار",
+        "د": "حلالیت"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q073",
+      "exam_number": 4,
+      "topic": "آنالیز کیفی",
+      "question_text": "کدام روش برای شناسایی یون‌های فلزی مناسب است؟",
+      "options": {
+        "الف": "طیف‌سنجی جرم",
+        "ب": "آزمایش شعله",
+        "ج": "تیتراسیون",
+        "د": "کروماتوگرافی گازی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q074",
+      "exam_number": 4,
+      "topic": "آنالیز کمی",
+      "question_text": "کدام روش برای اندازه‌گیری غلظت یک محلول استفاده می‌شود؟",
+      "options": {
+        "الف": "آزمایش شعله",
+        "ب": "طیف‌سنجی UV-Vis",
+        "ج": "کروماتوگرافی کاغذی",
+        "د": "آنالیز حرارتی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q075",
+      "exam_number": 4,
+      "topic": "شیمی سبز",
+      "question_text": "کدام‌یک هدف شیمی سبز است؟",
+      "options": {
+        "الف": "تولید مواد سمی",
+        "ب": "کاهش ضایعات",
+        "ج": "افزایش آلودگی",
+        "د": "مصرف انرژی بالا"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q076",
+      "exam_number": 4,
+      "topic": "اصول شیمی سبز",
+      "question_text": "کدام‌یک اصل شیمی سبز است؟",
+      "options": {
+        "الف": "استفاده از مواد خطرناک",
+        "ب": "استفاده از انرژی تجدیدپذیر",
+        "ج": "افزایش ضایعات",
+        "د": "تولید گازهای سمی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q077",
+      "exam_number": 4,
+      "topic": "کاربردهای شیمی سبز",
+      "question_text": "کدام‌یک کاربرد شیمی سبز است؟",
+      "options": {
+        "الف": "تولید پلاستیک‌های غیرقابل بازیافت",
+        "ب": "استفاده از کاتالیزورهای ایمن",
+        "ج": "افزایش آلودگی",
+        "د": "تولید مواد سمی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q078",
+      "exam_number": 4,
+      "topic": "پلیمرها",
+      "question_text": "کدام‌یک پلیمر نیست؟",
+      "options": {
+        "الف": "پروتئین",
+        "ب": "سلولز",
+        "ج": "متان",
+        "د": "نشاسته"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q079",
+      "exam_number": 4,
+      "topic": "انواع پلیمرها",
+      "question_text": "کدام پلیمر طبیعی است؟",
+      "options": {
+        "الف": "پلی‌استایرن",
+        "ب": "سلولز",
+        "ج": "نایلون",
+        "د": "PVC"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q080",
+      "exam_number": 4,
+      "topic": "مکانیسم پلیمریزاسیون",
+      "question_text": "پلی‌استر از چه نوع پلیمریزاسیونی تشکیل می‌شود؟",
+      "options": {
+        "الف": "افزایشی",
+        "ب": "تراکمی",
+        "ج": "رادیکالی",
+        "د": "یونی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q081",
+      "exam_number": 5,
+      "topic": "پلیمرها",
+      "question_text": "پلیمرها چه نوع مولکول‌هایی هستند؟",
+      "options": {
+        "الف": "کوچک",
+        "ب": "بزرگ با واحدهای تکراری",
+        "ج": "یونی",
+        "د": "غیرآلی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q082",
+      "exam_number": 5,
+      "topic": "انواع پلیمرها",
+      "question_text": "کدام‌یک پلیمر مصنوعی است؟",
+      "options": {
+        "الف": "سلولز",
+        "ب": "پلی‌پروپیلن",
+        "ج": "DNA",
+        "د": "نشاسته"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q083",
+      "exam_number": 5,
+      "topic": "مکانیسم پلیمریزاسیون",
+      "question_text": "کدام پلیمر از پلیمریزاسیون تراکمی تشکیل می‌شود؟",
+      "options": {
+        "الف": "پلی‌اتیلن",
+        "ب": "نایلون",
+        "ج": "پلی‌استایرن",
+        "د": "PVC"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q084",
+      "exam_number": 5,
+      "topic": "خواص پلیمرها",
+      "question_text": "کدام ویژگی پلیمرها برای ساخت فیبر مهم است؟",
+      "options": {
+        "الف": "هدایت الکتریکی",
+        "ب": "استحکام کششی",
+        "ج": "وزن پایین",
+        "د": "شکنندگی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q085",
+      "exam_number": 5,
+      "topic": "پلاستیک‌ها و بازیافت",
+      "question_text": "کدام پلاستیک برای بسته‌بندی مواد غذایی مناسب است؟",
+      "options": {
+        "الف": "PVC",
+        "ب": "PS",
+        "ج": "LDPE",
+        "د": "PET"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q086",
+      "exam_number": 5,
+      "topic": "شیمی محیط‌زیست",
+      "question_text": "کدام‌یک به شیمی محیط‌زیست مربوط است؟",
+      "options": {
+        "الف": "تولید پلیمر",
+        "ب": "آلودگی هوا",
+        "ج": "طیف‌سنجی",
+        "د": "پلیمریزاسیون"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q087",
+      "exam_number": 5,
+      "topic": "آلودگی هوا",
+      "question_text": "کدام گاز باعث گرمایش جهانی می‌شود؟",
+      "options": {
+        "الف": "N2",
+        "ب": "O2",
+        "ج": "CO2",
+        "د": "SO2"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q088",
+      "exam_number": 5,
+      "topic": "آلودگی آب",
+      "question_text": "کدام ماده باعث آلودگی حرارتی آب می‌شود؟",
+      "options": {
+        "الف": "نیترات‌ها",
+        "ب": "فسفات‌ها",
+        "ج": "آب گرم",
+        "د": "جیوه"
+      },
+      "correct_answer": "ج",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q089",
+      "exam_number": 5,
+      "topic": "گازهای گلخانه‌ای",
+      "question_text": "کدام گاز از تجزیه مواد آلی تولید می‌شود؟",
+      "options": {
+        "الف": "CO2",
+        "ب": "CH4",
+        "ج": "N2O",
+        "د": "O3"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q090",
+      "exam_number": 5,
+      "topic": "شیمی تجزیه",
+      "question_text": "کدام روش برای شناسایی ترکیبات آلی استفاده می‌شود؟",
+      "options": {
+        "الف": "آزمایش شعله",
+        "ب": "طیف‌سنجی IR",
+        "ج": "تیتراسیون",
+        "د": "کروماتوگرافی کاغذی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q091",
+      "exam_number": 5,
+      "topic": "روش‌های کروماتوگرافی",
+      "question_text": "کروماتوگرافی کاغذی برای چه موادی مناسب است؟",
+      "options": {
+        "الف": "مواد فرار",
+        "ب": "مواد غیرفرار",
+        "ج": "گازها",
+        "د": "یون‌ها"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q092",
+      "exam_number": 5,
+      "topic": "طیف‌سنجی",
+      "question_text": "طیف‌سنجی NMR برای شناسایی چه چیزی استفاده می‌شود؟",
+      "options": {
+        "الف": "جرم مولکولی",
+        "ب": "ساختار مولکولی",
+        "ج": "فشار بخار",
+        "د": "حلالیت"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q093",
+      "exam_number": 5,
+      "topic": "آنالیز کیفی",
+      "question_text": "کدام روش برای شناسایی ترکیبات آلی مناسب است؟",
+      "options": {
+        "الف": "آزمایش شعله",
+        "ب": "طیف‌سنجی IR",
+        "ج": "تیتراسیون",
+        "د": "کروماتوگرافی گازی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q094",
+      "exam_number": 5,
+      "topic": "آنالیز کمی",
+      "question_text": "کدام روش برای اندازه‌گیری غلظت یک محلول استفاده می‌شود؟",
+      "options": {
+        "الف": "آزمایش شعله",
+        "ب": "طیف‌سنجی UV-Vis",
+        "ج": "کروماتوگرافی کاغذی",
+        "د": "آنالیز حرارتی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q095",
+      "exam_number": 5,
+      "topic": "شیمی سبز",
+      "question_text": "شیمی سبز چه هدفی دارد؟",
+      "options": {
+        "الف": "افزایش آلودگی",
+        "ب": "کاهش اثرات زیست‌محیطی",
+        "ج": "تولید مواد سمی",
+        "د": "مصرف انرژی بالا"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q096",
+      "exam_number": 5,
+      "topic": "اصول شیمی سبز",
+      "question_text": "کدام‌یک اصل شیمی سبز است؟",
+      "options": {
+        "الف": "استفاده از مواد سمی",
+        "ب": "کاهش ضایعات",
+        "ج": "افزایش انرژی",
+        "د": "تولید گازهای سمی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q097",
+      "exam_number": 5,
+      "topic": "کاربردهای شیمی سبز",
+      "question_text": "کدام‌یک کاربرد شیمی سبز است؟",
+      "options": {
+        "الف": "تولید پلاستیک‌های زیست‌تخریب‌پذیر",
+        "ب": "استفاده از حلال‌های سمی",
+        "ج": "افزایش ضایعات",
+        "د": "تولید گازهای گلخانه‌ای"
+      },
+      "correct_answer": "الف",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q098",
+      "exam_number": 5,
+      "topic": "پلیمرها",
+      "question_text": "کدام‌یک پلیمر طبیعی است؟",
+      "options": {
+        "الف": "پلی‌استایرن",
+        "ب": "سلولز",
+        "ج": "نایلون",
+        "د": "PVC"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q099",
+      "exam_number": 5,
+      "topic": "انواع پلیمرها",
+      "question_text": "کدام پلیمر مصنوعی است؟",
+      "options": {
+        "الف": "سلولز",
+        "ب": "پلی‌اتیلن",
+        "ج": "DNA",
+        "د": "نشاسته"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    },
+    {
+      "question_id": "Q100",
+      "exam_number": 5,
+      "topic": "مکانیسم پلیمریزاسیون",
+      "question_text": "پلی‌اتیلن از چه نوع پلیمریزاسیونی تشکیل می‌شود؟",
+      "options": {
+        "الف": "تراکمی",
+        "ب": "افزایشی",
+        "ج": "رادیکالی",
+        "د": "یونی"
+      },
+      "correct_answer": "ب",
+      "question_type": "MCQ"
+    }
+  ]
+}

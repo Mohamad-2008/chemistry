@@ -37,9 +37,15 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/images/
     - assets/lottie/
-    - assets/
+    - assets/fonts/
     - assets/data/
+    - assets/data/quiz_1.json
+    - assets/data/quiz_2.json
+    - assets/data/quiz_3.json
+    - assets/data/quiz_4.json
+    - assets/data/quiz_5.json
     - assets/data/periodic_table.json
     - assets/images/app_icon.png
     - assets/images/atom.png

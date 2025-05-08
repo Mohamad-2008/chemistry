@@ -15,7 +15,6 @@ import 'package:periodic_table_app/features/chat_bot/presentation/screens/chat_b
 import 'package:periodic_table_app/utils/particle_painter.dart';
 import 'package:periodic_table_app/core/routes/app_routes.dart';
 
-
 void main() {
   runApp(const MyApp());
 }

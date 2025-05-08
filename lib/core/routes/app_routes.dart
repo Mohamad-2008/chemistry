@@ -70,8 +70,10 @@ class AppRoutes {
     return Navigator.pushNamed<T>(context, profile);
   }
 
-  static Future<T?> navigateToElementDetails<T>(BuildContext context, ElementModel element) {
-    return Navigator.pushNamed<T>(context, elementDetails, arguments: ElementDetailsArgs(element));
+  static Future<T?> navigateToElementDetails<T>(
+      BuildContext context, ElementModel element) {
+    return Navigator.pushNamed<T>(context, elementDetails,
+        arguments: ElementDetailsArgs(element));
   }
 
   static void navigateToElementSearch(
@@ -90,24 +92,30 @@ class AppRoutes {
     );
   }
 
-  static Future<T?> navigateToElementComparison<T>(BuildContext context, ElementModel element1, ElementModel element2) async {
-    final details1 = await PeriodicTableRepository().getElementDetails(element1.symbol);
-    final details2 = await PeriodicTableRepository().getElementDetails(element2.symbol);
+  static Future<T?> navigateToElementComparison<T>(BuildContext context,
+      ElementModel element1, ElementModel element2) async {
+    final details1 =
+        await PeriodicTableRepository().getElementDetails(element1.symbol);
+    final details2 =
+        await PeriodicTableRepository().getElementDetails(element2.symbol);
     if (details1 != null && details2 != null) {
-      return Navigator.pushNamed<T>(context, elementComparison, arguments: ElementComparisonArgs(details1, details2));
+      return Navigator.pushNamed<T>(context, elementComparison,
+          arguments: ElementComparisonArgs(details1, details2));
     }
     return null;
   }
 
-  static Future<T?> navigateToChemistryBook<T>(BuildContext context, {int? podmanId}) {
+  static Future<T?> navigateToChemistryBook<T>(BuildContext context,
+      {int? podmanId}) {
     return Navigator.pushNamed<T>(
-      context, 
+      context,
       chemistryBook,
       arguments: ChemistryBookArgs(podmanId: podmanId),
     );
   }
 
-  static Future<void> navigateToChemistryCalculator(BuildContext context) async {
+  static Future<void> navigateToChemistryCalculator(
+      BuildContext context) async {
     await Navigator.pushNamed(context, chemistryCalculator);
   }
 
@@ -131,16 +139,20 @@ class AppRoutes {
         final args = settings.arguments as ElementDetailsArgs;
         return MaterialPageRoute(
           builder: (_) => FutureBuilder<ElementDetailsModel?>(
-            future: PeriodicTableRepository().getElementDetails(args.element.symbol),
+            future: PeriodicTableRepository()
+                .getElementDetails(args.element.symbol),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Scaffold(body: Center(child: CircularProgressIndicator()));
+                return const Scaffold(
+                    body: Center(child: CircularProgressIndicator()));
               }
               if (snapshot.hasError) {
-                return Scaffold(body: Center(child: Text('خطا: ${snapshot.error}')));
+                return Scaffold(
+                    body: Center(child: Text('خطا: ${snapshot.error}')));
               }
               if (snapshot.data == null) {
-                return const Scaffold(body: Center(child: Text('عنصری یافت نشد')));
+                return const Scaffold(
+                    body: Center(child: Text('عنصری یافت نشد')));
               }
               return ElementDetailsScreen(element: snapshot.data!);
             },
@@ -149,11 +161,10 @@ class AppRoutes {
       case elementSearch:
         final args = settings.arguments as ElementSearchArgs;
         return MaterialPageRoute(
-          builder: (_) => ElementSearchScreen(
-            firstElement: args.firstElement,
-            isForComparison: args.isForComparison,
-          )
-        );
+            builder: (_) => ElementSearchScreen(
+                  firstElement: args.firstElement,
+                  isForComparison: args.isForComparison,
+                ));
       case elementComparison:
         final args = settings.arguments as ElementComparisonArgs;
         return MaterialPageRoute(

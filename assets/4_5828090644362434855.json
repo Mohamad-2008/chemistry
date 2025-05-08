@@ -1,0 +1,1502 @@
+[
+  {
+    "question_id": "MCQ001",
+    "exam_number": 1,
+    "topic": "واکنش‌های شیمیایی",
+    "question_text": "واکنش شیمیایی چیست؟",
+    "options": [
+      "تغییر فیزیکی ماده بدون تغییر ترکیب شیمیایی",
+      "فرآیندی که در آن مواد اولیه به محصولات جدید تبدیل می‌شوند",
+      "تغییر حالت ماده از جامد به مایع",
+      "فرآیندی که انرژی آزاد نمی‌کند"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ002",
+    "exam_number": 1,
+    "topic": "معادلات شیمیایی",
+    "question_text": "معادله متعادل برای سوختن متان چیست؟",
+    "options": [
+      "CH₄ + O₂ → CO₂ + H₂O",
+      "CH₄ + 2O₂ → CO₂ + 2H₂O",
+      "CH₄ + O₂ → CO + H₂O",
+      "CH₄ + 2O₂ → CO + 2H₂O"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ003",
+    "exam_number": 1,
+    "topic": "انواع واکنش‌ها",
+    "question_text": "کدام واکنش نمونه‌ای از جابه‌جایی تک است؟",
+    "options": [
+      "NaCl + AgNO₃ → NaNO₃ + AgCl",
+      "Zn + CuSO₄ → ZnSO₄ + Cu",
+      "2H₂ + O₂ → 2H₂O",
+      "CaCO₃ → CaO + CO₂"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ004",
+    "exam_number": 1,
+    "topic": "واکنش‌های ردوکس",
+    "question_text": "در واکنش Zn + CuSO₄ → ZnSO₄ + Cu، کدام ماده اکسید می‌شود؟",
+    "options": [
+      "Cu",
+      "Zn",
+      "SO₄",
+      "هیچ‌کدام"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ005",
+    "exam_number": 1,
+    "topic": "استوکیومتری",
+    "question_text": "تعداد مول‌های ۴۴ گرم CO₂ چقدر است؟",
+    "options": [
+      "۱ مول",
+      "۲ مول",
+      "۰.۵ مول",
+      "۴ مول"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ006",
+    "exam_number": 1,
+    "topic": "محاسبات استوکیومتری",
+    "question_text": "برای واکنش ۲H₂ + O₂ → ۲H₂O، جرم آب تولیدی از ۴ گرم H₂ چقدر است؟",
+    "options": [
+      "۱۸ گرم",
+      "۳۶ گرم",
+      "۹ گرم",
+      "۷۲ گرم"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ007",
+    "exam_number": 1,
+    "topic": "بازده واکنش",
+    "question_text": "بازده واکنش چیست؟",
+    "options": [
+      "نسبت واکنش‌گرها به محصولات",
+      "نسبت محصول واقعی به محصول نظری",
+      "مقدار انرژی آزادشده",
+      "سرعت تولید محصول"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ008",
+    "exam_number": 1,
+    "topic": "واکنش‌گر محدود",
+    "question_text": "در واکنش N₂ + ۳H₂ → ۲NH₃، اگر ۱ مول N₂ و ۲ مول H₂ داشته باشیم، واکنش‌گر محدود کدام است؟",
+    "options": [
+      "N₂",
+      "H₂",
+      "NH₃",
+      "هیچ‌کدام"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ009",
+    "exam_number": 1,
+    "topic": "حالت‌های ماده",
+    "question_text": "کدام حالت ماده شکل و حجم مشخصی ندارد؟",
+    "options": [
+      "جامد",
+      "مایع",
+      "گاز",
+      "پلاسما"
+    ],
+    "correct_answer": 3,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ010",
+    "exam_number": 1,
+    "topic": "خواص گازها",
+    "question_text": "قانون گازهای ایده‌آل چیست؟",
+    "options": [
+      "PV = nRT",
+      "V/T = ثابت",
+      "P₁V₁ = P₂V₂",
+      "P_total = P₁ + P₂"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ011",
+    "exam_number": 1,
+    "topic": "خواص مایعات",
+    "question_text": "کشش سطحی مایعات به چه عاملی بستگی دارد؟",
+    "options": [
+      "چگالی مایع",
+      "نیروی جاذبه بین مولکول‌ها",
+      "حجم مایع",
+      "دمای محیط"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ012",
+    "exam_number": 1,
+    "topic": "خواص جامدات",
+    "question_text": "کدام جامد ساختار بلوری منظمی دارد؟",
+    "options": [
+      "شیشه",
+      "پلاستیک",
+      "نمک طعام",
+      "لاستیک"
+    ],
+    "correct_answer": 3,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ013",
+    "exam_number": 1,
+    "topic": "تغییرات حالت",
+    "question_text": "فرآیند تبدیل مایع به گاز چیست؟",
+    "options": [
+      "ذوب",
+      "تبخیر",
+      "انجماد",
+      "تصعید"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ014",
+    "exam_number": 1,
+    "topic": "ترموشیمی",
+    "question_text": "واکنش گرماگیر کدام است؟",
+    "options": [
+      "ΔH < 0",
+      "ΔH > 0",
+      "ΔH = 0",
+      "ΔH نامشخص"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ015",
+    "exam_number": 1,
+    "topic": "آنتالپی",
+    "question_text": "آنتالپی تشکیل CO₂ چند است؟",
+    "options": [
+      "-۳۹۳.۵ kJ/mol",
+      "-۲۸۵.۸ kJ/mol",
+      "+۳۹۳.۵ kJ/mol",
+      "۰ kJ/mol"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ016",
+    "exam_number": 1,
+    "topic": "قانون هس",
+    "question_text": "قانون هس بیانگر چیست؟",
+    "options": [
+      "حفظ جرم",
+      "مجموع آنتالپی مراحل برابر ΔH کل",
+      "تعادل شیمیایی",
+      "انرژی پیوند"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ017",
+    "exam_number": 1,
+    "topic": "انرژی پیوند",
+    "question_text": "انرژی پیوند نشان‌دهنده چیست؟",
+    "options": [
+      "انرژی آزادشده در واکنش",
+      "انرژی لازم برای شکستن پیوند",
+      "انرژی کل واکنش",
+      "انرژی گرمایی واکنش"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ018",
+    "exam_number": 1,
+    "topic": "انواع واکنش‌ها",
+    "question_text": "کدام واکنش نمونه‌ای از واکنش ترکیب است؟",
+    "options": [
+      "CaCO₃ → CaO + CO₂",
+      "۲Mg + O₂ → ۲MgO",
+      "Zn + CuSO₄ → ZnSO₄ + Cu",
+      "NaCl + AgNO₃ → NaNO₃ + AgCl"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ019",
+    "exam_number": 1,
+    "topic": "استوکیومتری",
+    "question_text": "حجم CO₂ تولیدی از سوختن ۱۲ گرم کربن در STP چقدر است؟",
+    "options": [
+      "۱۱.۲ لیتر",
+      "۲۲.۴ لیتر",
+      "۴۴.۸ لیتر",
+      "۵.۶ لیتر"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ020",
+    "exam_number": 1,
+    "topic": "تغییرات حالت",
+    "question_text": "فرآیند تبدیل جامد به مایع چیست؟",
+    "options": [
+      "تبخیر",
+      "ذوب",
+      "تصعید",
+      "انجماد"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ021",
+    "exam_number": 2,
+    "topic": "واکنش‌های شیمیایی",
+    "question_text": "کدام ویژگی نشان‌دهنده واکنش شیمیایی است؟",
+    "options": [
+      "تغییر دما بدون تغییر ترکیب",
+      "تشکیل رسوب",
+      "تغییر حجم",
+      "تغییر چگالی"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ022",
+    "exam_number": 2,
+    "topic": "معادلات شیمیایی",
+    "question_text": "معادله متعادل برای تجزیه CaCO₃ چیست؟",
+    "options": [
+      "CaCO₃ → CaO + CO₂",
+      "CaCO₃ → Ca + CO₂",
+      "CaCO₃ → CaO + C",
+      "CaCO₃ → CaO + O₂"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ023",
+    "exam_number": 2,
+    "topic": "انواع واکنش‌ها",
+    "question_text": "کدام واکنش جابه‌جایی دوگانه است؟",
+    "options": [
+      "NaCl + AgNO₃ → NaNO₃ + AgCl",
+      "Zn + CuSO₄ → ZnSO₄ + Cu",
+      "۲H₂ + O₂ → ۲H₂O",
+      "CaCO₃ → CaO + CO₂"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ024",
+    "exam_number": 2,
+    "topic": "واکنش‌های ردوکس",
+    "question_text": "در واکنش Fe₂O₃ + ۳CO → ۲Fe + ۳CO₂، کدام ماده کاهش می‌یابد؟",
+    "options": [
+      "Fe₂O₃",
+      "CO",
+      "Fe",
+      "CO₂"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ025",
+    "exam_number": 2,
+    "topic": "استوکیومتری",
+    "question_text": "تعداد مولکول‌های ۱۸ گرم H₂O چقدر است؟",
+    "options": [
+      "۶.۰۲۲×۱۰²³",
+      "۱.۲۰۴۴×۱۰²۴",
+      "۳.۰۱۱×۱۰²۳",
+      "۱۲.۰۴۴×۱۰²۳"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ026",
+    "exam_number": 2,
+    "topic": "محاسبات استوکیومتری",
+    "question_text": "جرم کربن موردنیاز برای تولید ۴۴ گرم CO₂ چقدر است؟",
+    "options": [
+      "۱۲ گرم",
+      "۲۴ گرم",
+      "۶ گرم",
+      "۴۴ گرم"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ027",
+    "exam_number": 2,
+    "topic": "بازده واکنش",
+    "question_text": "اگر بازده واکنشی ۸۰٪ باشد، چه معنایی دارد؟",
+    "options": [
+      "۸۰٪ واکنش‌گر مصرف می‌شود",
+      "۸۰٪ محصول نظری تولید می‌شود",
+      "۸۰٪ انرژی آزاد می‌شود",
+      "۸۰٪ واکنش کامل می‌شود"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ028",
+    "exam_number": 2,
+    "topic": "واکنش‌گر محدود",
+    "question_text": "در واکنش ۲Al + ۳Cl₂ → ۲AlCl₃، با ۲۷ گرم Al و ۷۱ گرم Cl₂، واکنش‌گر محدود کدام است؟",
+    "options": [
+      "Al",
+      "Cl₂",
+      "AlCl₃",
+      "هیچ‌کدام"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ029",
+    "exam_number": 2,
+    "topic": "حالت‌های ماده",
+    "question_text": "کدام ماده در دمای اتاق گاز است؟",
+    "options": [
+      "آب",
+      "اکسیژن",
+      "جیوه",
+      "سدیم"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ030",
+    "exam_number": 2,
+    "topic": "خواص گازها",
+    "question_text": "حجم ۱ مول O₂ در ۱ اتمسفر و ۲۹۸ K چقدر است؟",
+    "options": [
+      "۱۱.۲ لیتر",
+      "۲۲.۴ لیتر",
+      "۲۴.۴۶ لیتر",
+      "۴۴.۸ لیتر"
+    ],
+    "correct_answer": 3,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ031",
+    "exam_number": 2,
+    "topic": "خواص مایعات",
+    "question_text": "ویسکوزیته مایع چیست؟",
+    "options": [
+      "مقاومت در برابر جریان",
+      "چگالی مایع",
+      "فشار بخار",
+      "کشش سطحی"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ032",
+    "exam_number": 2,
+    "topic": "خواص جامدات",
+    "question_text": "کدام جامد آمورف است؟",
+    "options": [
+      "الماس",
+      "شیشه",
+      "نمک طعام",
+      "کوارتز"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ033",
+    "exam_number": 2,
+    "topic": "تغییرات حالت",
+    "question_text": "فرآیند تبدیل جامد به گاز چیست؟",
+    "options": [
+      "تبخیر",
+      "ذوب",
+      "تصعید",
+      "چگالش"
+    ],
+    "correct_answer": 3,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ034",
+    "exam_number": 2,
+    "topic": "ترموشیمی",
+    "question_text": "گرمای واکنش در چه شرایطی اندازه‌گیری می‌شود؟",
+    "options": [
+      "دمای ثابت",
+      "فشار ثابت",
+      "حجم ثابت",
+      "بدون تغییر انرژی"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ035",
+    "exam_number": 2,
+    "topic": "آنتالپی",
+    "question_text": "آنتالپی سوختن اتانول چیست؟",
+    "options": [
+      "-۱۳۶۷ kJ/mol",
+      "-۳۹۳.۵ kJ/mol",
+      "-۲۸۵.۸ kJ/mol",
+      "+۱۳۶۷ kJ/mol"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ036",
+    "exam_number": 2,
+    "topic": "قانون هس",
+    "question_text": "ΔH برای واکنش ۲C + O₂ → ۲CO چیست؟",
+    "options": [
+      "-۲۲۱ kJ/mol",
+      "-۳۹۳.۵ kJ/mol",
+      "+۲۲۱ kJ/mol",
+      "-۱۱۰.۵ kJ/mol"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ037",
+    "exam_number": 2,
+    "topic": "انرژی پیوند",
+    "question_text": "کدام پیوند انرژی بیشتری دارد؟",
+    "options": [
+      "C-C",
+      "C=C",
+      "C≡C",
+      "C-H"
+    ],
+    "correct_answer": 3,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ038",
+    "exam_number": 2,
+    "topic": "انواع واکنش‌ها",
+    "question_text": "کدام واکنش تجزیه است؟",
+    "options": [
+      "۲H₂O → ۲H₂ + O₂",
+      "۲Mg + O₂ → ۲MgO",
+      "NaCl + AgNO₃ → NaNO₃ + AgCl",
+      "Zn + CuSO₄ → ZnSO₄ + Cu"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ039",
+    "exam_number": 2,
+    "topic": "استوکیومتری",
+    "question_text": "تعداد اتم‌های ۳۲ گرم O₂ چقدر است؟",
+    "options": [
+      "۶.۰۲۲×۱۰²۳",
+      "۱.۲۰۴۴×۱۰²۴",
+      "۳.۰۱۱×۱۰²۳",
+      "۲.۴۰۸۸×۱۰²۴"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ040",
+    "exam_number": 2,
+    "topic": "تغییرات حالت",
+    "question_text": "گرمای نهان تبخیر چیست؟",
+    "options": [
+      "گرمای لازم برای ذوب",
+      "گرمای لازم برای تبدیل مایع به گاز",
+      "گرمای آزادشده در انجماد",
+      "گرمای آزادشده در چگالش"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ041",
+    "exam_number": 3,
+    "topic": "واکنش‌های شیمیایی",
+    "question_text": "کدام عامل سرعت واکنش را افزایش می‌دهد؟",
+    "options": [
+      "کاهش دما",
+      "افزایش غلظت",
+      "کاهش فشار",
+      "حذف کاتالیزور"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ042",
+    "exam_number": 3,
+    "topic": "معادلات شیمیایی",
+    "question_text": "معادله متعادل برای تولید NH₃ چیست؟",
+    "options": [
+      "N₂ + H₂ → NH₃",
+      "N₂ + ۳H₂ → ۲NH₃",
+      "N₂ + ۲H₂ → NH₃",
+      "N₂ + H₂ → ۲NH₃"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ043",
+    "exam_number": 3,
+    "topic": "انواع واکنش‌ها",
+    "question_text": "واکنش NaCl + AgNO₃ → NaNO₃ + AgCl چه نوع واکنشی است؟",
+    "options": [
+      "ترکیب",
+      "تجزیه",
+      "جابه‌جایی دوگانه",
+      "جابه‌جایی تک"
+    ],
+    "correct_answer": 3,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ044",
+    "exam_number": 3,
+    "topic": "واکنش‌های ردوکس",
+    "question_text": "در واکنش MnO₄⁻ + Fe²⁺، کدام ماده اکسیدکننده است؟",
+    "options": [
+      "MnO₄⁻",
+      "Fe²⁺",
+      "Fe³⁺",
+      "Mn²⁺"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ045",
+    "exam_number": 3,
+    "topic": "استوکیومتری",
+    "question_text": "نسبت مولی در واکنش ۲Mg + O₂ → ۲MgO چیست؟",
+    "options": [
+      "۱:۱",
+      "۲:۱",
+      "۱:۲",
+      "۳:۲"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ046",
+    "exam_number": 3,
+    "topic": "محاسبات استوکیومتری",
+    "question_text": "حجم O₂ موردنیاز برای سوختن ۱۶ گرم CH₄ در STP چقدر است؟",
+    "options": [
+      "۲۲.۴ لیتر",
+      "۴۴.۸ لیتر",
+      "۱۱.۲ لیتر",
+      "۸۹.۶ لیتر"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ047",
+    "exam_number": 3,
+    "topic": "بازده واکنش",
+    "question_text": "کدام عامل بازده واکنش را کاهش می‌دهد؟",
+    "options": [
+      "کاتالیزور",
+      "دمای بهینه",
+      "ناخالصی‌ها",
+      "فشار بالا"
+    ],
+    "correct_answer": 3,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ048",
+    "exam_number": 3,
+    "topic": "واکنش‌گر محدود",
+    "question_text": "در واکنش CH₄ + ۲O₂ → CO₂ + ۲H₂O، اگر ۱ مول CH₄ و ۱ مول O₂ داشته باشیم، واکنش‌گر محدود چیست؟",
+    "options": [
+      "CH₄",
+      "O₂",
+      "CO₂",
+      "H₂O"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ049",
+    "exam_number": 3,
+    "topic": "حالت‌های ماده",
+    "question_text": "کدام ماده در دمای اتاق مایع است؟",
+    "options": [
+      "اکسیژن",
+      "جیوه",
+      "سدیم",
+      "کربن"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ050",
+    "exam_number": 3,
+    "topic": "خواص گازها",
+    "question_text": "قانون شارل چه رابطه‌ای را بیان می‌کند؟",
+    "options": [
+      "PV = ثابت",
+      "V/T = ثابت",
+      "P/T = ثابت",
+      "PV = nRT"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ051",
+    "exam_number": 3,
+    "topic": "خواص مایعات",
+    "question_text": "فشار بخار مایع چیست؟",
+    "options": [
+      "فشار مولکول‌های مایع در سطح",
+      "فشار گاز در تعادل با مایع",
+      "فشار جوی",
+      "فشار داخلی مایع"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ052",
+    "exam_number": 3,
+    "topic": "خواص جامدات",
+    "question_text": "کدام خاصیت فولاد را برای ساخت‌وساز مناسب می‌کند؟",
+    "options": [
+      "سختی",
+      "شفافیت",
+      "نرمی",
+      "شکنندگی"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ053",
+    "exam_number": 3,
+    "topic": "تغییرات حالت",
+    "question_text": "گرمای نهان ذوب چیست؟",
+    "options": [
+      "گرمای لازم برای تبدیل جامد به مایع",
+      "گرمای لازم برای تبخیر",
+      "گرمای آزادشده در چگالش",
+      "گرمای آزادشده در تصعید"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ054",
+    "exam_number": 3,
+    "topic": "ترموشیمی",
+    "question_text": "کدام روش برای اندازه‌گیری گرمای واکنش استفاده می‌شود؟",
+    "options": [
+      "اسپکتروسکوپی",
+      "کالریمتری",
+      "کروماتوگرافی",
+      "تیتراسیون"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ055",
+    "exam_number": 3,
+    "topic": "آنتالپی",
+    "question_text": "آنتالپی تشکیل H₂O چند است؟",
+    "options": [
+      "-۳۹۳.۵ kJ/mol",
+      "-۲۸۵.۸ kJ/mol",
+      "+۲۸۵.۸ kJ/mol",
+      "۰ kJ/mol"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ056",
+    "exam_number": 3,
+    "topic": "قانون هس",
+    "question_text": "ΔH برای واکنش CH₄ + ۲O₂ → CO₂ + ۲H₂O چیست؟",
+    "options": [
+      "-۸۹۰ kJ/mol",
+      "-۳۹۳.۵ kJ/mol",
+      "+۸۹۰ kJ/mol",
+      "-۵۷۲ kJ/mol"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ057",
+    "exam_number": 3,
+    "topic": "انرژی پیوند",
+    "question_text": "ΔH برای واکنش H₂ + Cl₂ → ۲HCl چیست؟",
+    "options": [
+      "-۱۸۳ kJ/mol",
+      "+۱۸۳ kJ/mol",
+      "-۴۳۶ kJ/mol",
+      "+۴۳۶ kJ/mol"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ058",
+    "exam_number": 3,
+    "topic": "انواع واکنش‌ها",
+    "question_text": "کدام واکنش نمونه‌ای از ردوکس است؟",
+    "options": [
+      "NaCl + AgNO₃ → NaNO₃ + AgCl",
+      "۴Fe + ۳O₂ → ۲Fe₂O₃",
+      "CaCO₃ → CaO + CO₂",
+      "۲Mg + O₂ → ۲MgO"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ059",
+    "exam_number": 3,
+    "topic": "استوکیومتری",
+    "question_text": "جرم SO₃ تولیدی از ۳۲ گرم SO₂ در واکنش ۲SO₂ + O₂ → ۲SO₃ چقدر است؟",
+    "options": [
+      "۳۲ گرم",
+      "۴۰ گرم",
+      "۸۰ گرم",
+      "۱۶ گرم"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ060",
+    "exam_number": 3,
+    "topic": "تغییرات حالت",
+    "question_text": "فرآیند تبدیل مایع به جامد چیست؟",
+    "options": [
+      "تبخیر",
+      "ذوب",
+      "انجماد",
+      "تصعید"
+    ],
+    "correct_answer": 3,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ061",
+    "exam_number": 4,
+    "topic": "واکنش‌های شیمیایی",
+    "question_text": "کدام ماده در واکنش شیمیایی تغییر شیمیایی می‌کند؟",
+    "options": [
+      "محصولات",
+      "واکنش‌گرها",
+      "هر دو",
+      "هیچ‌کدام"
+    ],
+    "correct_answer": 3,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ062",
+    "exam_number": 4,
+    "topic": "معادلات شیمیایی",
+    "question_text": "معادله متعادل برای واکنش Ca + ۲H₂O → Ca(OH)₂ + H₂ چیست؟",
+    "options": [
+      "Ca + H₂O → Ca(OH)₂ + H₂",
+      "Ca + ۲H₂O → Ca(OH)₂ + H₂",
+      "Ca + H₂O → CaOH + H₂",
+      "Ca + ۲H₂O → CaOH + H₂"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ063",
+    "exam_number": 4,
+    "topic": "انواع واکنش‌ها",
+    "question_text": "کدام واکنش در تصفیه فلزات کاربرد دارد؟",
+    "options": [
+      "ترکیب",
+      "جابه‌جایی تک",
+      "تجزیه",
+      "جابه‌جایی دوگانه"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ064",
+    "exam_number": 4,
+    "topic": "واکنش‌های ردوکس",
+    "question_text": "در باتری Zn-C، کدام ماده در آند اکسید می‌شود؟",
+    "options": [
+      "Cu",
+      "Zn",
+      "Cu²⁺",
+      "Zn²⁺"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ065",
+    "exam_number": 4,
+    "topic": "استوکیومتری",
+    "question_text": "تعداد مول‌های ۵۶ گرم Fe چقدر است؟",
+    "options": [
+      "۱ مول",
+      "۲ مول",
+      "۰.۵ مول",
+      "۴ مول"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ066",
+    "exam_number": 4,
+    "topic": "محاسبات استوکیومتری",
+    "question_text": "جرم Al موردنیاز برای تولید ۵۴ گرم Al₂O₃ چقدر است؟",
+    "options": [
+      "۲۷ گرم",
+      "۲۸.۶۲ گرم",
+      "۵۴ گرم",
+      "۱۳.۵ گرم"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ067",
+    "exam_number": 4,
+    "topic": "بازده واکنش",
+    "question_text": "کدام روش بازده واکنش را بهبود می‌بخشد؟",
+    "options": [
+      "کاهش دما",
+      "استفاده از کاتالیزور",
+      "کاهش فشار",
+      "افزایش ناخالصی"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ068",
+    "exam_number": 4,
+    "topic": "واکنش‌گر محدود",
+    "question_text": "در واکنش CH₄ + ۲O₂ → CO₂ + ۲H₂O، اگر ۱۶ گرم CH₄ و ۳۲ گرم O₂ داشته باشیم، واکنش‌گر محدود چیست؟",
+    "options": [
+      "CH₄",
+      "O₂",
+      "CO₂",
+      "H₂O"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ069",
+    "exam_number": 4,
+    "topic": "حالت‌های ماده",
+    "question_text": "کدام حالت ماده برای راکتورهای گازی مناسب است؟",
+    "options": [
+      "جامد",
+      "مایع",
+      "گاز",
+      "پلاسما"
+    ],
+    "correct_answer": 3,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ070",
+    "exam_number": 4,
+    "topic": "خواص گازها",
+    "question_text": "قانون بویل چه رابطه‌ای را بیان می‌کند؟",
+    "options": [
+      "PV = ثابت",
+      "V/T = ثابت",
+      "P/T = ثابت",
+      "PV = nRT"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ071",
+    "exam_number": 4,
+    "topic": "خواص مایعات",
+    "question_text": "چگالی آب در دمای اتاق چیست؟",
+    "options": [
+      "۰.۵ g/cm³",
+      "۱ g/cm³",
+      "۲ g/cm³",
+      "۱.۵ g/cm³"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ072",
+    "exam_number": 4,
+    "topic": "خواص جامدات",
+    "question_text": "کدام فلز رسانایی الکتریکی بالایی دارد؟",
+    "options": [
+      "آهن",
+      "مس",
+      "آلومینیوم",
+      "سرب"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ073",
+    "exam_number": 4,
+    "topic": "تغییرات حالت",
+    "question_text": "فرآیند تبدیل گاز به مایع چیست؟",
+    "options": [
+      "تبخیر",
+      "چگالش",
+      "تصعید",
+      "ذوب"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ074",
+    "exam_number": 4,
+    "topic": "ترموشیمی",
+    "question_text": "کدام واکنش در تولید متانول گرمازا است؟",
+    "options": [
+      "CO + ۲H₂ → CH₃OH",
+      "CH₃OH → CO + ۲H₂",
+      "CO → C + ½O₂",
+      "H₂ → ۲H"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ075",
+    "exam_number": 4,
+    "topic": "آنتالپی",
+    "question_text": "ΔH برای سوختن متان چیست؟",
+    "options": [
+      "-۸۹۰ kJ/mol",
+      "-۳۹۳.۵ kJ/mol",
+      "+۸۹۰ kJ/mol",
+      "-۲۸۵.۸ kJ/mol"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ076",
+    "exam_number": 4,
+    "topic": "قانون هس",
+    "question_text": "ΔH برای واکنش C₂H₄ + ۳O₂ → ۲CO₂ + ۲H₂O چیست؟",
+    "options": [
+      "-۱۴۱۱ kJ/mol",
+      "-۸۹۰ kJ/mol",
+      "+۱۴۱۱ kJ/mol",
+      "-۵۷۲ kJ/mol"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ077",
+    "exam_number": 4,
+    "topic": "انرژی پیوند",
+    "question_text": "ΔH برای واکنش H₂ + F₂ → ۲HF چیست؟",
+    "options": [
+      "-۵۳۵ kJ/mol",
+      "+۵۳۵ kJ/mol",
+      "-۴۳۶ kJ/mol",
+      "+۴۳۶ kJ/mol"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ078",
+    "exam_number": 4,
+    "topic": "انواع واکنش‌ها",
+    "question_text": "کدام واکنش احتراق است؟",
+    "options": [
+      "CH₄ + ۲O₂ → CO₂ + ۲H₂O",
+      "NaCl + AgNO₃ → NaNO₃ + AgCl",
+      "CaCO₃ → CaO + CO₂",
+      "Zn + CuSO₄ → ZnSO₄ + Cu"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ079",
+    "exam_number": 4,
+    "topic": "استوکیومتری",
+    "question_text": "تعداد مولکول‌های CO₂ از ۱۲ گرم C چقدر است؟",
+    "options": [
+      "۶.۰۲۲×۱۰²۳",
+      "۱.۲۰۴۴×۱۰²۴",
+      "۳.۰۱۱×۱۰²۳",
+      "۱۲.۰۴۴×۱۰²۳"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ080",
+    "exam_number": 4,
+    "topic": "تغییرات حالت",
+    "question_text": "فرآیند تبلور چیست؟",
+    "options": [
+      "تبدیل مایع به گاز",
+      "تبدیل محلول به جامد بلوری",
+      "تبدیل گاز به مایع",
+      "تبدیل جامد به مایع"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ081",
+    "exam_number": 5,
+    "topic": "واکنش‌های شیمیایی",
+    "question_text": "کدام نشانه واکنش شیمیایی نیست؟",
+    "options": [
+      "تشکیل رسوب",
+      "تغییر رنگ",
+      "تغییر حجم",
+      "تولید گاز"
+    ],
+    "correct_answer": 3,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ082",
+    "exam_number": 5,
+    "topic": "معادلات شیمیایی",
+    "question_text": "معادله متعادل برای واکنش ۲Na + Cl₂ → ۲NaCl چیست؟",
+    "options": [
+      "Na + Cl₂ → NaCl",
+      "۲Na + Cl₂ → ۲NaCl",
+      "Na + Cl → NaCl",
+      "۲Na + Cl₂ → NaCl"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ083",
+    "exam_number": 5,
+    "topic": "انواع واکنش‌ها",
+    "question_text": "کدام واکنش در بازیافت مواد کاربرد دارد؟",
+    "options": [
+      "ترکیب",
+      "تجزیه",
+      "جابه‌جایی تک",
+      "جابه‌جایی دوگانه"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ084",
+    "exam_number": 5,
+    "topic": "واکنش‌های ردوکس",
+    "question_text": "کدام واکنش در تصفیه آب کاربرد دارد؟",
+    "options": [
+      "Fe²⁺ → Fe³⁺",
+      "NaCl + AgNO₃ → NaNO₃ + AgCl",
+      "CaCO₃ → CaO + CO₂",
+      "۲Mg + O₂ → ۲MgO"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ085",
+    "exam_number": 5,
+    "topic": "استوکیومتری",
+    "question_text": "جرم واکنش‌گر باقی‌مانده در واکنش ۲H₂ + O₂ → ۲H₂O با ۴ گرم H₂ و ۳۲ گرم O₂ چقدر است؟",
+    "options": [
+      "۰ گرم",
+      "۴ گرم",
+      "۸ گرم",
+      "۱۶ گرم"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ086",
+    "exam_number": 5,
+    "topic": "محاسبات استوکیومتری",
+    "question_text": "حجم NH₃ تولیدی از ۱۴ گرم N₂ در STP چقدر است؟",
+    "options": [
+      "۱۱.۲ لیتر",
+      "۲۲.۴ لیتر",
+      "۴۴.۸ لیتر",
+      "۵.۶ لیتر"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ087",
+    "exam_number": 5,
+    "topic": "بازده واکنش",
+    "question_text": "کدام روش بازده واکنش را ارزیابی می‌کند؟",
+    "options": [
+      "مقایسه محصول واقعی و نظری",
+      "اندازه‌گیری دما",
+      "اندازه‌گیری فشار",
+      "مقایسه سرعت واکنش"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ088",
+    "exam_number": 5,
+    "topic": "واکنش‌گر محدود",
+    "question_text": "در واکنش ۲NH₃ + ۵/۲O₂ → ۲NO + ۳H₂O، با ۱ مول NH₃ و ۱ مول O₂، واکنش‌گر محدود چیست؟",
+    "options": [
+      "NH₃",
+      "O₂",
+      "NO",
+      "H₂O"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ089",
+    "exam_number": 5,
+    "topic": "حالت‌های ماده",
+    "question_text": "کدام ماده در ذخیره‌سازی به مخزن فشار بالا نیاز دارد؟",
+    "options": [
+      "آب",
+      "کلر",
+      "شکر",
+      "آهن"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ090",
+    "exam_number": 5,
+    "topic": "خواص گازها",
+    "question_text": "قانون دالتون چه رابطه‌ای را بیان می‌کند؟",
+    "options": [
+      "PV = nRT",
+      "P_total = P₁ + P₂",
+      "V/T = ثابت",
+      "PV = ثابت"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ091",
+    "exam_number": 5,
+    "topic": "خواص مایعات",
+    "question_text": "نقطه جوش اتانول چند است؟",
+    "options": [
+      "۱۰۰°C",
+      "۷۸°C",
+      "۰°C",
+      "۵۰°C"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ092",
+    "exam_number": 5,
+    "topic": "خواص جامدات",
+    "question_text": "نقطه ذوب پارافین در چه محدوده‌ای است؟",
+    "options": [
+      "۰-۱۰°C",
+      "۵۰-۶۰°C",
+      "۱۰۰-۱۱۰°C",
+      "۲۰۰-۲۱۰°C"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ093",
+    "exam_number": 5,
+    "topic": "تغییرات حالت",
+    "question_text": "کدام فرآیند در تعریق نقش دارد؟",
+    "options": [
+      "تبخیر",
+      "چگالش",
+      "ذوب",
+      "انجماد"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ094",
+    "exam_number": 5,
+    "topic": "ترموشیمی",
+    "question_text": "کدام واکنش در بهینه‌سازی موتورها تحلیل می‌شود؟",
+    "options": [
+      "سوختن بنزین",
+      "تجزیه آب",
+      "تولید NH₃",
+      "تجزیه CaCO₃"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ095",
+    "exam_number": 5,
+    "topic": "آنتالپی",
+    "question_text": "ΔH برای تشکیل CO₂ از C و O₂ چیست؟",
+    "options": [
+      "-۳۹۳.۵ kJ/mol",
+      "-۲۸۵.۸ kJ/mol",
+      "+۳۹۳.۵ kJ/mol",
+      "۰ kJ/mol"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ096",
+    "exam_number": 5,
+    "topic": "قانون هس",
+    "question_text": "ΔH برای واکنش SO₂ + ½O₂ → SO₃ چیست؟",
+    "options": [
+      "-۹۸.۹ kJ/mol",
+      "-۲۹۶.۸ kJ/mol",
+      "+۹۸.۹ kJ/mol",
+      "-۳۹۵.۷ kJ/mol"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ097",
+    "exam_number": 5,
+    "topic": "انرژی پیوند",
+    "question_text": "کدام ماده به دلیل پیوندهای قوی پایدار است؟",
+    "options": [
+      "N₂",
+      "O₂",
+      "F₂",
+      "Cl₂"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ098",
+    "exam_number": 5,
+    "topic": "انواع واکنش‌ها",
+    "question_text": "کدام واکنش در تولید نان نقش دارد؟",
+    "options": [
+      "تخمیر",
+      "احتراق",
+      "جابه‌جایی تک",
+      "تجزیه"
+    ],
+    "correct_answer": 1,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ099",
+    "exam_number": 5,
+    "topic": "استوکیومتری",
+    "question_text": "تعداد اتم‌های H₂O از ۱۶ گرم CH₄ در واکنش CH₄ + ۲O₂ → CO₂ + ۲H₂O چقدر است؟",
+    "options": [
+      "۶.۰۲۲×۱۰²۳",
+      "۱.۲۰۴۴×۱۰²۴",
+      "۳.۶۱۳۲×۱۰²۴",
+      "۲.۴۰۸۸×۱۰²۴"
+    ],
+    "correct_answer": 3,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  },
+  {
+    "question_id": "MCQ100",
+    "exam_number": 5,
+    "topic": "تغییرات حالت",
+    "question_text": "کدام فرآیند در تنظیم دمای بدن نقش دارد؟",
+    "options": [
+      "چگالش",
+      "تبخیر",
+      "انجماد",
+      "تصعید"
+    ],
+    "correct_answer": 2,
+    "question_type": "تستی",
+    "module": "پودمان 2"
+  }
+]
