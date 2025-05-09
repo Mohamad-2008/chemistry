@@ -25,7 +25,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen>
   bool _isLoading = true;
   bool _showPodmanSelection = true;
   late ScrollController _timelineController;
-  Map<int, double> _podmanProgress = {};
+  final Map<int, double> _podmanProgress = {};
   late TtsService _ttsService;
   final TextEditingController _textController = TextEditingController();
   late AnimationController _animationController;
@@ -156,8 +156,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen>
 
   Future<void> _loadTimelineData(int podmanId) async {
     try {
-      final String response =
-          await rootBundle.loadString('assets/data/podman$podmanId.json');
+      final String response = await rootBundle.loadString('P$podmanId.json');
       final data = json.decode(response);
       List<dynamic> timeline = data['timeline'] ?? [];
       final pedagogicalFeatures = data['pedagogical_features'] ?? {};
@@ -256,7 +255,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen>
   }
 
   void _scrollToCurrentStep() {
-    final double itemWidth = 75;
+    const double itemWidth = 75;
     final double targetPosition = _currentStep * itemWidth;
 
     _timelineController.animateTo(
@@ -458,7 +457,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen>
   Widget _buildAIInputBar() {
     return SafeArea(
       child: Container(
-        margin: EdgeInsets.only(top: 20),
+        margin: const EdgeInsets.only(top: 20),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Colors.grey[900]!.withOpacity(0.85),
@@ -516,8 +515,8 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen>
                     vertical: 12,
                   ),
                   suffixIcon: _ttsService.isProcessing
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
+                      ? const Padding(
+                          padding: EdgeInsets.all(8.0),
                           child: SizedBox(
                             width: 20,
                             height: 20,
@@ -706,15 +705,15 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen>
                           ),
                         ],
                       ),
-                      child: Row(
+                      child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.send,
                             color: Colors.white,
                             size: 18,
                           ),
-                          const SizedBox(width: 6),
+                          SizedBox(width: 6),
                           Text(
                             'ارسال',
                             style: TextStyle(
@@ -858,7 +857,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen>
                                       ),
                                     )
                                   else if (_timelineData.isNotEmpty) ...[
-                                    Container(
+                                    SizedBox(
                                       height: 90,
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
@@ -1042,7 +1041,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen>
                                     ),
                                     _buildTimelineItem(
                                         _timelineData[_currentStep]),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 10,
                                     ),
                                     if (_ttsService.isProcessing)
@@ -1109,7 +1108,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen>
                                                   curve: Curves.easeInOut,
                                                 ),
                                               ),
-                                              child: Container(
+                                              child: SizedBox(
                                                 width: 100,
                                                 height: 100,
                                                 child: Lottie.asset(
@@ -1385,7 +1384,7 @@ class _ChemistryBookScreenState extends State<ChemistryBookScreen>
                   color: typeColor.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Text(
+                child: const Text(
                   'فعالیت',
                   textDirection: TextDirection.rtl,
                   style: TextStyle(
@@ -1524,8 +1523,8 @@ class WaveformPainter extends CustomPainter {
       ..color = Colors.amber.withOpacity(0.8)
       ..style = PaintingStyle.fill;
 
-    final double barWidth = 4;
-    final double spacing = 2;
+    const double barWidth = 4;
+    const double spacing = 2;
     final int barCount = (size.width / (barWidth + spacing)).floor();
     final double maxHeight = size.height;
 

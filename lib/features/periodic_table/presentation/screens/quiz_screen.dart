@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'dart:math';
 
 class QuizScreen extends StatefulWidget {
   final int podmanId;
@@ -24,6 +25,21 @@ class _QuizScreenState extends State<QuizScreen> {
   String? _selectedAnswer;
   bool _isLoading = true;
 
+  void _shuffleAnswers(Map<String, dynamic> question) {
+    final answers = List<String>.from(question['answers']);
+    final correctAnswer = question['correct_answer'];
+
+    // بهم ریختن گزینه‌ها
+    answers.shuffle(Random());
+
+    // پیدا کردن موقعیت جدید گزینه درست
+    final newCorrectIndex = answers.indexOf(correctAnswer);
+
+    // به‌روزرسانی گزینه درست
+    question['correct_answer'] = answers[newCorrectIndex];
+    question['answers'] = answers;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -32,11 +48,37 @@ class _QuizScreenState extends State<QuizScreen> {
 
   Future<void> _loadQuizData() async {
     try {
-      final String response = await rootBundle
-          .loadString('assets/data/quiz_${widget.podmanId}.json');
-      final data = json.decode(response);
+      List<Map<String, dynamic>> allQuestions = [];
+      if (widget.podmanId == 2) {
+        // بارگذاری هر دو فایل برای پودمان ۲
+        final String response1 =
+            await rootBundle.loadString('assets/P2 (1).json');
+        final String response2 = await rootBundle.loadString('assets/P2s.json');
+        final data1 = json.decode(response1);
+        final data2 = json.decode(response2);
+        allQuestions
+            .addAll(List<Map<String, dynamic>>.from(data1['questions']));
+        allQuestions
+            .addAll(List<Map<String, dynamic>>.from(data2['questions']));
+      } else {
+        // بارگذاری یک فایل برای سایر پودمان‌ها
+        final String response =
+            await rootBundle.loadString('assets/P${widget.podmanId}.json');
+        final data = json.decode(response);
+        allQuestions = List<Map<String, dynamic>>.from(data['questions']);
+      }
+
+      // انتخاب ۲۰ سوال تصادفی
+      allQuestions.shuffle(Random());
+      final questions = allQuestions.take(20).toList();
+
+      // بهم ریختن گزینه‌ها برای هر سوال
+      for (var question in questions) {
+        _shuffleAnswers(question);
+      }
+
       setState(() {
-        _questions = List<Map<String, dynamic>>.from(data['questions']);
+        _questions = questions;
         _isLoading = false;
       });
     } catch (e) {
