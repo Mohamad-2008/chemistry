@@ -19,14 +19,12 @@ class PeriodicTableScreen extends StatefulWidget {
   _PeriodicTableScreenState createState() => _PeriodicTableScreenState();
 }
 
-class _PeriodicTableScreenState extends State<PeriodicTableScreen>
-    with TickerProviderStateMixin {
+class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerProviderStateMixin {
   bool _isAppBarVisible = true;
   late AnimationController _arrowController;
   late AnimationController _fadeController;
   Orientation? orientation;
-  final TransformationController _transformationController =
-      TransformationController();
+  final TransformationController _transformationController = TransformationController();
   bool _isMounted = false;
 
   @override
@@ -49,11 +47,9 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
       _arrowController.reverse();
       _fadeController.reverse();
     }
-    Provider.of<PeriodicTableProvider>(context, listen: false)
-        .loadUserProfile();
+    Provider.of<PeriodicTableProvider>(context, listen: false).loadUserProfile();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<PeriodicTableProvider>(context, listen: false)
-          .setCurrentRoute('/main_menu');
+      Provider.of<PeriodicTableProvider>(context, listen: false).setCurrentRoute('/main_menu');
     });
   }
 
@@ -157,15 +153,11 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
         onTap: () {
           HapticFeedback.lightImpact();
           final RenderBox button = context.findRenderObject() as RenderBox;
-          final RenderBox overlay = Navigator.of(context)
-              .overlay!
-              .context
-              .findRenderObject() as RenderBox;
+          final RenderBox overlay = Navigator.of(context).overlay!.context.findRenderObject() as RenderBox;
           final RelativeRect position = RelativeRect.fromRect(
             Rect.fromPoints(
               button.localToGlobal(Offset.zero, ancestor: overlay),
-              button.localToGlobal(button.size.bottomRight(Offset.zero),
-                  ancestor: overlay),
+              button.localToGlobal(button.size.bottomRight(Offset.zero), ancestor: overlay),
             ),
             Offset.zero & overlay.size,
           );
@@ -185,18 +177,14 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
         onDoubleTap: () {
           HapticFeedback.mediumImpact();
           CustomSnackBar.show(context, 'فیلترها بازنشانی شدند!');
-          Provider.of<PeriodicTableProvider>(context, listen: false)
-              .selectCategoryFilter('All');
+          Provider.of<PeriodicTableProvider>(context, listen: false).selectCategoryFilter('All');
         },
         child: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: RadialGradient(
-              colors: [
-                Colors.blueAccent.withOpacity(0.3),
-                Colors.blueGrey[800]!.withOpacity(0.8)
-              ],
+              colors: [Colors.blueAccent.withOpacity(0.3), Colors.blueGrey[800]!.withOpacity(0.8)],
               radius: 1.5,
             ),
           ),
@@ -278,8 +266,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
     AppRoutes.navigateToElementDetails(context, element);
   }
 
-  void showSearchDialog(BuildContext context,
-      {required Function(ElementModel) onElementSelected}) {
+  void showSearchDialog(BuildContext context, {required Function(ElementModel) onElementSelected}) {
     HapticFeedback.lightImpact();
     showDialog(
       context: context,
@@ -292,10 +279,8 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
   bool _isElementActive(ElementModel element) {
     final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
     return provider.currentSort == null ||
-        (provider.currentSort == 'category' &&
-            element.category == provider.currentCategory) ||
-        (provider.currentSort == 'name' &&
-            element.name.startsWith(provider.currentLetter ?? '')) ||
+        (provider.currentSort == 'category' && element.category == provider.currentCategory) ||
+        (provider.currentSort == 'name' && element.name.startsWith(provider.currentLetter ?? '')) ||
         (provider.currentSort == 'number' &&
             element.number >= (provider.currentMinNumber ?? 0) &&
             element.number <= (provider.currentMaxNumber ?? 118));
@@ -341,9 +326,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                       onElementSelected: (element) {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           if (_isMounted) {
-                            Provider.of<PeriodicTableProvider>(context,
-                                    listen: false)
-                                .selectElement(element);
+                            Provider.of<PeriodicTableProvider>(context, listen: false).selectElement(element);
                             _scrollToElement(element);
                           }
                         });
@@ -368,9 +351,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                   case '/chat_bot':
                     return WillPopScope(
                       onWillPop: () async {
-                        final provider = Provider.of<PeriodicTableProvider>(
-                            context,
-                            listen: false);
+                        final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
                         provider.setCurrentRoute('/main_menu');
                         return false;
                       },
@@ -441,19 +422,15 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                   panEnabled: true,
                   scaleEnabled: true,
                   onInteractionStart: (details) {
-                    if (orientation == Orientation.landscape &&
-                        _isAppBarVisible &&
-                        details.pointerCount == 1) {
+                    if (orientation == Orientation.landscape && _isAppBarVisible && details.pointerCount == 1) {
                       _toggleVisibility();
                     }
                   },
                   child: GestureDetector(
                     onTapUp: (details) {
                       HapticFeedback.lightImpact();
-                      final RenderBox box =
-                          context.findRenderObject() as RenderBox;
-                      final localPosition =
-                          box.globalToLocal(details.globalPosition);
+                      final RenderBox box = context.findRenderObject() as RenderBox;
+                      final localPosition = box.globalToLocal(details.globalPosition);
                       ElementModel? selectedElement;
                       for (final element in provider.elements) {
                         final x = (element.xpos - 1) * 68.0 + 16.0;
@@ -501,8 +478,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                       animation: _arrowController,
                       builder: (_, child) => Transform.rotate(
                         angle: _arrowController.value * 3.1416,
-                        child:
-                            const Icon(Icons.arrow_upward, color: Colors.white),
+                        child: const Icon(Icons.arrow_upward, color: Colors.white),
                       ),
                     ),
                   ),
@@ -517,8 +493,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
   Widget _buildMainMenu() {
     return WillPopScope(
       onWillPop: () async {
-        final provider =
-            Provider.of<PeriodicTableProvider>(context, listen: false);
+        final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
         provider.setCurrentRoute('/main_menu');
         return false;
       },
@@ -559,73 +534,49 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
       {
         'title': 'چت بات شیمی',
         'icon': Icons.chat_bubble_outline,
-        'colors': [
-          Colors.deepPurple[400]!.withOpacity(0.8),
-          Colors.blue[600]!.withOpacity(0.6)
-        ],
+        'colors': [Colors.deepPurple[400]!.withOpacity(0.8), Colors.blue[600]!.withOpacity(0.6)],
         'route': '/chat_bot',
       },
       {
         'title': 'جدول تناوبی',
         'icon': Icons.grid_on,
-        'colors': [
-          Colors.blue[600]!.withOpacity(0.8),
-          Colors.teal[400]!.withOpacity(0.6)
-        ],
+        'colors': [Colors.blue[600]!.withOpacity(0.8), Colors.teal[400]!.withOpacity(0.6)],
         'route': '/periodic_table',
       },
       {
         'title': 'کتاب شیمی',
         'icon': Icons.book,
-        'colors': [
-          Colors.teal[400]!.withOpacity(0.8),
-          Colors.green[400]!.withOpacity(0.6)
-        ],
+        'colors': [Colors.teal[400]!.withOpacity(0.8), Colors.green[400]!.withOpacity(0.6)],
         'route': '/chemistry_book',
       },
       {
         'title': 'جستجوی عناصر',
         'icon': Icons.search,
-        'colors': [
-          Colors.green[400]!.withOpacity(0.8),
-          Colors.lime[400]!.withOpacity(0.6)
-        ],
+        'colors': [Colors.green[400]!.withOpacity(0.8), Colors.lime[400]!.withOpacity(0.6)],
         'route': '/element_search',
       },
       {
         'title': 'ماشین حساب',
         'icon': Icons.calculate,
-        'colors': [
-          Colors.orange[400]!.withOpacity(0.8),
-          Colors.amber[400]!.withOpacity(0.6)
-        ],
+        'colors': [Colors.orange[400]!.withOpacity(0.8), Colors.amber[400]!.withOpacity(0.6)],
         'route': '/calculator',
       },
       {
         'title': 'فرمول‌های شیمی',
         'icon': Icons.science,
-        'colors': [
-          Colors.cyan[400]!.withOpacity(0.8),
-          Colors.blue[400]!.withOpacity(0.6)
-        ],
+        'colors': [Colors.cyan[400]!.withOpacity(0.8), Colors.blue[400]!.withOpacity(0.6)],
         'route': '/formulas',
       },
       {
         'title': 'تنظیمات',
         'icon': Icons.settings,
-        'colors': [
-          Colors.grey[600]!.withOpacity(0.8),
-          Colors.blueGrey[400]!.withOpacity(0.6)
-        ],
+        'colors': [Colors.grey[600]!.withOpacity(0.8), Colors.blueGrey[400]!.withOpacity(0.6)],
         'route': '/settings',
       },
       {
         'title': 'پروفایل',
         'icon': Icons.person,
-        'colors': [
-          Colors.pink[400]!.withOpacity(0.8),
-          Colors.purple[400]!.withOpacity(0.6)
-        ],
+        'colors': [Colors.pink[400]!.withOpacity(0.8), Colors.purple[400]!.withOpacity(0.6)],
         'route': '/profile',
       },
     ];
@@ -693,8 +644,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
               isTapped = false;
             });
             try {
-              final provider =
-                  Provider.of<PeriodicTableProvider>(context, listen: false);
+              final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
               switch (route) {
                 case '/chat_bot':
                   AppRoutes.navigateToChatBot(context).then((_) {
@@ -712,8 +662,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                   break;
                 case '/element_search':
                   if (provider.selectedElement != null) {
-                    AppRoutes.navigateToElementSearch(context,
-                        firstElement: provider.selectedElement!);
+                    AppRoutes.navigateToElementSearch(context, firstElement: provider.selectedElement!);
                   } else {
                     AppRoutes.navigateToElementSearch(context);
                   }
@@ -782,10 +731,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                     padding: EdgeInsets.all(isTapped ? 14 : 12),
                     decoration: BoxDecoration(
                       gradient: RadialGradient(
-                        colors: [
-                          Colors.white.withOpacity(0.2),
-                          Colors.white.withOpacity(0.1)
-                        ],
+                        colors: [Colors.white.withOpacity(0.2), Colors.white.withOpacity(0.1)],
                         radius: 1.0,
                       ),
                       shape: BoxShape.circle,
@@ -861,31 +807,21 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                   const SizedBox(height: 20),
                   _buildChartCard(
                     title: 'نمودار روند تغییرات خواص فیزیکی',
-                    description:
-                        'مشاهده روند تغییرات نقطه ذوب، جوش و چگالی در جدول تناوبی',
+                    description: 'مشاهده روند تغییرات نقطه ذوب، جوش و چگالی در جدول تناوبی',
                     icon: Icons.show_chart,
-                    colors: [
-                      Colors.blue[600]!.withOpacity(0.8),
-                      Colors.blue[400]!.withOpacity(0.6)
-                    ],
+                    colors: [Colors.blue[600]!.withOpacity(0.8), Colors.blue[400]!.withOpacity(0.6)],
                     onTap: () {
-                      CustomSnackBar.show(
-                          context, 'این نمودار به زودی اضافه می‌شود!');
+                      CustomSnackBar.show(context, 'این نمودار به زودی اضافه می‌شود!');
                     },
                   ),
                   const SizedBox(height: 16),
                   _buildChartCard(
                     title: 'نمودار روند تغییرات خواص شیمیایی',
-                    description:
-                        'مشاهده روند تغییرات الکترونگاتیوی، انرژی یونش و شعاع اتمی',
+                    description: 'مشاهده روند تغییرات الکترونگاتیوی، انرژی یونش و شعاع اتمی',
                     icon: Icons.science,
-                    colors: [
-                      Colors.green[600]!.withOpacity(0.8),
-                      Colors.green[400]!.withOpacity(0.6)
-                    ],
+                    colors: [Colors.green[600]!.withOpacity(0.8), Colors.green[400]!.withOpacity(0.6)],
                     onTap: () {
-                      CustomSnackBar.show(
-                          context, 'این نمودار به زودی اضافه می‌شود!');
+                      CustomSnackBar.show(context, 'این نمودار به زودی اضافه می‌شود!');
                     },
                   ),
                   const SizedBox(height: 16),
@@ -893,13 +829,9 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                     title: 'نمودار فراوانی عناصر',
                     description: 'مشاهده فراوانی عناصر در پوسته زمین و جهان',
                     icon: Icons.pie_chart,
-                    colors: [
-                      Colors.orange[600]!.withOpacity(0.8),
-                      Colors.orange[400]!.withOpacity(0.6)
-                    ],
+                    colors: [Colors.orange[600]!.withOpacity(0.8), Colors.orange[400]!.withOpacity(0.6)],
                     onTap: () {
-                      CustomSnackBar.show(
-                          context, 'این نمودار به زودی اضافه می‌شود!');
+                      CustomSnackBar.show(context, 'این نمودار به زودی اضافه می‌شود!');
                     },
                   ),
                   const SizedBox(height: 16),
@@ -907,13 +839,9 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                     title: 'نمودار کشف عناصر',
                     description: 'تاریخچه کشف عناصر در طول زمان',
                     icon: Icons.history,
-                    colors: [
-                      Colors.purple[600]!.withOpacity(0.8),
-                      Colors.purple[400]!.withOpacity(0.6)
-                    ],
+                    colors: [Colors.purple[600]!.withOpacity(0.8), Colors.purple[400]!.withOpacity(0.6)],
                     onTap: () {
-                      CustomSnackBar.show(
-                          context, 'این نمودار به زودی اضافه می‌شود!');
+                      CustomSnackBar.show(context, 'این نمودار به زودی اضافه می‌شود!');
                     },
                   ),
                 ],
@@ -980,10 +908,7 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen>
                     padding: EdgeInsets.all(isTapped ? 14 : 12),
                     decoration: BoxDecoration(
                       gradient: RadialGradient(
-                        colors: [
-                          Colors.white.withOpacity(0.2),
-                          Colors.white.withOpacity(0.1)
-                        ],
+                        colors: [Colors.white.withOpacity(0.2), Colors.white.withOpacity(0.1)],
                         radius: 1.0,
                       ),
                       shape: BoxShape.circle,
@@ -1119,15 +1044,13 @@ class _CategoryMenu extends StatelessWidget {
           ),
           const Divider(color: Colors.white24),
           const SizedBox(height: 8),
-          ...categories
-              .map((category) => _buildCategoryItem(context, category)),
+          ...categories.map((category) => _buildCategoryItem(context, category)),
         ],
       ),
     );
   }
 
-  Widget _buildCategoryItem(
-      BuildContext context, Map<String, String> category) {
+  Widget _buildCategoryItem(BuildContext context, Map<String, String> category) {
     final provider = Provider.of<PeriodicTableProvider>(context);
     final isSelected = category['key'] == provider.selectedCategoryFilter;
     bool isTapped = false;
@@ -1158,13 +1081,13 @@ class _CategoryMenu extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: isTapped
                   ? LinearGradient(
-                      colors: [
-                        Colors.blueAccent.withOpacity(0.3),
-                        Colors.blueGrey[800]!.withOpacity(0.2),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    )
+                colors: [
+                  Colors.blueAccent.withOpacity(0.3),
+                  Colors.blueGrey[800]!.withOpacity(0.2),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              )
                   : null,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
@@ -1184,12 +1107,11 @@ class _CategoryMenu extends StatelessWidget {
               ),
               trailing: isSelected
                   ? const Icon(
-                      Icons.check_circle,
-                      color: Colors.blueAccent,
-                    )
+                Icons.check_circle,
+                color: Colors.blueAccent,
+              )
                   : null,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
