@@ -18,7 +18,7 @@ plugins {
 android {
     namespace = "com.example.periodic_table_app"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "29.0.13113456"
+    ndkVersion = "27.2.12479018"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

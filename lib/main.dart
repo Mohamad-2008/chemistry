@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           scaffoldBackgroundColor: const Color(0xFF1A1A1A),
           appBarTheme: AppBarTheme(
-            backgroundColor: Colors.black.withOpacity(0.7),
+            backgroundColor: Colors.black.withAlpha((255 * 0.7).round()),
             elevation: 0,
             titleTextStyle: const TextStyle(
               color: Colors.white,
@@ -64,8 +64,8 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Lalezar',
             ),
           ),
-          dialogTheme: DialogTheme(
-            backgroundColor: Colors.black.withOpacity(0.8),
+          dialogTheme: DialogThemeData(
+            backgroundColor: Colors.black.withAlpha((255 * 0.8).round()),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),

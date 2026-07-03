@@ -597,11 +597,11 @@ class _PeriodicTableScreenState extends State<PeriodicTableScreen> with TickerPr
         return AnimatedBuilder(
           animation: _fadeController,
           builder: (context, child) {
-            final delay = index * 0.1;
+            final delay = (index * 0.1).clamp(0.0, 0.5);
             final animation = Tween<double>(begin: 0.0, end: 1.0).animate(
               CurvedAnimation(
                 parent: _fadeController,
-                curve: Interval(delay, delay + 0.5, curve: Curves.easeOutCubic),
+                curve: Interval(delay, (delay + 0.3).clamp(0.0, 1.0), curve: Curves.easeOutCubic),
               ),
             );
             return Transform.translate(

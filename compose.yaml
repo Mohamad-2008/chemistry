@@ -1,0 +1,6 @@
+services:
+  chemistry:
+    image: chemistry
+    build:
+      context: .
+      dockerfile: ./Dockerfile
