@@ -32,7 +32,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: 3.35.3
           cache: true
           cache-key: flutter-macos-arm64
       - name: Enable macOS desktop support
@@ -120,7 +120,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: 3.35.3
           cache: true
           cache-key: flutter-android
       - name: Install Flutter dependencies
@@ -163,7 +163,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: 3.35.3
           cache: true
           cache-key: flutter-ios-arm64
       - name: Install Flutter dependencies
