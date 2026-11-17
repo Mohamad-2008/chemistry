@@ -132,7 +132,11 @@ jobs:
             echo "Android sdkmanager was not found."
             exit 1
           fi
+          # sdkmanager closes stdin after accepting all licenses; avoid pipefail
+          # treating the resulting SIGPIPE from yes as a workflow failure.
+          set +o pipefail
           yes | "$SDKMANAGER" --licenses
+          set -o pipefail
           "$SDKMANAGER" --install "ndk;29.0.13113456"
       - name: Install Flutter dependencies
         run: flutter pub get
