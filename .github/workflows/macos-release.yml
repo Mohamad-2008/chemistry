@@ -1,21 +1,18 @@
-name: Flutter macOS CI/CD
+name: Flutter CI/CD
 
 on:
   push:
-    branches:
-      - main
-    tags:
-      - "v*"
+    branches: [main]
+    tags: ["v*"]
   pull_request:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: macos-${{ github.ref }}
+  group: chemistry-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -24,50 +21,33 @@ jobs:
     runs-on: macos-15
     outputs:
       version: ${{ steps.version.outputs.version }}
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
       - name: Verify Apple Silicon runner
-        run: |
-          echo "Runner architecture: $(uname -m)"
-          test "$(uname -m)" = "arm64"
-
+        run: test "$(uname -m)" = "arm64"
       - name: Select Xcode
         run: |
           xcode-select -p
           xcodebuild -version
-
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true
           cache-key: flutter-macos-arm64
-
-      # The repository currently has no macOS project scaffolding.
-      # Generate it in CI without changing the repository.
       - name: Enable macOS desktop support
         run: flutter config --enable-macos-desktop
-
       - name: Generate macOS project scaffolding when missing
         run: |
           if [ ! -d macos ]; then
             flutter create --platforms=macos .
           fi
-
       - name: Install Flutter dependencies
         run: flutter pub get
-
       - name: Analyze Dart code
-        # Keep analyzer findings visible without blocking builds for existing
-        # warnings and informational lints. Actual compile errors still fail.
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
-
       - name: Run Flutter tests
         run: flutter test
-
       - name: Resolve release version
         id: version
         shell: bash
@@ -80,85 +60,48 @@ jobs:
             VERSION="${VERSION//\"/}"
             VERSION="${VERSION//\'/}"
           fi
-
           if [[ -z "$VERSION" ]]; then
             echo "Could not determine application version from pubspec.yaml"
             exit 1
           fi
-
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "build_number=$GITHUB_RUN_NUMBER" >> "$GITHUB_OUTPUT"
-
       - name: Build Flutter macOS release
         run: |
           flutter build macos --release \
             --build-name="${{ steps.version.outputs.version }}" \
             --build-number="${{ steps.version.outputs.build_number }}"
-
       - name: Locate and verify application bundle
         id: app
         shell: bash
         run: |
-          APP_PATH="$(find build/macos/Build/Products/Release \
-            -maxdepth 1 -type d -name "*.app" -print -quit)"
-
+          APP_PATH="$(find build/macos/Build/Products/Release -maxdepth 1 -type d -name "*.app" -print -quit)"
           if [ -z "$APP_PATH" ]; then
-            echo "No .app bundle found in the macOS Release directory."
-            echo "Available build outputs:"
+            echo "No .app bundle found."
             find build/macos/Build/Products/Release -maxdepth 2 -print || true
             exit 1
           fi
-
-          EXECUTABLE=$(/usr/libexec/PlistBuddy \
-            -c "Print :CFBundleExecutable" \
-            "$APP_PATH/Contents/Info.plist")
-
+          EXECUTABLE=$(/usr/libexec/PlistBuddy -c "Print :CFBundleExecutable" "$APP_PATH/Contents/Info.plist")
           BINARY="$APP_PATH/Contents/MacOS/$EXECUTABLE"
           ARCHS="$(lipo -archs "$BINARY")"
-
-          echo "Application executable: $EXECUTABLE"
           echo "Architectures: $ARCHS"
-
           case " $ARCHS " in
             *" arm64 "*) ;;
-            *)
-              echo "The application binary does not contain arm64."
-              exit 1
-              ;;
+            *) echo "The application binary does not contain arm64."; exit 1 ;;
           esac
-
           echo "path=$APP_PATH" >> "$GITHUB_OUTPUT"
-
       - name: Package ZIP and DMG
         shell: bash
         run: |
           set -euo pipefail
-
           APP="${{ steps.app.outputs.path }}"
           VERSION="${{ steps.version.outputs.version }}"
-          APP_NAME="Chemistry"
-          DIST_DIR="$PWD/dist"
-          STAGING_DIR="$PWD/dmg-staging"
-
-          mkdir -p "$DIST_DIR" "$STAGING_DIR"
-
-          ditto -c -k --sequesterRsrc --keepParent \
-            "$APP" \
-            "$DIST_DIR/${APP_NAME}-${VERSION}-macos-arm64.zip"
-
-          ditto "$APP" "$STAGING_DIR/${APP_NAME}.app"
-          ln -s /Applications "$STAGING_DIR/Applications"
-
-          hdiutil create \
-            -volname "$APP_NAME" \
-            -srcfolder "$STAGING_DIR" \
-            -ov \
-            -format UDZO \
-            "$DIST_DIR/${APP_NAME}-${VERSION}-macos-arm64.dmg"
-
-          echo "Created packages:"
-          ls -lh "$DIST_DIR"
-
+          mkdir -p dist dmg-staging
+          ditto -c -k --sequesterRsrc --keepParent "$APP" "dist/Chemistry-$VERSION-macos-arm64.zip"
+          ditto "$APP" "dmg-staging/Chemistry.app"
+          ln -s /Applications "dmg-staging/Applications"
+          hdiutil create -volname "Chemistry" -srcfolder "dmg-staging" -ov -format UDZO "dist/Chemistry-$VERSION-macos-arm64.dmg"
+          ls -lh dist
       - name: Upload macOS packages
         uses: actions/upload-artifact@v4
         with:
@@ -167,28 +110,108 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+  android:
+    name: Build Android test APK
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+          cache-key: flutter-android
+      - name: Install Flutter dependencies
+        run: flutter pub get
+      - name: Resolve build version
+        id: version
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+          else
+            VERSION="$(sed -n 's/^version:[[:space:]]*//p' pubspec.yaml | head -n 1)"
+            VERSION="${VERSION%%+*}"
+            VERSION="${VERSION//\"/}"
+            VERSION="${VERSION//\'/}"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+      - name: Build Android debug APK
+        run: |
+          flutter build apk --debug \
+            --build-name="${{ steps.version.outputs.version }}" \
+            --build-number="$GITHUB_RUN_NUMBER"
+      - name: Upload Android APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: chemistry-android-debug-${{ steps.version.outputs.version }}-${{ github.run_number }}
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
+
+  ios:
+    name: Build iOS (unsigned compile check)
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: |
+          xcode-select -p
+          xcodebuild -version
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+          cache-key: flutter-ios-arm64
+      - name: Install Flutter dependencies
+        run: flutter pub get
+      - name: Build iOS without code signing
+        run: flutter build ios --release --no-codesign
+      - name: Package unsigned iOS app for inspection
+        run: |
+          cd build/ios/iphoneos
+          ditto -c -k --sequesterRsrc --keepParent Runner.app "$GITHUB_WORKSPACE/Chemistry-ios-unsigned.app.zip"
+      - name: Upload unsigned iOS build
+        uses: actions/upload-artifact@v4
+        with:
+          name: chemistry-ios-unsigned-${{ github.run_number }}
+          path: Chemistry-ios-unsigned.app.zip
+          if-no-files-found: error
+          retention-days: 14
+
   release:
     name: Publish GitHub Release
-    needs: build
+    needs: [build, android, ios]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-24.04
-
     permissions:
       contents: write
-
     steps:
       - name: Download macOS packages
         uses: actions/download-artifact@v4
         with:
           name: chemistry-macos-arm64-${{ needs.build.outputs.version }}-${{ github.run_number }}
-          path: dist
-
+          path: dist/macos
+      - name: Download Android test APK
+        uses: actions/download-artifact@v4
+        with:
+          name: chemistry-android-debug-${{ needs.android.outputs.version }}-${{ github.run_number }}
+          path: dist/android
       - name: Publish release
         uses: softprops/action-gh-release@v2
         with:
           name: Chemistry ${{ github.ref_name }}
           generate_release_notes: true
           fail_on_unmatched_files: true
+          body: |
+            Android APK attached to this release is a debug-signed test build,
+            intended for testing rather than production or Google Play.
+            The iOS build is unsigned and available as an Actions artifact;
+            it is not an installable iPhone package.
           files: |
-            dist/*.zip
-            dist/*.dmg
+            dist/macos/*.zip
+            dist/macos/*.dmg
+            dist/android/*.apk
