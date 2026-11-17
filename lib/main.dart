@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Lalezar',
             ),
           ),
-          dialogTheme: DialogTheme(
+          dialogTheme: DialogThemeData(
             backgroundColor: Colors.black.withOpacity(0.8),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
