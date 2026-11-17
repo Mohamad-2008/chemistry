@@ -25,6 +25,7 @@ class _PeriodicTableBottomNavState extends State<PeriodicTableBottomNav> with Si
   int _selectedIndex = 0;
   final List<String> _routes = ['/periodic_table', '/list', '/charts', '/chat_bot', '/main_menu'];
   late AnimationController _animationController;
+  PeriodicTableProvider? _provider;
   late Animation<double> _animation;
 
   @override
@@ -41,15 +42,15 @@ class _PeriodicTableBottomNavState extends State<PeriodicTableBottomNav> with Si
     
     // اضافه کردن listener برای تغییر مسیر
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
-      provider.addListener(_handleRouteChange);
+      if (!mounted) return;
+      _provider = Provider.of<PeriodicTableProvider>(context, listen: false);
+      _provider!.addListener(_handleRouteChange);
     });
   }
 
   @override
   void dispose() {
-    final provider = Provider.of<PeriodicTableProvider>(context, listen: false);
-    provider.removeListener(_handleRouteChange);
+    _provider?.removeListener(_handleRouteChange);
     _animationController.dispose();
     super.dispose();
   }
