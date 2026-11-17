@@ -215,6 +215,11 @@ jobs:
         with:
           name: chemistry-android-debug-${{ needs.android.outputs.version }}-${{ github.run_number }}
           path: dist/android
+      - name: Download iOS unsigned build
+        uses: actions/download-artifact@v4
+        with:
+          name: chemistry-ios-unsigned-${{ github.run_number }}
+          path: dist/ios
       - name: Publish release
         uses: softprops/action-gh-release@v2
         with:
@@ -224,9 +229,10 @@ jobs:
           body: |
             Android APK attached to this release is a debug-signed test build,
             intended for testing rather than production or Google Play.
-            The iOS build is unsigned and available as an Actions artifact;
-            it is not an installable iPhone package.
+            The iOS ZIP contains an unsigned build for inspection only; it is
+            not an installable iPhone package without Apple code signing.
           files: |
             dist/macos/*.zip
             dist/macos/*.dmg
             dist/android/*.apk
+            dist/ios/*.zip
