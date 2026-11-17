@@ -7,6 +7,13 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
 
+val releaseKeystoreFile = file("../Chemistry.keystore")
+val hasReleaseSigning =
+    keystorePropertiesFile.exists() &&
+    releaseKeystoreFile.exists() &&
+    keystoreProperties["storePassword"] != null &&
+    keystoreProperties["keyAlias"] != null &&
+    keystoreProperties["keyPassword"] != null
 
 plugins {
     id("com.android.application")
@@ -36,21 +43,21 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.periodic_table_app"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
-    signingConfigs {
-        create("release") {
-            storeFile = file("../Chemistry.keystore")
-            storePassword = keystoreProperties["storePassword"] as String
-            keyAlias = keystoreProperties["keyAlias"] as String
-            keyPassword = keystoreProperties["keyPassword"] as String
+
+    if (hasReleaseSigning) {
+        signingConfigs {
+            create("release") {
+                storeFile = releaseKeystoreFile
+                storePassword = keystoreProperties["storePassword"] as String
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+            }
         }
     }
 
@@ -58,7 +65,11 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
-            signingConfig = signingConfigs.getByName("release")
+            if (hasReleaseSigning) {
+                signingConfig = signingConfigs.getByName("release")
+            } else {
+                logger.warn("Release signing is not configured; the release APK will be unsigned.")
+            }
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
